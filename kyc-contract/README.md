@@ -1,4 +1,4 @@
-# Proof of concept for the medical record storage based on Blockchain, smart contract and NFT technologies.
+# Proof of concept for personal data trading based on Blockchain and smart contract.
 
 Try running some of the following tasks:
 
