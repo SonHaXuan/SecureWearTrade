@@ -8,6 +8,8 @@ This project involves interacting with a Jedi server and running a smart contrac
 
 Ensure you have the following installed on your machine:
 - Docker
+- Docker compose
+- Golang
 - Node.js and npm (Node Package Manager)
 - Hardhat (for running Ethereum smart contract tests)
 
