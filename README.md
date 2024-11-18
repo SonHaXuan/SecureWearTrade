@@ -14,6 +14,9 @@ Ensure you have the following installed on your machine:
 - Node.js and npm (Node Package Manager)
 - Hardhat (for running Ethereum smart contract tests)
 
+## Dataset
+This project uses the [LifeSnaps Fitbit Dataset](https://www.kaggle.com/datasets/skywescar/lifesnaps-fitbit-dataset) from Kaggle for data analysis and testing. Please ensure you download and place the dataset in the appropriate directory before proceeding.
+
 ## Step-by-Step Instructions
 
 ### 1. Start the Jedi Server
