@@ -1,0 +1,84 @@
+{
+  "name": "Alice2",
+  "policies": [
+    {
+      "uri": "company/comsumer1",
+      "permissions": {
+        "steps": true,
+        "heartRate": true,
+        "sleep": true,
+        "caloriesBurned": false,
+        "distance": true
+      }
+    },
+    {
+      "uri": "company/comsumer1/comsumer2",
+      "permissions": {
+        "steps": true,
+        "heartRate": true,
+        "sleep": false,
+        "caloriesBurned": true,
+        "distance": true
+      }
+    },
+    {
+      "uri": "company/comsumer1/comsumer3",
+      "permissions": {
+        "steps": false,
+        "heartRate": true,
+        "sleep": true,
+        "caloriesBurned": false,
+        "distance": true
+      }
+    },
+    {
+      "uri": "company/comsumer1/comsumer4",
+      "permissions": {
+        "steps": true,
+        "heartRate": true,
+        "sleep": true,
+        "caloriesBurned": true,
+        "distance": true
+      }
+    }
+  ],
+  "dataPoints": [
+    {
+      "type": "steps",
+      "startTimestamp": "2021-01-01T00:00:00Z",
+      "endTimestamp": "2021-01-01T00:00:00Z",
+      "url": "https://maroon-wandering-fly-487.mypinata.cloud/ipfs/QmaoLUdG4A7KQbbMwUN7uwpCBESaeKeHMacPhPf6Kgjk8c"
+    },
+    {
+      "type": "steps",
+      "startTimestamp": "2021-01-02T00:00:00Z",
+      "endTimestamp": "2021-01-02T00:00:00Z",
+      "url": "https://maroon-wandering-fly-487.mypinata.cloud/ipfs/QmYCZziBBWp7iBBNhbiUNyqMpaHxte7qMxACvDwv7DKfvs"
+    },
+    {
+      "type": "heartRate",
+      "startTimestamp": "2021-01-03T00:00:00Z",
+      "endTimestamp": "2021-01-03T00:00:00Z",
+      "url": "https://maroon-wandering-fly-487.mypinata.cloud/ipfs/QmTmKn8obS3DERsN74qvpiiReeF2cBE3g5CVEoRxkmToKF"
+    },
+    {
+      "type": "heartRate",
+      "startTimestamp": "2021-01-04T00:00:00Z",
+      "endTimestamp": "2021-01-04T00:00:00Z",
+      "url": "https://maroon-wandering-fly-487.mypinata.cloud/ipfs/QmVyW1YUxyzZsgj3Zu1sLiaY6g5XaJu66dd2SpxZpak1Pi"
+    },
+    {
+      "type": "distance",
+      "startTimestamp": "2021-01-05T00:00:00Z",
+      "endTimestamp": "2021-01-05T00:00:00Z",
+      "url": "https://maroon-wandering-fly-487.mypinata.cloud/ipfs/QmXwz97LD1gZuQsZZNCvj8btjbNz2wTemvdeJK6YheDyhx"
+    }
+  ],
+  "requestAccessLogs": [
+    {
+      "id": "company1",
+      "requestURI": "company/comsumer1/comsumer2",
+      "expiredDate": "2024-11-21T12:00:00Z"
+    }
+  ]
+}

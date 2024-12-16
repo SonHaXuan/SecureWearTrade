@@ -3,21 +3,25 @@ const app = require("../app");
 
 var jediKeys;
 describe("API Endpoints", () => {
-  test("Should request access to Onwer successfully", async () => {
-    const response = await request(app)
-      .post("/api/request-access")
-      .send({
-        id: "company1",
-        requestURI: "company/comsumer1/comsumer2",
-        expiredDate: "2024-11-21T12:00:00Z",
-      })
-      .set("Content-Type", "application/json");
+  test(
+    "Should request access to Onwer successfully",
+    async () => {
+      const response = await request(app)
+        .post("/api/request-access")
+        .send({
+          id: "company1",
+          requestURI: "company/comsumer1/comsumer2",
+          expiredDate: "2024-11-21T12:00:00Z",
+        })
+        .set("Content-Type", "application/json");
 
-    expect(response.statusCode).toBe(200);
-    expect(typeof response.body.key).toBe("string");
+      expect(response.statusCode).toBe(200);
+      expect(typeof response.body.key).toBe("string");
 
-    jediKeys = response.body.key;
-  });
+      jediKeys = response.body.key;
+    },
+    30 * 10_000
+  );
 
   test(
     ">>>> Case 1: User Access Authorized...",

@@ -3,6 +3,9 @@ const chalk = require("chalk");
 const app = express();
 const bodyParser = require("body-parser");
 const axios = require("axios");
+const path = require("path");
+const fs = require("fs");
+const moment = require("moment");
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -14,6 +17,24 @@ const JediInstance = axios.default.create({
   baseURL: "http://localhost:8080",
 });
 
+// Path to the JSON file
+const userFilePath = path.join(__dirname, "users.json");
+const userData = JSON.parse(
+  fs.readFileSync(path.join(__dirname, "user-data.json"), "utf8")
+);
+
+// Function to initialize the JSON file
+function initializeFile() {
+  if (!fs.existsSync(userFilePath)) {
+    // If file does not exist, create it with an empty array
+    fs.writeFileSync(userFilePath, JSON.stringify([]), "utf8");
+    console.log("File created successfully");
+  } else {
+    console.log("File already exists");
+  }
+}
+initializeFile();
+
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -24,7 +45,7 @@ app.post("/api/request-access", async (req, res) => {
   console.log(
     chalk.blue("INFO: ") +
       chalk.bold(
-        `User "${user.id}" register for access to Owner ${"Alice"}'s data\n`
+        `User "${user.id}" register for access to Owner ${userData.name}'s data\n`
       ) +
       chalk.cyan("  - URI: ") +
       `${user.requestURI}\n` +
@@ -48,11 +69,19 @@ app.post("/api/request-access", async (req, res) => {
       chalk.cyan("  - New Key ID: ") +
       `${jediKeys.slice(0, 400)}...`
   );
+
+  const data = JSON.parse(fs.readFileSync(userFilePath, "utf8"));
+  data.push(user); // Add new user to the array
+  fs.writeFileSync(userFilePath, JSON.stringify(data, null, 2), "utf8"); // Save back to file
+
   res.status(200).json({ key: jediKeys });
 });
 
 app.post("/api/user-data", async (req, res) => {
   const user = req.body;
+  const data = JSON.parse(fs.readFileSync(userFilePath, "utf8"));
+
+  const existedUser = data.find((u) => u.id === user.id);
 
   console.log(
     chalk.blue("INFO: ") +
@@ -61,7 +90,6 @@ app.post("/api/user-data", async (req, res) => {
       user.requestURI
   );
 
-  await sleep(3000);
   // Log verification step
   console.log(
     chalk.blue("INFO: ") +
@@ -70,14 +98,47 @@ app.post("/api/user-data", async (req, res) => {
       chalk.gray("(in progress)")
   );
 
-  await sleep(2000);
+  if (moment().isAfter(moment(existedUser.expiredDate))) {
+    console.log(
+      chalk.blue("INFO: ") +
+        "Access verified\n" +
+        chalk.cyan("   - User'URI: ") +
+        `${existedUser.requestURI}\n` +
+        chalk.cyan("   - User'Expiration date: ") +
+        `${existedUser.expiredDate}\n` +
+        chalk.cyan("   - Access Granted: ") +
+        "false\n" +
+        chalk.cyan("   - Reason: ") +
+        "User's access has expired. Access denied."
+    );
+    console.log(chalk.blue("INFO: ") + "End of data transfer\n");
+
+    return res.status(200).json({});
+  } else if (existedUser.requestURI !== user.requestURI) {
+    console.log(
+      chalk.blue("INFO: ") +
+        "Access verified\n" +
+        chalk.cyan("   - User'URI: ") +
+        `${existedUser.requestURI}\n` +
+        chalk.cyan("   - User'Expiration date: ") +
+        `${existedUser.expiredDate}\n` +
+        chalk.cyan("   - Access Granted: ") +
+        "false\n" +
+        chalk.cyan("   - Reason: ") +
+        "User does not have access to the requested URI. Access denied."
+    );
+    console.log(chalk.blue("INFO: ") + "End of data transfer\n");
+
+    return res.status(200).json({});
+  }
+
   console.log(
     chalk.blue("INFO: ") +
       "Access verified\n" +
       chalk.cyan("   - User'URI: ") +
       `${user.requestURI}\n` +
       chalk.cyan("   - User'Expiration date: ") +
-      `${"2024-08-25T23:59:59Z"}\n` +
+      `${existedUser.expiredDate}\n` +
       chalk.cyan("   - Access Granted: ") +
       "true\n"
   );
@@ -88,16 +149,11 @@ app.post("/api/user-data", async (req, res) => {
     chalk.blue("INFO: ") +
       "Loading owner’s data..." +
       chalk.gray("\n   - Files:\n") +
-      chalk.cyan("      1. ") +
-      "https://maroon-wandering-fly-487.mypinata.cloud/ipfs/QmaoLUdG4A7KQbbMwUN7uwpCBESaeKeHMacPhPf6Kgjk8c\n" +
-      chalk.cyan("      2. ") +
-      "https://maroon-wandering-fly-487.mypinata.cloud/ipfs/QmYCZziBBWp7iBBNhbiUNyqMpaHxte7qMxACvDwv7DKfvs\n" +
-      chalk.cyan("      3. ") +
-      "https://maroon-wandering-fly-487.mypinata.cloud/ipfs/QmTmKn8obS3DERsN74qvpiiReeF2cBE3g5CVEoRxkmToKF\n" +
-      chalk.cyan("      4. ") +
-      "https://maroon-wandering-fly-487.mypinata.cloud/ipfs/QmVyW1YUxyzZsgj3Zu1sLiaY6g5XaJu66dd2SpxZpak1Pi\n" +
-      chalk.cyan("      5. ") +
-      "https://maroon-wandering-fly-487.mypinata.cloud/ipfs/QmXwz97LD1gZuQsZZNCvj8btjbNz2wTemvdeJK6YheDyhx"
+      `${userData.dataPoints
+        .map((dataPoint, index) => {
+          return chalk.cyan(`      ${index + 1}. `) + `${dataPoint.url}`;
+        })
+        .join("\n")}`
   );
   console.log(".....");
 
