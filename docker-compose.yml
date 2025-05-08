@@ -106,3 +106,48 @@ services:
       resources:
         limits:
           cpus: "2"
+
+  # smart-band:
+  #   build: ./kyc-contract
+  #   mem_limit: 128m
+  #   cpus: "0.2"
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         memory: 128M
+  #         cpus: "0.2"
+  #       reservations:
+  #         memory: 64M
+  #         cpus: "0.1"
+  #   depends_on:
+  #     - go-jedi
+
+  # low-power-sensor:
+  #   build: ./kyc-contract
+  #   mem_limit: 64m
+  #   cpus: "0.1"
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         memory: 64M
+  #         cpus: "0.1"
+  #       reservations:
+  #         memory: 32M
+  #         cpus: "0.05"
+  #   depends_on:
+  #     - go-jedi
+
+  # ble-beacon:
+  #   build: ./kyc-contract
+  #   mem_limit: 32m
+  #   cpus: "0.05"
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         memory: 32M
+  #         cpus: "0.05"
+  #       reservations:
+  #         memory: 16M
+  #         cpus: "0.02"
+  #   depends_on:
+  #     - go-jedi
