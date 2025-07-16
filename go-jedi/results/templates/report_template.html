@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Test Results Report</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        
+        h2 {
+            color: #34495e;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+            margin-top: 30px;
+        }
+        
+        h3 {
+            color: #2c3e50;
+            margin-top: 25px;
+        }
+        
+        .meta-info {
+            background-color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .summary-card {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .summary-card h4 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        
+        .metric-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #27ae60;
+        }
+        
+        .metric-value.warning {
+            color: #f39c12;
+        }
+        
+        .metric-value.danger {
+            color: #e74c3c;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+        
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .success {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        
+        .failure {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        .chart-container {
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .chart-placeholder {
+            width: 100%;
+            height: 300px;
+            background-color: #ecf0f1;
+            border: 2px dashed #bdc3c7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #7f8c8d;
+            font-size: 1.1em;
+            border-radius: 5px;
+        }
+        
+        .confidence-interval {
+            background-color: #e8f5e8;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        
+        .hypothesis-test {
+            background-color: #f0f8ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        
+        .recommendation {
+            background-color: #fff3cd;
+            padding: 15px;
+            border-left: 4px solid #ffc107;
+            margin: 10px 0;
+        }
+        
+        .limitation {
+            background-color: #f8d7da;
+            padding: 15px;
+            border-left: 4px solid #dc3545;
+            margin: 10px 0;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            color: #7f8c8d;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+        
+        .badge-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .badge-warning {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .badge-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background-color: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: #28a745;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-fill.warning {
+            background-color: #ffc107;
+        }
+        
+        .progress-fill.danger {
+            background-color: #dc3545;
+        }
+        
+        @media (max-width: 768px) {
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            table {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Security Test Results Report</h1>
+        
+        <div class="meta-info">
+            <p><strong>Test Suite:</strong> {{.TestSuite}}</p>
+            <p><strong>Generated:</strong> {{.Timestamp}}</p>
+            <p><strong>Environment:</strong> {{.Environment.DeviceType}} on {{.Environment.OS}}</p>
+            <p><strong>Test Duration:</strong> {{.TestDuration}}</p>
+        </div>
+        
+        <h2>Executive Summary</h2>
+        <div class="summary-grid">
+            <div class="summary-card">
+                <h4>Overall Security Score</h4>
+                <div class="metric-value">{{.SecurityScore}}/100</div>
+                <p>Based on comprehensive attack resistance testing</p>
+            </div>
+            
+            <div class="summary-card">
+                <h4>Attack Success Rate</h4>
+                <div class="metric-value">{{.AttackSuccessRate}}%</div>
+                <p>Percentage of successful attacks across all vectors</p>
+            </div>
+            
+            <div class="summary-card">
+                <h4>Tests Performed</h4>
+                <div class="metric-value">{{.TotalTests}}</div>
+                <p>Total number of security tests executed</p>
+            </div>
+            
+            <div class="summary-card">
+                <h4>Statistical Confidence</h4>
+                <div class="metric-value">{{.StatisticalConfidence}}%</div>
+                <p>Confidence level for statistical significance</p>
+            </div>
+        </div>
+        
+        <h2>Test Results by Attack Type</h2>
+        
+        <h3>Man-in-the-Middle (MITM) Attacks</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Attack Type</th>
+                    <th>Success Rate</th>
+                    <th>Attempts</th>
+                    <th>Status</th>
+                    <th>Confidence</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{range .MITMResults}}
+                <tr>
+                    <td>{{.AttackType}}</td>
+                    <td>{{.SuccessRate}}%</td>
+                    <td>{{.Attempts}}</td>
+                    <td>
+                        {{if .Success}}
+                            <span class="badge badge-danger">VULNERABLE</span>
+                        {{else}}
+                            <span class="badge badge-success">PROTECTED</span>
+                        {{end}}
+                    </td>
+                    <td>{{.Confidence}}%</td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
+        
+        <h3>Timing Attacks</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Attack Type</th>
+                    <th>Success Rate</th>
+                    <th>Timing Variation</th>
+                    <th>Statistical Significance</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{range .TimingResults}}
+                <tr>
+                    <td>{{.AttackType}}</td>
+                    <td>{{.SuccessRate}}%</td>
+                    <td>{{.TimingVariation}}ns</td>
+                    <td>p = {{.StatisticalSignificance}}</td>
+                    <td>
+                        {{if .Success}}
+                            <span class="badge badge-danger">VULNERABLE</span>
+                        {{else}}
+                            <span class="badge badge-success">PROTECTED</span>
+                        {{end}}
+                    </td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
+        
+        <h3>Power Analysis Attacks</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Attack Type</th>
+                    <th>Success Rate</th>
+                    <th>Key Recovery Rate</th>
+                    <th>Power Variation</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{range .PowerResults}}
+                <tr>
+                    <td>{{.AttackType}}</td>
+                    <td>{{.SuccessRate}}%</td>
+                    <td>{{.KeyRecoveryRate}}%</td>
+                    <td>{{.PowerVariation}}W</td>
+                    <td>
+                        {{if .Success}}
+                            <span class="badge badge-danger">VULNERABLE</span>
+                        {{else}}
+                            <span class="badge badge-success">PROTECTED</span>
+                        {{end}}
+                    </td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
+        
+        <h2>Statistical Analysis</h2>
+        
+        <h3>Confidence Intervals (95%)</h3>
+        <div class="confidence-interval">
+            <p><strong>Attack Success Rate:</strong> [{{.ConfidenceIntervals.AttackSuccessRate.Lower}}, {{.ConfidenceIntervals.AttackSuccessRate.Upper}}]</p>
+            <p><strong>Timing Variation:</strong> [{{.ConfidenceIntervals.TimingVariation.Lower}}ns, {{.ConfidenceIntervals.TimingVariation.Upper}}ns]</p>
+            <p><strong>Power Consumption:</strong> [{{.ConfidenceIntervals.PowerConsumption.Lower}}W, {{.ConfidenceIntervals.PowerConsumption.Upper}}W]</p>
+        </div>
+        
+        <h3>Hypothesis Testing</h3>
+        <div class="hypothesis-test">
+            <p><strong>Null Hypothesis:</strong> {{.HypothesisTest.NullHypothesis}}</p>
+            <p><strong>Alternative Hypothesis:</strong> {{.HypothesisTest.AlternativeHypothesis}}</p>
+            <p><strong>Test Statistic:</strong> {{.HypothesisTest.TestStatistic}}</p>
+            <p><strong>P-value:</strong> {{.HypothesisTest.PValue}}</p>
+            <p><strong>Conclusion:</strong> {{.HypothesisTest.Conclusion}}</p>
+        </div>
+        
+        <h2>Performance Impact Analysis</h2>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Metric</th>
+                    <th>Baseline</th>
+                    <th>With Security</th>
+                    <th>Overhead</th>
+                    <th>Acceptable</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Latency</td>
+                    <td>{{.Performance.BaselineLatency}}</td>
+                    <td>{{.Performance.SecureLatency}}</td>
+                    <td>{{.Performance.LatencyOverhead}}%</td>
+                    <td>
+                        {{if .Performance.LatencyAcceptable}}
+                            <span class="badge badge-success">YES</span>
+                        {{else}}
+                            <span class="badge badge-danger">NO</span>
+                        {{end}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Throughput</td>
+                    <td>{{.Performance.BaselineThroughput}}</td>
+                    <td>{{.Performance.SecureThroughput}}</td>
+                    <td>{{.Performance.ThroughputOverhead}}%</td>
+                    <td>
+                        {{if .Performance.ThroughputAcceptable}}
+                            <span class="badge badge-success">YES</span>
+                        {{else}}
+                            <span class="badge badge-danger">NO</span>
+                        {{end}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Memory Usage</td>
+                    <td>{{.Performance.BaselineMemory}}</td>
+                    <td>{{.Performance.SecureMemory}}</td>
+                    <td>{{.Performance.MemoryOverhead}}%</td>
+                    <td>
+                        {{if .Performance.MemoryAcceptable}}
+                            <span class="badge badge-success">YES</span>
+                        {{else}}
+                            <span class="badge badge-danger">NO</span>
+                        {{end}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <h2>Visualizations</h2>
+        
+        <div class="chart-container">
+            <h3>Attack Success Rates by Category</h3>
+            <div class="chart-placeholder">
+                [Chart: Bar chart showing success rates for MITM, Timing, and Power attacks]
+            </div>
+        </div>
+        
+        <div class="chart-container">
+            <h3>Timing Attack Distribution</h3>
+            <div class="chart-placeholder">
+                [Chart: Histogram showing distribution of timing variations]
+            </div>
+        </div>
+        
+        <div class="chart-container">
+            <h3>Power Consumption Analysis</h3>
+            <div class="chart-placeholder">
+                [Chart: Time series showing power consumption during attacks]
+            </div>
+        </div>
+        
+        <h2>Security Effectiveness Assessment</h2>
+        
+        <div class="summary-card">
+            <h4>Overall Security Rating: {{.SecurityEffectiveness.OverallRating}}</h4>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: {{.SecurityEffectiveness.ProgressPercentage}}%"></div>
+            </div>
+            <p><strong>Evidence Strength:</strong> {{.SecurityEffectiveness.EvidenceStrength}}</p>
+            <p><strong>Confidence Level:</strong> {{.SecurityEffectiveness.ConfidenceLevel}}%</p>
+        </div>
+        
+        <h3>Protection Levels by Attack Type</h3>
+        <ul>
+            <li><strong>MITM Protection:</strong> {{.SecurityEffectiveness.MITMProtection}}</li>
+            <li><strong>Timing Attack Protection:</strong> {{.SecurityEffectiveness.TimingProtection}}</li>
+            <li><strong>Power Analysis Protection:</strong> {{.SecurityEffectiveness.PowerProtection}}</li>
+        </ul>
+        
+        <h2>Recommendations</h2>
+        
+        {{range .Recommendations}}
+        <div class="recommendation">
+            <strong>{{.Priority}} Priority:</strong> {{.Description}}
+            <p><em>Timeline: {{.Timeline}}</em></p>
+        </div>
+        {{end}}
+        
+        <h2>Limitations and Future Work</h2>
+        
+        <h3>Study Limitations</h3>
+        {{range .Limitations}}
+        <div class="limitation">
+            {{.Description}}
+        </div>
+        {{end}}
+        
+        <h3>Future Research Directions</h3>
+        <ul>
+            {{range .FutureWork}}
+            <li>{{.}}</li>
+            {{end}}
+        </ul>
+        
+        <h2>Conclusion</h2>
+        
+        <p>{{.Conclusion}}</p>
+        
+        <div class="footer">
+            <p>Report generated on {{.Timestamp}} by Security Testing Framework v{{.Version}}</p>
+            <p>For questions about this report, contact the security team at security@example.com</p>
+        </div>
+    </div>
+</body>
+</html>

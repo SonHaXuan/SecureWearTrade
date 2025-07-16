@@ -1,0 +1,321 @@
+{
+  "encryption_baselines": {
+    "description": "Performance baselines for encryption operations",
+    "test_environment": {
+      "cpu": "Intel Core i7-12700K",
+      "ram": "32GB DDR4",
+      "os": "Ubuntu 22.04",
+      "go_version": "1.21.3"
+    },
+    "baselines": [
+      {
+        "data_size": 64,
+        "operations_per_second": 50000,
+        "latency_p50": "20µs",
+        "latency_p95": "50µs",
+        "latency_p99": "100µs",
+        "memory_usage": "4KB",
+        "cpu_usage": "15%",
+        "throughput_mbps": 3.2
+      },
+      {
+        "data_size": 256,
+        "operations_per_second": 45000,
+        "latency_p50": "22µs",
+        "latency_p95": "55µs",
+        "latency_p99": "110µs",
+        "memory_usage": "8KB",
+        "cpu_usage": "18%",
+        "throughput_mbps": 11.5
+      },
+      {
+        "data_size": 1024,
+        "operations_per_second": 35000,
+        "latency_p50": "28µs",
+        "latency_p95": "70µs",
+        "latency_p99": "150µs",
+        "memory_usage": "16KB",
+        "cpu_usage": "25%",
+        "throughput_mbps": 35.8
+      },
+      {
+        "data_size": 4096,
+        "operations_per_second": 20000,
+        "latency_p50": "50µs",
+        "latency_p95": "120µs",
+        "latency_p99": "250µs",
+        "memory_usage": "32KB",
+        "cpu_usage": "35%",
+        "throughput_mbps": 81.9
+      },
+      {
+        "data_size": 16384,
+        "operations_per_second": 8000,
+        "latency_p50": "125µs",
+        "latency_p95": "300µs",
+        "latency_p99": "600µs",
+        "memory_usage": "64KB",
+        "cpu_usage": "45%",
+        "throughput_mbps": 131.1
+      },
+      {
+        "data_size": 65536,
+        "operations_per_second": 2000,
+        "latency_p50": "500µs",
+        "latency_p95": "1200µs",
+        "latency_p99": "2400µs",
+        "memory_usage": "128KB",
+        "cpu_usage": "55%",
+        "throughput_mbps": 131.1
+      }
+    ]
+  },
+  "decryption_baselines": {
+    "description": "Performance baselines for decryption operations",
+    "baselines": [
+      {
+        "data_size": 64,
+        "operations_per_second": 52000,
+        "latency_p50": "19µs",
+        "latency_p95": "48µs",
+        "latency_p99": "95µs",
+        "memory_usage": "4KB",
+        "cpu_usage": "14%",
+        "throughput_mbps": 3.3
+      },
+      {
+        "data_size": 256,
+        "operations_per_second": 47000,
+        "latency_p50": "21µs",
+        "latency_p95": "52µs",
+        "latency_p99": "105µs",
+        "memory_usage": "8KB",
+        "cpu_usage": "17%",
+        "throughput_mbps": 12.0
+      },
+      {
+        "data_size": 1024,
+        "operations_per_second": 37000,
+        "latency_p50": "27µs",
+        "latency_p95": "65µs",
+        "latency_p99": "140µs",
+        "memory_usage": "16KB",
+        "cpu_usage": "23%",
+        "throughput_mbps": 37.9
+      },
+      {
+        "data_size": 4096,
+        "operations_per_second": 22000,
+        "latency_p50": "45µs",
+        "latency_p95": "110µs",
+        "latency_p99": "230µs",
+        "memory_usage": "32KB",
+        "cpu_usage": "32%",
+        "throughput_mbps": 90.1
+      },
+      {
+        "data_size": 16384,
+        "operations_per_second": 9000,
+        "latency_p50": "111µs",
+        "latency_p95": "270µs",
+        "latency_p99": "540µs",
+        "memory_usage": "64KB",
+        "cpu_usage": "40%",
+        "throughput_mbps": 147.5
+      },
+      {
+        "data_size": 65536,
+        "operations_per_second": 2200,
+        "latency_p50": "454µs",
+        "latency_p95": "1100µs",
+        "latency_p99": "2200µs",
+        "memory_usage": "128KB",
+        "cpu_usage": "50%",
+        "throughput_mbps": 144.2
+      }
+    ]
+  },
+  "security_overhead_baselines": {
+    "description": "Security overhead baselines compared to baseline operations",
+    "baselines": {
+      "tls_handshake": {
+        "operations_per_second": 5000,
+        "latency_p50": "200µs",
+        "latency_p95": "500µs",
+        "latency_p99": "1000µs",
+        "cpu_usage": "30%",
+        "memory_usage": "64KB",
+        "overhead_percentage": 20
+      },
+      "security_headers": {
+        "operations_per_second": 100000,
+        "latency_p50": "10µs",
+        "latency_p95": "25µs",
+        "latency_p99": "50µs",
+        "cpu_usage": "5%",
+        "memory_usage": "2KB",
+        "overhead_percentage": 5
+      },
+      "certificate_validation": {
+        "operations_per_second": 1000,
+        "latency_p50": "1000µs",
+        "latency_p95": "2500µs",
+        "latency_p99": "5000µs",
+        "cpu_usage": "40%",
+        "memory_usage": "128KB",
+        "overhead_percentage": 25
+      },
+      "session_management": {
+        "operations_per_second": 10000,
+        "latency_p50": "100µs",
+        "latency_p95": "250µs",
+        "latency_p99": "500µs",
+        "cpu_usage": "20%",
+        "memory_usage": "32KB",
+        "overhead_percentage": 10
+      },
+      "input_validation": {
+        "operations_per_second": 50000,
+        "latency_p50": "20µs",
+        "latency_p95": "50µs",
+        "latency_p99": "100µs",
+        "cpu_usage": "10%",
+        "memory_usage": "8KB",
+        "overhead_percentage": 3
+      }
+    }
+  },
+  "power_consumption_baselines": {
+    "description": "Power consumption baselines for different device types",
+    "mobile_device": {
+      "base_power": 1.5,
+      "encryption_power": 1.65,
+      "decryption_power": 1.62,
+      "idle_power": 0.8,
+      "max_power": 3.0,
+      "power_efficiency": "1.2 ops/joule",
+      "battery_impact": "5% per hour"
+    },
+    "iot_device": {
+      "base_power": 0.1,
+      "encryption_power": 0.12,
+      "decryption_power": 0.11,
+      "idle_power": 0.05,
+      "max_power": 0.5,
+      "power_efficiency": "10 ops/joule",
+      "battery_impact": "2% per hour"
+    },
+    "server": {
+      "base_power": 50.0,
+      "encryption_power": 55.0,
+      "decryption_power": 52.0,
+      "idle_power": 30.0,
+      "max_power": 200.0,
+      "power_efficiency": "0.5 ops/joule",
+      "power_scaling": "linear"
+    }
+  },
+  "attack_resistance_baselines": {
+    "description": "Expected attack resistance baselines",
+    "mitm_attacks": {
+      "certificate_substitution": {
+        "expected_success_rate": 0.0,
+        "detection_rate": 1.0,
+        "prevention_effectiveness": 0.95,
+        "false_positive_rate": 0.01
+      },
+      "ssl_stripping": {
+        "expected_success_rate": 0.0,
+        "detection_rate": 1.0,
+        "prevention_effectiveness": 0.98,
+        "false_positive_rate": 0.005
+      },
+      "traffic_interception": {
+        "expected_success_rate": 0.0,
+        "detection_rate": 0.95,
+        "prevention_effectiveness": 0.99,
+        "false_positive_rate": 0.02
+      },
+      "session_hijacking": {
+        "expected_success_rate": 0.0,
+        "detection_rate": 0.90,
+        "prevention_effectiveness": 0.95,
+        "false_positive_rate": 0.01
+      }
+    },
+    "timing_attacks": {
+      "password_comparison": {
+        "expected_success_rate": 0.0,
+        "timing_variation_threshold": "1µs",
+        "statistical_significance": 0.05,
+        "constant_time_compliance": 0.99
+      },
+      "key_comparison": {
+        "expected_success_rate": 0.0,
+        "timing_variation_threshold": "0.5µs",
+        "statistical_significance": 0.05,
+        "constant_time_compliance": 0.99
+      },
+      "hash_comparison": {
+        "expected_success_rate": 0.0,
+        "timing_variation_threshold": "0.75µs",
+        "statistical_significance": 0.05,
+        "constant_time_compliance": 0.99
+      }
+    },
+    "power_analysis": {
+      "simple_power_analysis": {
+        "expected_success_rate": 0.05,
+        "key_recovery_threshold": 0.1,
+        "countermeasure_effectiveness": 0.95
+      },
+      "differential_power_analysis": {
+        "expected_success_rate": 0.02,
+        "key_recovery_threshold": 0.05,
+        "countermeasure_effectiveness": 0.98
+      },
+      "correlation_power_analysis": {
+        "expected_success_rate": 0.01,
+        "key_recovery_threshold": 0.03,
+        "countermeasure_effectiveness": 0.99
+      },
+      "electromagnetic_analysis": {
+        "expected_success_rate": 0.005,
+        "key_recovery_threshold": 0.02,
+        "countermeasure_effectiveness": 0.995
+      }
+    }
+  },
+  "statistical_thresholds": {
+    "confidence_levels": {
+      "high": 0.99,
+      "medium": 0.95,
+      "low": 0.90
+    },
+    "significance_levels": {
+      "strict": 0.01,
+      "standard": 0.05,
+      "relaxed": 0.10
+    },
+    "sample_size_requirements": {
+      "minimum": 1000,
+      "recommended": 10000,
+      "high_precision": 100000
+    },
+    "performance_tolerances": {
+      "latency_deviation": 0.20,
+      "throughput_deviation": 0.15,
+      "memory_deviation": 0.25,
+      "cpu_deviation": 0.30
+    }
+  },
+  "test_matrix": {
+    "device_types": ["mobile", "iot", "server"],
+    "data_sizes": [64, 256, 1024, 4096, 16384, 65536],
+    "concurrency_levels": [1, 2, 4, 8, 16, 32],
+    "key_sizes": [128, 256, 512],
+    "attack_types": ["mitm", "timing", "power", "electromagnetic"],
+    "security_levels": ["basic", "standard", "high"],
+    "network_conditions": ["local", "lan", "wan", "mobile"]
+  }
+}

@@ -1,0 +1,354 @@
+{
+  "mitm_scenarios": [
+    {
+      "name": "basic_certificate_substitution",
+      "description": "Basic certificate substitution attack with self-signed certificate",
+      "target_endpoint": "/encrypt",
+      "attack_type": "certificate_substitution",
+      "expected_success": false,
+      "test_data": {
+        "fake_cert_subject": "CN=fake-server.com,O=Malicious CA,C=US",
+        "target_domain": "secure-server.com",
+        "certificate_validity": "365d"
+      },
+      "success_criteria": {
+        "certificate_validation": "fail",
+        "connection_established": false,
+        "data_intercepted": false
+      }
+    },
+    {
+      "name": "ssl_stripping_attack",
+      "description": "SSL stripping attack downgrading HTTPS to HTTP",
+      "target_endpoint": "/secure-login",
+      "attack_type": "ssl_stripping",
+      "expected_success": false,
+      "test_data": {
+        "original_protocol": "https",
+        "downgraded_protocol": "http",
+        "redirect_url": "http://malicious-proxy.com"
+      },
+      "success_criteria": {
+        "protocol_downgrade": "prevented",
+        "hsts_header": "enforced",
+        "secure_connection": "maintained"
+      }
+    },
+    {
+      "name": "traffic_interception",
+      "description": "Traffic interception and modification attack",
+      "target_endpoint": "/api/data",
+      "attack_type": "traffic_interception",
+      "expected_success": false,
+      "test_data": {
+        "original_message": "sensitive_user_data",
+        "modified_message": "modified_by_attacker",
+        "payload_size": 1024
+      },
+      "success_criteria": {
+        "data_integrity": "maintained",
+        "tampering_detection": "successful",
+        "encryption_bypass": "prevented"
+      }
+    },
+    {
+      "name": "session_hijacking",
+      "description": "Session hijacking attack capturing authentication tokens",
+      "target_endpoint": "/secure-area",
+      "attack_type": "session_hijacking",
+      "expected_success": false,
+      "test_data": {
+        "session_token": "user123_session_token",
+        "auth_header": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+        "cookie_name": "session_id"
+      },
+      "success_criteria": {
+        "session_protection": "active",
+        "token_validation": "enforced",
+        "unauthorized_access": "blocked"
+      }
+    },
+    {
+      "name": "dns_spoofing",
+      "description": "DNS spoofing attack redirecting to malicious server",
+      "target_endpoint": "/api/login",
+      "attack_type": "dns_spoofing",
+      "expected_success": false,
+      "test_data": {
+        "legitimate_host": "secure-server.com",
+        "malicious_host": "malicious-server.com",
+        "spoofed_ip": "192.168.1.100"
+      },
+      "success_criteria": {
+        "certificate_pinning": "enforced",
+        "host_validation": "successful",
+        "dns_verification": "passed"
+      }
+    }
+  ],
+  "timing_attack_scenarios": [
+    {
+      "name": "password_comparison_timing",
+      "description": "Timing attack on password comparison function",
+      "attack_type": "password_timing",
+      "expected_success": false,
+      "test_data": {
+        "correct_password": "correct_password_123",
+        "incorrect_passwords": [
+          "incorrect_password",
+          "wrong_pass",
+          "bad_password",
+          "c",
+          "co",
+          "cor",
+          "corr",
+          "corre",
+          "correc",
+          "correct",
+          "correct_",
+          "correct_p",
+          "correct_pa",
+          "correct_pas",
+          "correct_pass",
+          "correct_passw",
+          "correct_passwo",
+          "correct_passwor",
+          "correct_password",
+          "correct_password_",
+          "correct_password_1",
+          "correct_password_12"
+        ],
+        "sample_size": 10000
+      },
+      "success_criteria": {
+        "timing_variation": "< 1μs",
+        "statistical_significance": "> 0.05",
+        "constant_time": "enforced"
+      }
+    },
+    {
+      "name": "cryptographic_key_timing",
+      "description": "Timing attack on cryptographic key comparison",
+      "attack_type": "key_timing",
+      "expected_success": false,
+      "test_data": {
+        "key_length": 256,
+        "key_variations": [
+          "different_at_position_0",
+          "different_at_position_1",
+          "different_at_position_2",
+          "different_at_position_127",
+          "different_at_position_255",
+          "completely_different"
+        ],
+        "sample_size": 5000
+      },
+      "success_criteria": {
+        "timing_variation": "< 0.5μs",
+        "early_termination": "prevented",
+        "constant_time_comparison": "enforced"
+      }
+    },
+    {
+      "name": "hash_comparison_timing",
+      "description": "Timing attack on hash value comparison",
+      "attack_type": "hash_timing",
+      "expected_success": false,
+      "test_data": {
+        "correct_hash": "a1b2c3d4e5f6789012345678901234567890abcdef",
+        "hash_variations": [
+          "b1b2c3d4e5f6789012345678901234567890abcdef",
+          "a2b2c3d4e5f6789012345678901234567890abcdef",
+          "a1c2c3d4e5f6789012345678901234567890abcdef",
+          "a1b2c3d4e5f6789012345678901234567890abcdeg",
+          "completely_different_hash_value_here_123456789"
+        ],
+        "sample_size": 8000
+      },
+      "success_criteria": {
+        "timing_variation": "< 0.75μs",
+        "prefix_correlation": "< 0.1",
+        "constant_time_comparison": "enforced"
+      }
+    },
+    {
+      "name": "remote_network_timing",
+      "description": "Remote timing attack over network connection",
+      "attack_type": "remote_timing",
+      "expected_success": false,
+      "test_data": {
+        "network_delay_range": "1-10ms",
+        "jitter_percentage": 20,
+        "sample_size": 15000,
+        "connection_type": "https"
+      },
+      "success_criteria": {
+        "timing_variation": "< 5ms",
+        "network_jitter_compensation": "active",
+        "attack_detection": "successful"
+      }
+    }
+  ],
+  "power_analysis_scenarios": [
+    {
+      "name": "simple_power_analysis",
+      "description": "Simple Power Analysis (SPA) attack on cryptographic operations",
+      "attack_type": "spa",
+      "device_type": "mobile",
+      "expected_success": false,
+      "test_data": {
+        "key_length": 128,
+        "sample_size": 1000,
+        "power_model": {
+          "base_power": 1.5,
+          "bit_power_factor": 0.01,
+          "noise_level": 0.05
+        }
+      },
+      "success_criteria": {
+        "key_recovery_rate": "< 10%",
+        "power_variation": "< 0.1W",
+        "countermeasures": "active"
+      }
+    },
+    {
+      "name": "differential_power_analysis",
+      "description": "Differential Power Analysis (DPA) attack on encryption",
+      "attack_type": "dpa",
+      "device_type": "iot",
+      "expected_success": false,
+      "test_data": {
+        "key_length": 128,
+        "sample_size": 5000,
+        "power_model": {
+          "base_power": 0.1,
+          "bit_power_factor": 0.001,
+          "noise_level": 0.02
+        }
+      },
+      "success_criteria": {
+        "key_recovery_rate": "< 5%",
+        "correlation_coefficient": "< 0.2",
+        "dpa_countermeasures": "active"
+      }
+    },
+    {
+      "name": "correlation_power_analysis",
+      "description": "Correlation Power Analysis (CPA) attack using Hamming weight model",
+      "attack_type": "cpa",
+      "device_type": "mobile",
+      "expected_success": false,
+      "test_data": {
+        "key_length": 256,
+        "sample_size": 10000,
+        "hamming_weight_model": true,
+        "power_model": {
+          "base_power": 1.5,
+          "bit_power_factor": 0.01,
+          "noise_level": 0.05
+        }
+      },
+      "success_criteria": {
+        "key_recovery_rate": "< 3%",
+        "correlation_coefficient": "< 0.15",
+        "cpa_countermeasures": "active"
+      }
+    },
+    {
+      "name": "electromagnetic_analysis",
+      "description": "Electromagnetic Analysis (EMA) attack on device emissions",
+      "attack_type": "ema",
+      "device_type": "server",
+      "expected_success": false,
+      "test_data": {
+        "key_length": 256,
+        "sample_size": 8000,
+        "em_frequency": "2.4GHz",
+        "power_model": {
+          "base_power": 50.0,
+          "bit_power_factor": 0.1,
+          "noise_level": 0.1
+        }
+      },
+      "success_criteria": {
+        "key_recovery_rate": "< 2%",
+        "snr_threshold": "> 10dB",
+        "em_shielding": "effective"
+      }
+    }
+  ],
+  "benchmark_scenarios": [
+    {
+      "name": "encryption_performance",
+      "description": "Encryption performance under various data sizes",
+      "benchmark_type": "encryption",
+      "test_data": {
+        "data_sizes": [64, 256, 1024, 4096, 16384, 65536],
+        "iterations": 10000,
+        "key_size": 256
+      },
+      "performance_thresholds": {
+        "min_ops_per_second": 1000,
+        "max_latency_p95": "10ms",
+        "max_memory_usage": "100MB",
+        "max_cpu_usage": "50%"
+      }
+    },
+    {
+      "name": "decryption_performance",
+      "description": "Decryption performance under various data sizes",
+      "benchmark_type": "decryption",
+      "test_data": {
+        "data_sizes": [64, 256, 1024, 4096, 16384, 65536],
+        "iterations": 10000,
+        "key_size": 256
+      },
+      "performance_thresholds": {
+        "min_ops_per_second": 1000,
+        "max_latency_p95": "10ms",
+        "max_memory_usage": "100MB",
+        "max_cpu_usage": "50%"
+      }
+    },
+    {
+      "name": "concurrent_security_operations",
+      "description": "Concurrent security operations performance",
+      "benchmark_type": "concurrency",
+      "test_data": {
+        "concurrency_levels": [1, 2, 4, 8, 16, 32],
+        "iterations": 5000,
+        "data_size": 1024
+      },
+      "performance_thresholds": {
+        "min_ops_per_second": 500,
+        "max_latency_p99": "50ms",
+        "max_memory_usage": "500MB",
+        "max_cpu_usage": "80%"
+      }
+    },
+    {
+      "name": "security_headers_processing",
+      "description": "Security headers processing performance",
+      "benchmark_type": "headers",
+      "test_data": {
+        "header_count": 5,
+        "iterations": 50000
+      },
+      "performance_thresholds": {
+        "min_ops_per_second": 10000,
+        "max_latency_p95": "1ms",
+        "max_overhead": "5%"
+      }
+    }
+  ],
+  "test_configuration": {
+    "environment": "test",
+    "logging_level": "info",
+    "output_format": "json",
+    "results_directory": "./results",
+    "statistical_confidence": 0.95,
+    "default_timeout": "30s",
+    "max_retries": 3,
+    "cleanup_after_test": true
+  }
+}
