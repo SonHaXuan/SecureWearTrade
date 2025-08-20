@@ -2,11 +2,9 @@ package security
 
 import (
 	"bytes"
-	"context"
 	"crypto/rand"
 	"crypto/tls"
 	"encoding/json"
-	"fmt"
 	"io"
 	"net/http"
 	"net/http/httptest"

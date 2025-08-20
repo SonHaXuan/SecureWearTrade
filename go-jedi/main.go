@@ -13,6 +13,11 @@ import (
 	"security/attacks"
 	"strconv"
 	"time"
+	
+	"analysis"
+	"benchmarks"
+	"blockchain"
+	"privacy"
 
 	"github.com/gin-gonic/gin"
 	"github.com/shirou/gopsutil/v3/cpu"
@@ -713,6 +718,319 @@ func main() {
 		}
 		
 		c.JSON(200, config)
+	})
+	
+	// === NEW BENCHMARK AND ANALYSIS ENDPOINTS ===
+	
+	// Comparative Analysis Endpoint
+	r.GET("/benchmarks/comparative-analysis", func(c *gin.Context) {
+		iterations := 5
+		if iter := c.Query("iterations"); iter != "" {
+			if i, err := strconv.Atoi(iter); err == nil && i > 0 {
+				iterations = i
+			}
+		}
+		
+		comparison := benchmarks.NewSchemeComparison()
+		results, err := comparison.RunFullComparison(ctx, iterations)
+		if err != nil {
+			c.JSON(500, gin.H{"error": err.Error()})
+			return
+		}
+		
+		format := c.DefaultQuery("format", "json")
+		if format == "text" {
+			report := comparison.GenerateComparisonReport(results)
+			c.Header("Content-Type", "text/plain")
+			c.String(200, report)
+			return
+		}
+		
+		c.JSON(200, gin.H{
+			"results": results,
+			"report":  comparison.GenerateComparisonReport(results),
+		})
+	})
+	
+	// Wildcard Performance Endpoint
+	r.GET("/benchmarks/wildcard-performance", func(c *gin.Context) {
+		benchmark := benchmarks.NewWildcardBenchmark()
+		
+		testType := c.DefaultQuery("test_type", "complex_hierarchies")
+		format := c.DefaultQuery("format", "json")
+		
+		var results []benchmarks.WildcardResult
+		var err error
+		
+		switch testType {
+		case "complex_hierarchies":
+			results, err = benchmark.BenchmarkComplexHierarchies(ctx)
+		case "mobile_simulation":
+			deviceType := c.DefaultQuery("device_type", "mobile")
+			result, mobileErr := benchmark.BenchmarkMobileDeviceSimulation(ctx, deviceType)
+			if mobileErr != nil {
+				err = mobileErr
+			} else {
+				results = []benchmarks.WildcardResult{*result}
+			}
+		case "algorithm3":
+			iterations := 1000
+			if iter := c.Query("iterations"); iter != "" {
+				if i, err := strconv.Atoi(iter); err == nil && i > 0 {
+					iterations = i
+				}
+			}
+			result, algoErr := benchmark.BenchmarkAlgorithm3Performance(ctx, iterations)
+			if algoErr != nil {
+				err = algoErr
+			} else {
+				results = []benchmarks.WildcardResult{*result}
+			}
+		default:
+			// Default to single URI comparison
+			uri := c.DefaultQuery("uri", "hospital/cardiology/patient123/ecg")
+			results, err = benchmark.BenchmarkWildcardVsNonWildcard(ctx, uri)
+		}
+		
+		if err != nil {
+			c.JSON(500, gin.H{"error": err.Error()})
+			return
+		}
+		
+		if format == "text" {
+			report := benchmark.GenerateWildcardReport(results)
+			c.Header("Content-Type", "text/plain")
+			c.String(200, report)
+			return
+		}
+		
+		c.JSON(200, gin.H{
+			"test_type": testType,
+			"results":   results,
+			"report":    benchmark.GenerateWildcardReport(results),
+		})
+	})
+	
+	// Advanced Security Analysis Endpoint
+	r.GET("/security/advanced-analysis", func(c *gin.Context) {
+		analysis := security.NewAdvancedSecurityAnalysis()
+		
+		format := c.DefaultQuery("format", "json")
+		if format == "text" {
+			report := analysis.GenerateAdvancedSecurityReport()
+			c.Header("Content-Type", "text/plain")
+			c.String(200, report)
+			return
+		}
+		
+		c.JSON(200, analysis)
+	})
+	
+	// IPFS-Blockchain Integration Security Endpoint
+	r.GET("/security/ipfs-blockchain", func(c *gin.Context) {
+		ibs := security.NewIPFSBlockchainSecurity()
+		
+		audit := ibs.PerformSecurityAudit()
+		report := ibs.GenerateSecurityReport()
+		
+		format := c.DefaultQuery("format", "json")
+		if format == "text" {
+			c.Header("Content-Type", "text/plain")
+			c.String(200, report)
+			return
+		}
+		
+		c.JSON(200, gin.H{
+			"audit":  audit,
+			"report": report,
+		})
+	})
+	
+	// Privacy Technology Integration Endpoint
+	r.GET("/privacy/technologies", func(c *gin.Context) {
+		pt := privacy.NewPrivacyTechnology()
+		
+		dataSize := 1000
+		if size := c.Query("data_size"); size != "" {
+			if s, err := strconv.Atoi(size); err == nil && s > 0 {
+				dataSize = s
+			}
+		}
+		
+		results, err := pt.BenchmarkPrivacyTechnologies(dataSize)
+		if err != nil {
+			c.JSON(500, gin.H{"error": err.Error()})
+			return
+		}
+		
+		format := c.DefaultQuery("format", "json")
+		if format == "text" {
+			report := pt.GeneratePrivacyReport(results)
+			c.Header("Content-Type", "text/plain")
+			c.String(200, report)
+			return
+		}
+		
+		c.JSON(200, gin.H{
+			"results": results,
+			"report":  pt.GeneratePrivacyReport(results),
+		})
+	})
+	
+	// Blockchain Optimization Analysis Endpoint
+	r.GET("/blockchain/optimization", func(c *gin.Context) {
+		boa := blockchain.NewBlockchainOptimizationAnalysis()
+		
+		format := c.DefaultQuery("format", "json")
+		if format == "text" {
+			report := boa.GenerateOptimizationReport()
+			c.Header("Content-Type", "text/plain")
+			c.String(200, report)
+			return
+		}
+		
+		scenarios := boa.SimulateOptimizationScenarios()
+		healthcareOpts := boa.OptimizeForHealthcareUseCase()
+		
+		c.JSON(200, gin.H{
+			"analysis":            boa,
+			"scenarios":           scenarios,
+			"healthcare_optimizations": healthcareOpts,
+			"report":              boa.GenerateOptimizationReport(),
+		})
+	})
+	
+	// Hyperparameters Documentation Endpoint
+	r.GET("/analysis/hyperparameters", func(c *gin.Context) {
+		configType := c.DefaultQuery("config", "default")
+		
+		var params *analysis.SystemHyperparameters
+		switch configType {
+		case "mobile":
+			params = analysis.MobileDeviceHyperparameters()
+		case "iot":
+			params = analysis.IoTDeviceHyperparameters()
+		case "high_performance":
+			params = analysis.HighPerformanceHyperparameters()
+		default:
+			params = analysis.DefaultHyperparameters()
+		}
+		
+		format := c.DefaultQuery("format", "json")
+		if format == "text" {
+			table := analysis.GenerateHyperparametersTable(params)
+			c.Header("Content-Type", "text/plain")
+			c.String(200, table)
+			return
+		}
+		
+		// Validate parameters
+		errors := analysis.ValidateHyperparameters(params)
+		
+		// Create reproducibility package
+		reproPackage, err := analysis.ExportForReproducibility(params)
+		if err != nil {
+			c.JSON(500, gin.H{"error": err.Error()})
+			return
+		}
+		
+		c.JSON(200, gin.H{
+			"hyperparameters":        params,
+			"validation_errors":      errors,
+			"reproducibility_package": reproPackage,
+		})
+	})
+	
+	// Comprehensive Benchmark Suite Endpoint
+	r.GET("/benchmarks/comprehensive", func(c *gin.Context) {
+		// Run all benchmark modules
+		start := time.Now()
+		
+		// Comparative Analysis
+		comparison := benchmarks.NewSchemeComparison()
+		compResults, _ := comparison.RunFullComparison(ctx, 3)
+		
+		// Wildcard Performance
+		wildcardBench := benchmarks.NewWildcardBenchmark()
+		wildcardResults, _ := wildcardBench.BenchmarkComplexHierarchies(ctx)
+		
+		// Privacy Technologies
+		pt := privacy.NewPrivacyTechnology()
+		privacyResults, _ := pt.BenchmarkPrivacyTechnologies(500)
+		
+		// Security Analysis
+		securityAnalysis := security.NewAdvancedSecurityAnalysis()
+		
+		// Blockchain Optimization
+		blockchainOpt := blockchain.NewBlockchainOptimizationAnalysis()
+		scenarios := blockchainOpt.SimulateOptimizationScenarios()
+		
+		totalTime := time.Since(start)
+		
+		format := c.DefaultQuery("format", "json")
+		if format == "text" {
+			report := "=== COMPREHENSIVE BENCHMARK SUITE REPORT ===\n\n"
+			report += fmt.Sprintf("Execution Time: %v\n\n", totalTime)
+			report += comparison.GenerateComparisonReport(compResults)
+			report += "\n" + wildcardBench.GenerateWildcardReport(wildcardResults)
+			report += "\n" + pt.GeneratePrivacyReport(privacyResults)
+			report += "\n" + securityAnalysis.GenerateAdvancedSecurityReport()
+			report += "\n" + blockchainOpt.GenerateOptimizationReport()
+			
+			c.Header("Content-Type", "text/plain")
+			c.String(200, report)
+			return
+		}
+		
+		c.JSON(200, gin.H{
+			"execution_time_ms": totalTime.Milliseconds(),
+			"comparative_analysis": gin.H{
+				"results": compResults,
+				"report":  comparison.GenerateComparisonReport(compResults),
+			},
+			"wildcard_performance": gin.H{
+				"results": wildcardResults,
+				"report":  wildcardBench.GenerateWildcardReport(wildcardResults),
+			},
+			"privacy_technologies": gin.H{
+				"results": privacyResults,
+				"report":  pt.GeneratePrivacyReport(privacyResults),
+			},
+			"security_analysis": securityAnalysis,
+			"blockchain_optimization": gin.H{
+				"analysis": blockchainOpt,
+				"scenarios": scenarios,
+			},
+		})
+	})
+	
+	// Performance Monitoring Endpoint
+	r.GET("/monitoring/performance", func(c *gin.Context) {
+		// Collect real-time performance metrics
+		var memStats runtime.MemStats
+		runtime.ReadMemStats(&memStats)
+		
+		cpuPercent, _ := cpu.Percent(0, false)
+		
+		// Get power profile
+		powerProfile := getPowerProfile()
+		
+		// Get blockchain performance metrics
+		blockchainOpt := blockchain.NewBlockchainOptimizationAnalysis()
+		perfMetrics := blockchainOpt.MonitorPerformanceMetrics()
+		
+		c.JSON(200, gin.H{
+			"timestamp": time.Now(),
+			"system_metrics": gin.H{
+				"memory_usage_mb":   memStats.Alloc / (1024 * 1024),
+				"cpu_utilization":   cpuPercent[0],
+				"goroutines":        runtime.NumGoroutine(),
+				"gc_cycles":         memStats.NumGC,
+			},
+			"power_profile":         powerProfile,
+			"blockchain_metrics":    perfMetrics,
+			"power_reports_count":   len(powerReports),
+		})
 	})
 
 	r.Run() // listen and serve on 0.0.0.0:8080
