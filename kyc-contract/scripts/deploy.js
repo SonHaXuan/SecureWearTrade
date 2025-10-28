@@ -7,20 +7,22 @@
 const hre = require("hardhat");
 
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const ONE_YEAR_IN_SECS = 365 * 24 * 60 * 60;
-  const unlockTime = currentTimestampInSeconds + ONE_YEAR_IN_SECS;
+  console.log("Deploying KYC contract to Sepolia testnet...");
 
-  // const lockedAmount = hre.ethers.utils.parseEther("1");
+  const KYC = await hre.ethers.getContractFactory("KYC");
+  const kyc = await KYC.deploy();
 
-  const Lock = await hre.ethers.getContractFactory("MedicalRecord");
-  const lock = await Lock.deploy();
+  await kyc.deployed();
 
-  await lock.deployed();
+  console.log(`KYC contract deployed to: ${kyc.address}`);
+  console.log(`Transaction hash: ${kyc.deployTransaction.hash}`);
 
-  console.log(
-    `Lock with 1 ETH and unlock timestamp ${unlockTime} deployed to ${lock.address}`
-  );
+  // Wait for a few block confirmations
+  console.log("Waiting for block confirmations...");
+  await kyc.deployTransaction.wait(2);
+
+  console.log("Contract deployment confirmed!");
+  console.log(`You can verify the contract on Etherscan: https://sepolia.etherscan.io/address/${kyc.address}`);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

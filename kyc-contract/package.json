@@ -30,6 +30,7 @@
     "@openzeppelin/contracts": "^4.8.0",
     "@pinata/sdk": "^2.1.0",
     "axios": "^1.6.8",
+    "dotenv": "^17.2.3",
     "ipfs-core": "^0.17.0",
     "node-rsa": "^1.1.1"
   }
