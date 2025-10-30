@@ -14,30 +14,38 @@ RUN apt-get update && apt-get install -y \
     lsb-release && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Download and install Go
-RUN wget https://golang.org/dl/go$GO_VERSION.linux-amd64.tar.gz && \
-    tar -C /usr/local -xzf go$GO_VERSION.linux-amd64.tar.gz && \
-    rm go$GO_VERSION.linux-amd64.tar.gz
+# Download and install Go (supporting multiple architectures)
+RUN ARCH=$(dpkg --print-architecture) && \
+    if [ "$ARCH" = "arm64" ]; then \
+        wget https://golang.org/dl/go$GO_VERSION.linux-arm64.tar.gz && \
+        tar -C /usr/local -xzf go$GO_VERSION.linux-arm64.tar.gz && \
+        rm go$GO_VERSION.linux-arm64.tar.gz; \
+    else \
+        wget https://golang.org/dl/go$GO_VERSION.linux-amd64.tar.gz && \
+        tar -C /usr/local -xzf go$GO_VERSION.linux-amd64.tar.gz && \
+        rm go$GO_VERSION.linux-amd64.tar.gz; \
+    fi
 
 # Set Go paths
 ENV PATH=/usr/local/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 ENV GOPATH=/go
+ENV GO111MODULE=on
+ENV GOCACHE=/root/.cache/go-build
 ENV PATH=$GOPATH/bin:$PATH
 
 # Verify Go installation
 RUN go version
-
-# Set working directory
-WORKDIR /go
-
-# Display Go environment variables
-RUN go env
 
 # Default command to run when container starts
 # CMD ["bash"]
 
 WORKDIR /app
 
+# Copy entire source code first (needed for local package replacements)
 COPY . .
-# Command to run the Go application
-CMD ["go", "run", "main.go"]
+
+# No external dependencies needed for minimal version
+# Skip dependency resolution
+
+# Build and run the application
+CMD ["go", "run", "enhanced_main.go"]
