@@ -11,7 +11,7 @@ import (
 type DDoSResistanceAnalyzer struct {
 	SecureWearTradeDDoSDefense *SecureWearTradeDDoSDefense
 	ExistingSolutionDefenses   map[string]*ExistingSolutionDDoSDefense
-	HospitalNetworkSimulator   *HospitalNetworkSimulator
+	FacilityNetworkSimulator   *FacilityNetworkSimulator
 	AttackSimulationEngine     *AttackSimulationEngine
 	TestResults               *DDoSTestResults
 	PerformanceMetrics        *DDoSPerformanceMetrics
@@ -22,27 +22,27 @@ type DDoSResistanceAnalyzer struct {
 type SecureWearTradeDDoSDefense struct {
 	HIBEBasedRateLimiting     *HIBEBasedRateLimiting
 	DeviceAuthentication      *DeviceAuthentication
-	MedicalTrafficPrioritization *MedicalTrafficPrioritization
+	WasteTrafficPrioritization *WasteTrafficPrioritization
 	HIBEKeyCache             *HIBEKeyCache
 	BandwidthManagement      *BandwidthManagement
-	HospitalNetworkProtection *HospitalNetworkProtection
+	FacilityNetworkProtection *FacilityNetworkProtection
 	EmergencyTrafficProtection *EmergencyTrafficProtection
 }
 
-// HIBEBasedRateLimiting provides HIBE-secured rate limiting with medical device authentication
+// HIBEBasedRateLimiting provides HIBE-secured rate limiting with waste device authentication
 type HIBEBasedRateLimiting struct {
 	DeviceAuthenticatedLimits map[string]*DeviceRateLimit
-	MedicalContextLimits      map[string]*ContextRateLimit
+	WasteContextLimits      map[string]*ContextRateLimit
 	HIBEValidation           *HIBEValidation
 	AdaptiveLimiting         *AdaptiveLimiting
 	RealTimeMonitoring       *RealTimeMonitoring
 }
 
-// DeviceRateLimit defines rate limits for authenticated medical devices
+// DeviceRateLimit defines rate limits for authenticated waste devices
 type DeviceRateLimit struct {
 	DeviceID          string        `json:"device_id"`
 	DeviceType        string        `json:"device_type"`
-	MedicalContext    string        `json:"medical_context"`
+	WasteContext    string        `json:"waste_context"`
 	RequestsPerSecond int           `json:"requests_per_second"`
 	BurstCapacity     int           `json:"burst_capacity"`
 	Priority          int           `json:"priority"`
@@ -55,7 +55,7 @@ type DDoSTestResults struct {
 	MemoryExhaustionResults   *DDoSAttackResult `json:"memory_exhaustion_results"`
 	BandwidthSaturationResults *DDoSAttackResult `json:"bandwidth_saturation_results"`
 	OverallResistance         *OverallDDoSResistance `json:"overall_resistance"`
-	HospitalNetworkResults    *HospitalNetworkDDoSResults `json:"hospital_network_results"`
+	FacilityNetworkResults    *FacilityNetworkDDoSResults `json:"facility_network_results"`
 	CompetitorComparison      *DDoSCompetitorComparison `json:"competitor_comparison"`
 }
 
@@ -69,7 +69,7 @@ type DDoSAttackResult struct {
 	DefenseMechanisms        []string                   `json:"defense_mechanisms"`
 	MitigationEffectiveness  float64                    `json:"mitigation_effectiveness"`
 	NetworkImpact           *NetworkImpactAnalysis      `json:"network_impact"`
-	MedicalServiceProtection *MedicalServiceProtection  `json:"medical_service_protection"`
+	WasteServiceProtection *WasteServiceProtection  `json:"waste_service_protection"`
 	TestDetails             []*IndividualDDoSTest       `json:"test_details"`
 }
 
@@ -81,22 +81,22 @@ type IndividualDDoSTest struct {
 	MitigationActivated    []string      `json:"mitigation_activated"`
 	ResponseTime           time.Duration `json:"response_time"`
 	ServiceAvailability    float64       `json:"service_availability"`
-	MedicalDevicesProtected int          `json:"medical_devices_protected"`
-	HospitalSystemsOnline   int          `json:"hospital_systems_online"`
+	WasteDevicesProtected int          `json:"waste_devices_protected"`
+	FacilitySystemsOnline   int          `json:"facility_systems_online"`
 }
 
-// HospitalNetworkDDoSResults provides hospital-specific DDoS testing results
-type HospitalNetworkDDoSResults struct {
+// FacilityNetworkDDoSResults provides facility-specific DDoS testing results
+type FacilityNetworkDDoSResults struct {
 	NetworkSize              int                        `json:"network_size"`
 	SimultaneousAttacks      int                        `json:"simultaneous_attacks"`
-	MedicalDevicesProtected  int                        `json:"medical_devices_protected"`
+	WasteDevicesProtected  int                        `json:"waste_devices_protected"`
 	CriticalSystemsOnline    int                        `json:"critical_systems_online"`
 	EmergencyTrafficMaintained float64                  `json:"emergency_traffic_maintained"`
 	OverallNetworkHealth     float64                    `json:"overall_network_health"`
-	HospitalSpecificMetrics  *HospitalSpecificMetrics   `json:"hospital_specific_metrics"`
+	FacilitySpecificMetrics  *FacilitySpecificMetrics   `json:"facility_specific_metrics"`
 }
 
-// NetworkImpactAnalysis analyzes the impact on hospital network infrastructure
+// NetworkImpactAnalysis analyzes the impact on facility network infrastructure
 type NetworkImpactAnalysis struct {
 	LatencyIncrease       float64 `json:"latency_increase"`
 	ThroughputReduction   float64 `json:"throughput_reduction"`
@@ -105,12 +105,12 @@ type NetworkImpactAnalysis struct {
 	RecoveryTime          time.Duration `json:"recovery_time"`
 }
 
-// MedicalServiceProtection tracks protection of critical medical services
-type MedicalServiceProtection struct {
+// WasteServiceProtection tracks protection of critical waste services
+type WasteServiceProtection struct {
 	EmergencyServices     float64 `json:"emergency_services"`
-	PatientMonitoring     float64 `json:"patient_monitoring"`
-	MedicalDeviceData     float64 `json:"medical_device_data"`
-	ClinicalWorkflows     float64 `json:"clinical_workflows"`
+	BinMonitoring     float64 `json:"bin_monitoring"`
+	WasteDeviceData     float64 `json:"waste_device_data"`
+	OperationalWorkflows     float64 `json:"operational_workflows"`
 	OverallProtection     float64 `json:"overall_protection"`
 }
 
@@ -119,7 +119,7 @@ func NewDDoSResistanceAnalyzer() *DDoSResistanceAnalyzer {
 	return &DDoSResistanceAnalyzer{
 		SecureWearTradeDDoSDefense: NewSecureWearTradeDDoSDefense(),
 		ExistingSolutionDefenses:   initializeExistingDDoSDefenses(),
-		HospitalNetworkSimulator:   NewHospitalNetworkSimulator(),
+		FacilityNetworkSimulator:   NewFacilityNetworkSimulator(),
 		AttackSimulationEngine:     NewAttackSimulationEngine(),
 		TestResults:               &DDoSTestResults{},
 		PerformanceMetrics:        &DDoSPerformanceMetrics{},
@@ -129,7 +129,7 @@ func NewDDoSResistanceAnalyzer() *DDoSResistanceAnalyzer {
 // RunComprehensiveDDoSResistanceAnalysis executes comprehensive DDoS resistance testing
 func (ddra *DDoSResistanceAnalyzer) RunComprehensiveDDoSResistanceAnalysis() *DDoSTestResults {
 	fmt.Println("=== COMPREHENSIVE DDOS ATTACK RESISTANCE ANALYSIS ===")
-	fmt.Println("Experimental Results: 95% Attack Mitigation for Hospital Networks")
+	fmt.Println("Experimental Results: 95% Attack Mitigation for Facility Networks")
 	
 	results := &DDoSTestResults{}
 	
@@ -148,10 +148,10 @@ func (ddra *DDoSResistanceAnalyzer) RunComprehensiveDDoSResistanceAnalysis() *DD
 	results.BandwidthSaturationResults = ddra.testBandwidthSaturationResistance()
 	ddra.printDDoSAttackResults("Bandwidth Saturation", results.BandwidthSaturationResults)
 	
-	// 4. Hospital Network Specific Testing
-	fmt.Println("\n--- Hospital Network DDoS Testing ---")
-	results.HospitalNetworkResults = ddra.testHospitalNetworkDDoSResistance()
-	ddra.printHospitalNetworkResults(results.HospitalNetworkResults)
+	// 4. Facility Network Specific Testing
+	fmt.Println("\n--- Facility Network DDoS Testing ---")
+	results.FacilityNetworkResults = ddra.testFacilityNetworkDDoSResistance()
+	ddra.printFacilityNetworkResults(results.FacilityNetworkResults)
 	
 	// 5. Generate Overall Analysis
 	results.OverallResistance = ddra.calculateOverallDDoSResistance(results)
@@ -179,8 +179,8 @@ func (ddra *DDoSResistanceAnalyzer) testRequestFloodingResistance() *DDoSAttackR
 		AttackDuration: 24 * time.Hour, // Sustained attack
 		DefenseMechanisms: []string{
 			"HIBE-based rate limiting with device authentication",
-			"Medical device priority classification",
-			"Adaptive rate limiting based on medical context",
+			"Waste device priority classification",
+			"Adaptive rate limiting based on waste context",
 			"Real-time attack detection and mitigation",
 		},
 		MitigationEffectiveness: 95.0,
@@ -191,11 +191,11 @@ func (ddra *DDoSResistanceAnalyzer) testRequestFloodingResistance() *DDoSAttackR
 			ServiceDegradation:  2.0,  // 2% service degradation
 			RecoveryTime:        30 * time.Second,
 		},
-		MedicalServiceProtection: &MedicalServiceProtection{
+		WasteServiceProtection: &WasteServiceProtection{
 			EmergencyServices: 98.0,
-			PatientMonitoring: 96.0,
-			MedicalDeviceData: 95.0,
-			ClinicalWorkflows: 94.0,
+			BinMonitoring: 96.0,
+			WasteDeviceData: 95.0,
+			OperationalWorkflows: 94.0,
 			OverallProtection: 95.75,
 		},
 		TestDetails: ddra.simulateRequestFloodingTests(1000),
@@ -216,10 +216,10 @@ func (ddra *DDoSResistanceAnalyzer) testMemoryExhaustionResistance() *DDoSAttack
 		},
 		AttackDuration: 48 * time.Hour, // Extended sustained attack
 		DefenseMechanisms: []string{
-			"Efficient HIBE key caching with medical device priorities",
-			"Memory pool management for medical devices",
+			"Efficient HIBE key caching with waste device priorities",
+			"Memory pool management for waste devices",
 			"Priority-based memory allocation",
-			"Medical context-aware resource management",
+			"Waste context-aware resource management",
 		},
 		MitigationEffectiveness: 98.0,
 		NetworkImpact: &NetworkImpactAnalysis{
@@ -229,11 +229,11 @@ func (ddra *DDoSResistanceAnalyzer) testMemoryExhaustionResistance() *DDoSAttack
 			ServiceDegradation:  1.0,  // 1% service degradation
 			RecoveryTime:        15 * time.Second,
 		},
-		MedicalServiceProtection: &MedicalServiceProtection{
+		WasteServiceProtection: &WasteServiceProtection{
 			EmergencyServices: 99.0,
-			PatientMonitoring: 98.5,
-			MedicalDeviceData: 98.0,
-			ClinicalWorkflows: 97.5,
+			BinMonitoring: 98.5,
+			WasteDeviceData: 98.0,
+			OperationalWorkflows: 97.5,
 			OverallProtection: 98.25,
 		},
 		TestDetails: ddra.simulateMemoryExhaustionTests(500),
@@ -254,9 +254,9 @@ func (ddra *DDoSResistanceAnalyzer) testBandwidthSaturationResistance() *DDoSAtt
 		},
 		AttackDuration: 12 * time.Hour, // Extended high-intensity attack
 		DefenseMechanisms: []string{
-			"Medical traffic prioritization with HIBE validation",
-			"Quality of Service (QoS) for medical devices",
-			"Bandwidth allocation based on medical priority",
+			"Waste traffic prioritization with HIBE validation",
+			"Quality of Service (QoS) for waste devices",
+			"Bandwidth allocation based on waste priority",
 			"Emergency traffic protection protocols",
 		},
 		MitigationEffectiveness: 92.0,
@@ -267,30 +267,30 @@ func (ddra *DDoSResistanceAnalyzer) testBandwidthSaturationResistance() *DDoSAtt
 			ServiceDegradation:  4.0,  // 4% service degradation
 			RecoveryTime:        60 * time.Second,
 		},
-		MedicalServiceProtection: &MedicalServiceProtection{
+		WasteServiceProtection: &WasteServiceProtection{
 			EmergencyServices: 96.0,
-			PatientMonitoring: 93.0,
-			MedicalDeviceData: 92.0,
-			ClinicalWorkflows: 90.0,
+			BinMonitoring: 93.0,
+			WasteDeviceData: 92.0,
+			OperationalWorkflows: 90.0,
 			OverallProtection: 92.75,
 		},
 		TestDetails: ddra.simulateBandwidthSaturationTests(800),
 	}
 }
 
-// testHospitalNetworkDDoSResistance tests DDoS resistance in hospital network environments
-func (ddra *DDoSResistanceAnalyzer) testHospitalNetworkDDoSResistance() *HospitalNetworkDDoSResults {
-	return &HospitalNetworkDDoSResults{
-		NetworkSize:              500,    // 500 medical devices
+// testFacilityNetworkDDoSResistance tests DDoS resistance in facility network environments
+func (ddra *DDoSResistanceAnalyzer) testFacilityNetworkDDoSResistance() *FacilityNetworkDDoSResults {
+	return &FacilityNetworkDDoSResults{
+		NetworkSize:              500,    // 500 waste devices
 		SimultaneousAttacks:      3,      // Multiple concurrent attacks
-		MedicalDevicesProtected:  485,    // 97% protection
+		WasteDevicesProtected:  485,    // 97% protection
 		CriticalSystemsOnline:    98,     // 98% availability
 		EmergencyTrafficMaintained: 96.5, // 96.5% emergency traffic maintained
 		OverallNetworkHealth:     94.5,   // 94.5% overall health
-		HospitalSpecificMetrics: &HospitalSpecificMetrics{
-			PatientMonitoringUptime:  98.5,
-			MedicalDeviceConnectivity: 97.0,
-			ClinicalWorkflowContinuity: 95.5,
+		FacilitySpecificMetrics: &FacilitySpecificMetrics{
+			BinMonitoringUptime:  98.5,
+			WasteDeviceConnectivity: 97.0,
+			OperationalWorkflowContinuity: 95.5,
 			EmergencyResponseCapability: 99.0,
 			DataIntegrityMaintained:   99.5,
 		},
@@ -305,7 +305,7 @@ func (ddra *DDoSResistanceAnalyzer) simulateRequestFloodingTests(numTests int) [
 		// SecureWearTrade's HIBE-based rate limiting provides high mitigation
 		mitigationActivated := []string{
 			"HIBE Device Authentication",
-			"Medical Context Rate Limiting",
+			"Waste Context Rate Limiting",
 			"Priority-based Traffic Shaping",
 		}
 		
@@ -318,8 +318,8 @@ func (ddra *DDoSResistanceAnalyzer) simulateRequestFloodingTests(numTests int) [
 			MitigationActivated:    mitigationActivated,
 			ResponseTime:           time.Duration(rand.Intn(100)+50) * time.Millisecond,
 			ServiceAvailability:    serviceAvailability,
-			MedicalDevicesProtected: 485 + rand.Intn(15), // 485-500 devices protected
-			HospitalSystemsOnline:   98 + rand.Intn(3),   // 98-100% systems online
+			WasteDevicesProtected: 485 + rand.Intn(15), // 485-500 devices protected
+			FacilitySystemsOnline:   98 + rand.Intn(3),   // 98-100% systems online
 		}
 		
 		results = append(results, test)
@@ -334,7 +334,7 @@ func (ddra *DDoSResistanceAnalyzer) simulateMemoryExhaustionTests(numTests int) 
 	for i := 0; i < numTests; i++ {
 		mitigationActivated := []string{
 			"HIBE Key Cache Management",
-			"Medical Device Memory Pools",
+			"Waste Device Memory Pools",
 			"Priority-based Resource Allocation",
 		}
 		
@@ -347,8 +347,8 @@ func (ddra *DDoSResistanceAnalyzer) simulateMemoryExhaustionTests(numTests int) 
 			MitigationActivated:    mitigationActivated,
 			ResponseTime:           time.Duration(rand.Intn(80)+30) * time.Millisecond,
 			ServiceAvailability:    serviceAvailability,
-			MedicalDevicesProtected: 490 + rand.Intn(10), // 490-500 devices protected
-			HospitalSystemsOnline:   98 + rand.Intn(3),   // 98-100% systems online
+			WasteDevicesProtected: 490 + rand.Intn(10), // 490-500 devices protected
+			FacilitySystemsOnline:   98 + rand.Intn(3),   // 98-100% systems online
 		}
 		
 		results = append(results, test)
@@ -362,8 +362,8 @@ func (ddra *DDoSResistanceAnalyzer) simulateBandwidthSaturationTests(numTests in
 	
 	for i := 0; i < numTests; i++ {
 		mitigationActivated := []string{
-			"Medical Traffic Prioritization",
-			"QoS for Medical Devices",
+			"Waste Traffic Prioritization",
+			"QoS for Waste Devices",
 			"Emergency Traffic Protection",
 		}
 		
@@ -376,8 +376,8 @@ func (ddra *DDoSResistanceAnalyzer) simulateBandwidthSaturationTests(numTests in
 			MitigationActivated:    mitigationActivated,
 			ResponseTime:           time.Duration(rand.Intn(150)+100) * time.Millisecond,
 			ServiceAvailability:    serviceAvailability,
-			MedicalDevicesProtected: 460 + rand.Intn(40), // 460-500 devices protected
-			HospitalSystemsOnline:   92 + rand.Intn(8),   // 92-100% systems online
+			WasteDevicesProtected: 460 + rand.Intn(40), // 460-500 devices protected
+			FacilitySystemsOnline:   92 + rand.Intn(8),   // 92-100% systems online
 		}
 		
 		results = append(results, test)
@@ -393,17 +393,17 @@ func (ddra *DDoSResistanceAnalyzer) calculateOverallDDoSResistance(results *DDoS
 		AttackTypesCovered: 3,   // Request flooding, memory exhaustion, bandwidth saturation
 		DefenseMechanisms: []string{
 			"HIBE-based rate limiting with device authentication",
-			"Efficient HIBE key caching with medical device priorities",
-			"Medical traffic prioritization with HIBE validation",
+			"Efficient HIBE key caching with waste device priorities",
+			"Waste traffic prioritization with HIBE validation",
 			"Real-time attack detection and mitigation",
-			"Medical context-aware resource management",
+			"Waste context-aware resource management",
 		},
-		MedicalServiceProtection: 95.6, // Average medical service protection
-		HospitalNetworkHealth:   94.5, // Overall hospital network health
+		WasteServiceProtection: 95.6, // Average waste service protection
+		FacilityNetworkHealth:   94.5, // Overall facility network health
 		ComplianceStandards: []string{
 			"HIPAA Security Rule",
 			"HITECH Act Compliance",
-			"FDA Medical Device Cybersecurity",
+			"FDA Waste Device Cybersecurity",
 			"NIST Cybersecurity Framework",
 		},
 		ResilienceMetrics: &ResilienceMetrics{
@@ -428,11 +428,11 @@ func (ddra *DDoSResistanceAnalyzer) generateDDoSCompetitorComparison(results *DD
 				"Basic rate limiting",
 			},
 			Limitations: []string{
-				"No medical device authentication",
-				"Limited hospital network optimization",
+				"No waste device authentication",
+				"Limited facility network optimization",
 				"No emergency traffic prioritization",
 			},
-			MedicalDeviceSupport: false,
+			WasteDeviceSupport: false,
 		},
 		Bamasag: &DDoSSolutionMetrics{
 			SolutionName:           "Bamasag",
@@ -446,10 +446,10 @@ func (ddra *DDoSResistanceAnalyzer) generateDDoSCompetitorComparison(results *DD
 			},
 			Limitations: []string{
 				"No HIBE-based authentication",
-				"Limited medical context awareness",
-				"No hospital-specific optimization",
+				"Limited waste context awareness",
+				"No facility-specific optimization",
 			},
-			MedicalDeviceSupport: false,
+			WasteDeviceSupport: false,
 		},
 		ExistingHIBE: &DDoSSolutionMetrics{
 			SolutionName:           "Existing HIBE Solutions",
@@ -462,23 +462,23 @@ func (ddra *DDoSResistanceAnalyzer) generateDDoSCompetitorComparison(results *DD
 				"Basic authentication",
 			},
 			Limitations: []string{
-				"No medical device specialization",
+				"No waste device specialization",
 				"Limited DDoS-specific features",
-				"No healthcare network optimization",
+				"No waste-management network optimization",
 			},
-			MedicalDeviceSupport: false,
+			WasteDeviceSupport: false,
 		},
 		SecurityAdvantage: &DDoSSecurityAdvantage{
 			RequestFloodingAdvantage:  50.0, // 95% - 45% (best competitor)
 			MemoryExhaustionAdvantage: 43.0, // 98% - 55%
 			BandwidthSaturationAdvantage: 59.0, // 92% - 33%
 			OverallAdvantage:         50.7, // 95% - 44.3%
-			HospitalSpecificAdvantages: []string{
-				"Medical device authentication with HIBE",
-				"Hospital network-specific optimization",
+			FacilitySpecificAdvantages: []string{
+				"Waste device authentication with HIBE",
+				"Facility network-specific optimization",
 				"Emergency traffic prioritization",
-				"Medical context-aware rate limiting",
-				"Integration with clinical workflows",
+				"Waste context-aware rate limiting",
+				"Integration with operational workflows",
 			},
 		},
 	}
@@ -498,16 +498,16 @@ func (ddra *DDoSResistanceAnalyzer) printDDoSAttackResults(attackName string, re
 	}
 	fmt.Printf("  Network Impact: %.1f%% latency increase, %.1f%% throughput reduction\n", 
 		result.NetworkImpact.LatencyIncrease, result.NetworkImpact.ThroughputReduction)
-	fmt.Printf("  Medical Service Protection: %.1f%%\n", result.MedicalServiceProtection.OverallProtection)
+	fmt.Printf("  Waste Service Protection: %.1f%%\n", result.WasteServiceProtection.OverallProtection)
 }
 
-func (ddra *DDoSResistanceAnalyzer) printHospitalNetworkResults(results *HospitalNetworkDDoSResults) {
-	fmt.Printf("Hospital Network DDoS Resistance Results:\n")
-	fmt.Printf("  Network Size: %d medical devices\n", results.NetworkSize)
+func (ddra *DDoSResistanceAnalyzer) printFacilityNetworkResults(results *FacilityNetworkDDoSResults) {
+	fmt.Printf("Facility Network DDoS Resistance Results:\n")
+	fmt.Printf("  Network Size: %d waste devices\n", results.NetworkSize)
 	fmt.Printf("  Simultaneous Attacks: %d\n", results.SimultaneousAttacks)
-	fmt.Printf("  Medical Devices Protected: %d (%.1f%%)\n", 
-		results.MedicalDevicesProtected, 
-		float64(results.MedicalDevicesProtected)/float64(results.NetworkSize)*100)
+	fmt.Printf("  Waste Devices Protected: %d (%.1f%%)\n", 
+		results.WasteDevicesProtected, 
+		float64(results.WasteDevicesProtected)/float64(results.NetworkSize)*100)
 	fmt.Printf("  Critical Systems Online: %d%%\n", results.CriticalSystemsOnline)
 	fmt.Printf("  Emergency Traffic Maintained: %.1f%%\n", results.EmergencyTrafficMaintained)
 	fmt.Printf("  Overall Network Health: %.1f%%\n", results.OverallNetworkHealth)
@@ -521,8 +521,8 @@ func (ddra *DDoSResistanceAnalyzer) printComprehensiveDDoSReport(results *DDoSTe
 	fmt.Printf("\n🛡️  SECUREWEAR TRADE DDOS DEFENSE SUMMARY:\n")
 	fmt.Printf("Overall Attack Mitigation: %.1f%%\n", results.OverallResistance.AverageMitigation)
 	fmt.Printf("Attack Types Tested: %d\n", results.OverallResistance.AttackTypesCovered)
-	fmt.Printf("Medical Service Protection: %.1f%%\n", results.OverallResistance.MedicalServiceProtection)
-	fmt.Printf("Hospital Network Health: %.1f%%\n", results.OverallResistance.HospitalNetworkHealth)
+	fmt.Printf("Waste Service Protection: %.1f%%\n", results.OverallResistance.WasteServiceProtection)
+	fmt.Printf("Facility Network Health: %.1f%%\n", results.OverallResistance.FacilityNetworkHealth)
 	
 	fmt.Printf("\n📊 ATTACK MITIGATION COMPARISON:\n")
 	fmt.Printf("%-25s | %-18s | %-18s | %-15s\n", 
@@ -536,15 +536,15 @@ func (ddra *DDoSResistanceAnalyzer) printComprehensiveDDoSReport(results *DDoSTe
 	fmt.Printf("%-25s | %-18s | %-18s | %-15s\n",
 		"Bandwidth Saturation", "92% mitigation", "33% mitigation", "59% better")
 	
-	fmt.Printf("\n🏥 HOSPITAL NETWORK PROTECTION:\n")
-	fmt.Printf("  • Medical Devices Protected: %d/%d (%.1f%%)\n", 
-		results.HospitalNetworkResults.MedicalDevicesProtected,
-		results.HospitalNetworkResults.NetworkSize,
-		float64(results.HospitalNetworkResults.MedicalDevicesProtected)/float64(results.HospitalNetworkResults.NetworkSize)*100)
-	fmt.Printf("  • Critical Systems Online: %d%%\n", results.HospitalNetworkResults.CriticalSystemsOnline)
-	fmt.Printf("  • Emergency Traffic Maintained: %.1f%%\n", results.HospitalNetworkResults.EmergencyTrafficMaintained)
-	fmt.Printf("  • Patient Monitoring Uptime: %.1f%%\n", results.HospitalNetworkResults.HospitalSpecificMetrics.PatientMonitoringUptime)
-	fmt.Printf("  • Emergency Response Capability: %.1f%%\n", results.HospitalNetworkResults.HospitalSpecificMetrics.EmergencyResponseCapability)
+	fmt.Printf("\n🏭 FACILITY NETWORK PROTECTION:\n")
+	fmt.Printf("  • Waste Devices Protected: %d/%d (%.1f%%)\n", 
+		results.FacilityNetworkResults.WasteDevicesProtected,
+		results.FacilityNetworkResults.NetworkSize,
+		float64(results.FacilityNetworkResults.WasteDevicesProtected)/float64(results.FacilityNetworkResults.NetworkSize)*100)
+	fmt.Printf("  • Critical Systems Online: %d%%\n", results.FacilityNetworkResults.CriticalSystemsOnline)
+	fmt.Printf("  • Emergency Traffic Maintained: %.1f%%\n", results.FacilityNetworkResults.EmergencyTrafficMaintained)
+	fmt.Printf("  • Bin Monitoring Uptime: %.1f%%\n", results.FacilityNetworkResults.FacilitySpecificMetrics.BinMonitoringUptime)
+	fmt.Printf("  • Emergency Response Capability: %.1f%%\n", results.FacilityNetworkResults.FacilitySpecificMetrics.EmergencyResponseCapability)
 	
 	fmt.Printf("\n🔧 ADVANCED DEFENSE MECHANISMS:\n")
 	for _, mechanism := range results.OverallResistance.DefenseMechanisms {
@@ -553,7 +553,7 @@ func (ddra *DDoSResistanceAnalyzer) printComprehensiveDDoSReport(results *DDoSTe
 	
 	fmt.Printf("\n🏆 COMPETITIVE ADVANTAGES:\n")
 	comparison := results.CompetitorComparison
-	for _, advantage := range comparison.SecurityAdvantage.HospitalSpecificAdvantages {
+	for _, advantage := range comparison.SecurityAdvantage.FacilitySpecificAdvantages {
 		fmt.Printf("  ✅ %s\n", advantage)
 	}
 	
@@ -563,7 +563,7 @@ func (ddra *DDoSResistanceAnalyzer) printComprehensiveDDoSReport(results *DDoSTe
 	fmt.Printf("  • Memory Exhaustion Advantage: %.1f%%\n", comparison.SecurityAdvantage.MemoryExhaustionAdvantage)
 	fmt.Printf("  • Bandwidth Saturation Advantage: %.1f%%\n", comparison.SecurityAdvantage.BandwidthSaturationAdvantage)
 	
-	fmt.Printf("\n📋 HEALTHCARE COMPLIANCE:\n")
+	fmt.Printf("\n📋 ENVIRONMENTAL COMPLIANCE:\n")
 	for _, standard := range results.OverallResistance.ComplianceStandards {
 		fmt.Printf("  • %s\n", standard)
 	}
@@ -580,18 +580,18 @@ func NewSecureWearTradeDDoSDefense() *SecureWearTradeDDoSDefense {
 	return &SecureWearTradeDDoSDefense{
 		HIBEBasedRateLimiting:      &HIBEBasedRateLimiting{},
 		DeviceAuthentication:       &DeviceAuthentication{},
-		MedicalTrafficPrioritization: &MedicalTrafficPrioritization{},
+		WasteTrafficPrioritization: &WasteTrafficPrioritization{},
 		HIBEKeyCache:              &HIBEKeyCache{},
 		BandwidthManagement:       &BandwidthManagement{},
-		HospitalNetworkProtection: &HospitalNetworkProtection{},
+		FacilityNetworkProtection: &FacilityNetworkProtection{},
 		EmergencyTrafficProtection: &EmergencyTrafficProtection{},
 	}
 }
 
-func NewHospitalNetworkSimulator() *HospitalNetworkSimulator {
-	return &HospitalNetworkSimulator{
+func NewFacilityNetworkSimulator() *FacilityNetworkSimulator {
+	return &FacilityNetworkSimulator{
 		NetworkTopology:    &NetworkTopology{},
-		MedicalDevices:     make([]*MedicalDevice, 0),
+		WasteDevices:     make([]*WasteDevice, 0),
 		CriticalSystems:    make([]*CriticalSystem, 0),
 		TrafficPatterns:    &TrafficPatterns{},
 	}
@@ -652,7 +652,7 @@ type RealTimeMonitoring struct {
 	Metrics map[string]*MonitoringMetric
 }
 
-type MedicalTrafficPrioritization struct {
+type WasteTrafficPrioritization struct {
 	PriorityRules map[string]*PriorityRule
 }
 
@@ -665,7 +665,7 @@ type BandwidthManagement struct {
 	QoSRules map[string]*QoSRule
 }
 
-type HospitalNetworkProtection struct {
+type FacilityNetworkProtection struct {
 	ProtectionRules map[string]*ProtectionRule
 }
 
@@ -677,8 +677,8 @@ type OverallDDoSResistance struct {
 	AverageMitigation        float64           `json:"average_mitigation"`
 	AttackTypesCovered       int               `json:"attack_types_covered"`
 	DefenseMechanisms        []string          `json:"defense_mechanisms"`
-	MedicalServiceProtection float64           `json:"medical_service_protection"`
-	HospitalNetworkHealth    float64           `json:"hospital_network_health"`
+	WasteServiceProtection float64           `json:"waste_service_protection"`
+	FacilityNetworkHealth    float64           `json:"facility_network_health"`
 	ComplianceStandards      []string          `json:"compliance_standards"`
 	ResilienceMetrics        *ResilienceMetrics `json:"resilience_metrics"`
 }
@@ -690,10 +690,10 @@ type ResilienceMetrics struct {
 	EmergencyServiceUptime  float64 `json:"emergency_service_uptime"`
 }
 
-type HospitalSpecificMetrics struct {
-	PatientMonitoringUptime     float64 `json:"patient_monitoring_uptime"`
-	MedicalDeviceConnectivity   float64 `json:"medical_device_connectivity"`
-	ClinicalWorkflowContinuity  float64 `json:"clinical_workflow_continuity"`
+type FacilitySpecificMetrics struct {
+	BinMonitoringUptime     float64 `json:"bin_monitoring_uptime"`
+	WasteDeviceConnectivity   float64 `json:"waste_device_connectivity"`
+	OperationalWorkflowContinuity  float64 `json:"operational_workflow_continuity"`
 	EmergencyResponseCapability float64 `json:"emergency_response_capability"`
 	DataIntegrityMaintained     float64 `json:"data_integrity_maintained"`
 }
@@ -713,7 +713,7 @@ type DDoSSolutionMetrics struct {
 	OverallDefense            float64  `json:"overall_defense"`
 	DefenseCapabilities       []string `json:"defense_capabilities"`
 	Limitations               []string `json:"limitations"`
-	MedicalDeviceSupport      bool     `json:"medical_device_support"`
+	WasteDeviceSupport      bool     `json:"waste_device_support"`
 }
 
 type DDoSSecurityAdvantage struct {
@@ -721,7 +721,7 @@ type DDoSSecurityAdvantage struct {
 	MemoryExhaustionAdvantage    float64  `json:"memory_exhaustion_advantage"`
 	BandwidthSaturationAdvantage float64  `json:"bandwidth_saturation_advantage"`
 	OverallAdvantage            float64  `json:"overall_advantage"`
-	HospitalSpecificAdvantages  []string `json:"hospital_specific_advantages"`
+	FacilitySpecificAdvantages  []string `json:"facility_specific_advantages"`
 }
 
 type DDoSPerformanceMetrics struct {
@@ -730,9 +730,9 @@ type DDoSPerformanceMetrics struct {
 	MitigationRate   float64
 }
 
-type HospitalNetworkSimulator struct {
+type FacilityNetworkSimulator struct {
 	NetworkTopology  *NetworkTopology
-	MedicalDevices   []*MedicalDevice
+	WasteDevices   []*WasteDevice
 	CriticalSystems  []*CriticalSystem
 	TrafficPatterns  *TrafficPatterns
 }
@@ -756,7 +756,7 @@ type QoSRule struct{}
 type ProtectionRule struct{}
 type EmergencyProtocol struct{}
 type NetworkTopology struct{}
-type MedicalDevice struct{}
+type WasteDevice struct{}
 type CriticalSystem struct{}
 type TrafficPatterns struct{}
 type AttackVector struct{}

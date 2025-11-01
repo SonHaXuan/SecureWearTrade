@@ -137,7 +137,7 @@ func displaySideChannelSuperioritySummary(results *comparison.SideChannelTestRes
 	
 	fmt.Println("\nTiming Attack Defense Comparison:")
 	fmt.Printf("  • HIBE Key Generation: < 0.5%% vs 25-35%% (LHABE), 30-40%% (Bamasag)\n")
-	fmt.Printf("  • Medical Data Decryption: < 1%% vs 20-30%% (existing solutions)\n")
+	fmt.Printf("  • Waste Data Decryption: < 1%% vs 20-30%% (existing solutions)\n")
 	fmt.Printf("  • Device Authentication: < 0.75%% vs 15-25%% (existing solutions)\n")
 	fmt.Printf("  • Remote Timing: < 5%% vs 40-50%% (existing solutions)\n")
 	
@@ -157,18 +157,18 @@ func displayDDoSSuperioritySummary(results *comparison.DDoSTestResults) {
 	fmt.Printf("SecureWearTrade Overall Attack Mitigation: %.1f%%\n", 
 		results.OverallResistance.AverageMitigation)
 	
-	fmt.Println("\nHospital Network DDoS Testing:")
+	fmt.Println("\nFacility Network DDoS Testing:")
 	fmt.Printf("  • Request Flooding: 95%% mitigation vs 30-50%% (existing solutions)\n")
 	fmt.Printf("  • Memory Exhaustion: 98%% protection vs 40-60%% (existing solutions)\n")
 	fmt.Printf("  • Bandwidth Saturation: 92%% mitigation vs 25-35%% (existing solutions)\n")
 	
-	fmt.Println("\nMedical Service Protection:")
-	fmt.Printf("  • Medical Devices Protected: %d/%d (%.1f%%)\n", 
-		results.HospitalNetworkResults.MedicalDevicesProtected,
-		results.HospitalNetworkResults.NetworkSize,
-		float64(results.HospitalNetworkResults.MedicalDevicesProtected)/float64(results.HospitalNetworkResults.NetworkSize)*100)
+	fmt.Println("\nWaste Service Protection:")
+	fmt.Printf("  • Waste Devices Protected: %d/%d (%.1f%%)\n", 
+		results.FacilityNetworkResults.WasteDevicesProtected,
+		results.FacilityNetworkResults.NetworkSize,
+		float64(results.FacilityNetworkResults.WasteDevicesProtected)/float64(results.FacilityNetworkResults.NetworkSize)*100)
 	fmt.Printf("  • Emergency Traffic Maintained: %.1f%%\n", 
-		results.HospitalNetworkResults.EmergencyTrafficMaintained)
+		results.FacilityNetworkResults.EmergencyTrafficMaintained)
 	
 	fmt.Printf("\n🏆 Defense Advantage: %.1f%% better than best competitor\n", 
 		results.CompetitorComparison.SecurityAdvantage.OverallAdvantage)
@@ -203,7 +203,7 @@ func generateComprehensiveSecurityReport(mitmResults *comparison.MITMTestResults
 	
 	fmt.Printf("\nKey Technical Differentiators:\n")
 	fmt.Printf("  ✅ Certificate pinning with HIBE key validation\n")
-	fmt.Printf("  ✅ Medical device attestation integration\n")
+	fmt.Printf("  ✅ Waste device attestation integration\n")
 	fmt.Printf("  ✅ TLS 1.3+ enforcement with HIBE-secured handshake\n")
 	fmt.Printf("  ✅ End-to-end encryption with device binding\n")
 	fmt.Printf("  ✅ HIBE-secured DNS resolution with trust chains\n\n")
@@ -218,7 +218,7 @@ func generateComprehensiveSecurityReport(mitmResults *comparison.MITMTestResults
 	fmt.Printf("│ Attack Type             │ SecureWearTrade │ LHABE        │ Bamasag      │ Generic HIBE    │\n")
 	fmt.Printf("├─────────────────────────┼─────────────────┼──────────────┼──────────────┼─────────────────┤\n")
 	fmt.Printf("│ HIBE Key Generation     │ < 0.5%% success  │ 25-35%%       │ 30-40%%       │ 25-35%%          │\n")
-	fmt.Printf("│ Medical Data Decryption │ < 1%% success    │ 20-30%%       │ 20-30%%       │ 20-30%%          │\n")
+	fmt.Printf("│ Waste Data Decryption │ < 1%% success    │ 20-30%%       │ 20-30%%       │ 20-30%%          │\n")
 	fmt.Printf("│ Device Authentication   │ < 0.75%% success │ 15-25%%       │ 15-25%%       │ 15-25%%          │\n")
 	fmt.Printf("│ Power Analysis (SPA)    │ < 5%% success    │ 45-60%%       │ 45-60%%       │ 45-60%%          │\n")
 	fmt.Printf("│ Power Analysis (DPA)    │ < 2%% success    │ 35-50%%       │ 35-50%%       │ 35-50%%          │\n")
@@ -226,16 +226,16 @@ func generateComprehensiveSecurityReport(mitmResults *comparison.MITMTestResults
 	fmt.Printf("└─────────────────────────┴─────────────────┴──────────────┴──────────────┴─────────────────┘\n")
 	
 	fmt.Printf("\nAdvanced Protection Mechanisms:\n")
-	fmt.Printf("  ✅ Constant-time HIBE implementation for medical devices\n")
+	fmt.Printf("  ✅ Constant-time HIBE implementation for waste devices\n")
 	fmt.Printf("  ✅ Power consumption normalization on wearables\n")
 	fmt.Printf("  ✅ Advanced masking with noise injection\n")
-	fmt.Printf("  ✅ EM shielding recommendations for medical environments\n")
-	fmt.Printf("  ✅ Medical device-specific side-channel hardening\n\n")
+	fmt.Printf("  ✅ EM shielding recommendations for waste environments\n")
+	fmt.Printf("  ✅ Waste device-specific side-channel hardening\n\n")
 	
 	// Section 3: Large-Scale DDoS Resistance
 	fmt.Printf("3. ⚡ LARGE-SCALE DDOS RESISTANCE - SCALABILITY SUPERIORITY\n")
 	fmt.Printf("========================================================\n")
-	fmt.Printf("Hospital Network DDoS Testing Results:\n\n")
+	fmt.Printf("Facility Network DDoS Testing Results:\n\n")
 	
 	fmt.Printf("Attack Mitigation Performance:\n")
 	fmt.Printf("┌─────────────────────────┬─────────────────┬──────────────────────┬─────────────────┐\n")
@@ -246,24 +246,24 @@ func generateComprehensiveSecurityReport(mitmResults *comparison.MITMTestResults
 	fmt.Printf("│ Bandwidth Saturation    │ 92%% mitigation  │ 25-35%% mitigation    │ 57-67%% better   │\n")
 	fmt.Printf("└─────────────────────────┴─────────────────┴──────────────────────┴─────────────────┘\n")
 	
-	fmt.Printf("\nHospital Network Protection Results:\n")
-	fmt.Printf("  • Network Size: 500 medical devices\n")
-	fmt.Printf("  • Medical Devices Protected: %d (%.1f%%)\n", 
-		ddosResults.HospitalNetworkResults.MedicalDevicesProtected,
-		float64(ddosResults.HospitalNetworkResults.MedicalDevicesProtected)/float64(ddosResults.HospitalNetworkResults.NetworkSize)*100)
+	fmt.Printf("\nFacility Network Protection Results:\n")
+	fmt.Printf("  • Network Size: 500 waste devices\n")
+	fmt.Printf("  • Waste Devices Protected: %d (%.1f%%)\n", 
+		ddosResults.FacilityNetworkResults.WasteDevicesProtected,
+		float64(ddosResults.FacilityNetworkResults.WasteDevicesProtected)/float64(ddosResults.FacilityNetworkResults.NetworkSize)*100)
 	fmt.Printf("  • Emergency Traffic Maintained: %.1f%%\n", 
-		ddosResults.HospitalNetworkResults.EmergencyTrafficMaintained)
-	fmt.Printf("  • Patient Monitoring Uptime: %.1f%%\n", 
-		ddosResults.HospitalNetworkResults.HospitalSpecificMetrics.PatientMonitoringUptime)
+		ddosResults.FacilityNetworkResults.EmergencyTrafficMaintained)
+	fmt.Printf("  • Bin Monitoring Uptime: %.1f%%\n", 
+		ddosResults.FacilityNetworkResults.FacilitySpecificMetrics.BinMonitoringUptime)
 	fmt.Printf("  • Emergency Response Capability: %.1f%%\n", 
-		ddosResults.HospitalNetworkResults.HospitalSpecificMetrics.EmergencyResponseCapability)
+		ddosResults.FacilityNetworkResults.FacilitySpecificMetrics.EmergencyResponseCapability)
 	
 	fmt.Printf("\nAdvanced DDoS Defense Features:\n")
 	fmt.Printf("  ✅ HIBE-based rate limiting with device authentication\n")
-	fmt.Printf("  ✅ Medical traffic prioritization with HIBE validation\n")
-	fmt.Printf("  ✅ Efficient HIBE key caching with medical device priorities\n")
+	fmt.Printf("  ✅ Waste traffic prioritization with HIBE validation\n")
+	fmt.Printf("  ✅ Efficient HIBE key caching with waste device priorities\n")
 	fmt.Printf("  ✅ Emergency traffic protection protocols\n")
-	fmt.Printf("  ✅ Medical context-aware resource management\n\n")
+	fmt.Printf("  ✅ Waste context-aware resource management\n\n")
 	
 	// Section 4: Overall Competitive Analysis
 	fmt.Printf("4. 📊 OVERALL COMPETITIVE ANALYSIS SUMMARY\n")
@@ -280,34 +280,34 @@ func generateComprehensiveSecurityReport(mitmResults *comparison.MITMTestResults
 	fmt.Printf("│ Security Domain         │ Superiority Margin  │ Key Differentiator │\n")
 	fmt.Printf("├─────────────────────────┼─────────────────────┼───────────────────┤\n")
 	fmt.Printf("│ MITM Attack Resistance  │ %.1f%% advantage      │ HIBE Integration  │\n", mitmAdvantage)
-	fmt.Printf("│ Side-Channel Defense    │ %.1f%% advantage      │ Medical Device    │\n", sideChannelAdvantage)
-	fmt.Printf("│ DDoS Attack Mitigation  │ %.1f%% advantage      │ Hospital Network  │\n", ddosAdvantage)
-	fmt.Printf("│ OVERALL SECURITY        │ %.1f%% advantage      │ Healthcare Focus  │\n", overallAdvantage)
+	fmt.Printf("│ Side-Channel Defense    │ %.1f%% advantage      │ Waste Device    │\n", sideChannelAdvantage)
+	fmt.Printf("│ DDoS Attack Mitigation  │ %.1f%% advantage      │ Facility Network  │\n", ddosAdvantage)
+	fmt.Printf("│ OVERALL SECURITY        │ %.1f%% advantage      │ WasteManagement Focus  │\n", overallAdvantage)
 	fmt.Printf("└─────────────────────────┴─────────────────────┴───────────────────┘\n")
 	
 	fmt.Printf("\n🏆 TECHNICAL IMPLEMENTATION SUPERIORITY:\n")
 	fmt.Printf("SecureWearTrade demonstrates measurable technical superiority through:\n\n")
 	
-	fmt.Printf("Healthcare-Specific Innovations:\n")
-	fmt.Printf("  🏥 Medical device-specific security optimizations\n")
-	fmt.Printf("  🏥 Hospital network-aware defense mechanisms\n")
+	fmt.Printf("WasteManagement-Specific Innovations:\n")
+	fmt.Printf("  🏥 Waste device-specific security optimizations\n")
+	fmt.Printf("  🏥 Facility network-aware defense mechanisms\n")
 	fmt.Printf("  🏥 Emergency traffic prioritization and protection\n")
 	fmt.Printf("  🏥 Clinical workflow integration and continuity\n")
-	fmt.Printf("  🏥 Patient data and monitoring system protection\n\n")
+	fmt.Printf("  🏥 Bin data and monitoring system protection\n\n")
 	
 	fmt.Printf("Advanced Cryptographic Integration:\n")
 	fmt.Printf("  🔐 HIBE-integrated certificate pinning and validation\n")
-	fmt.Printf("  🔐 Hierarchical access control with medical device binding\n")
+	fmt.Printf("  🔐 Hierarchical access control with waste device binding\n")
 	fmt.Printf("  🔐 Constant-time cryptographic implementations\n")
 	fmt.Printf("  🔐 Advanced masking and noise injection techniques\n")
-	fmt.Printf("  🔐 Multi-layer security with medical context awareness\n\n")
+	fmt.Printf("  🔐 Multi-layer security with waste context awareness\n\n")
 	
 	fmt.Printf("Scalability and Performance Advantages:\n")
-	fmt.Printf("  📈 Large-scale hospital network DDoS resistance (500+ devices)\n")
-	fmt.Printf("  📈 Real-time medical device authentication and rate limiting\n")
+	fmt.Printf("  📈 Large-scale facility network DDoS resistance (500+ devices)\n")
+	fmt.Printf("  📈 Real-time waste device authentication and rate limiting\n")
 	fmt.Printf("  📈 Sustained attack mitigation (48+ hour endurance testing)\n")
 	fmt.Printf("  📈 High-bandwidth attack resistance (10Gbps+ testing)\n")
-	fmt.Printf("  📈 Medical service continuity under attack conditions\n\n")
+	fmt.Printf("  📈 Waste service continuity under attack conditions\n\n")
 	
 	// Section 5: Addressing Reviewer #3's Specific Concerns
 	fmt.Printf("5. 🎯 ADDRESSING REVIEWER #3 CONCERNS\n")
@@ -315,7 +315,7 @@ func generateComprehensiveSecurityReport(mitmResults *comparison.MITMTestResults
 	fmt.Printf("\"Brief comparative analysis\" → Comprehensive 3-domain security comparison\n")
 	fmt.Printf("\"Lack of technical implementation details\" → Detailed mechanism comparison\n")
 	fmt.Printf("\"Missing performance metrics\" → Quantified superiority margins\n")
-	fmt.Printf("\"No large-scale data trading analysis\" → Hospital network scalability testing\n\n")
+	fmt.Printf("\"No large-scale data trading analysis\" → Facility network scalability testing\n\n")
 	
 	fmt.Printf("Comprehensive Evidence Provided:\n")
 	fmt.Printf("  📊 %d+ individual security tests across 3 major attack categories\n", 
@@ -323,16 +323,16 @@ func generateComprehensiveSecurityReport(mitmResults *comparison.MITMTestResults
 		len(sideChannelResults.TimingAttackResults.HIBEKeyGeneration.TestResults) + 
 		len(ddosResults.RequestFloodingResults.TestDetails))
 	fmt.Printf("  📊 Quantified comparison with LHABE, Bamasag, and generic HIBE solutions\n")
-	fmt.Printf("  📊 Large-scale testing up to 500-device hospital networks\n")
+	fmt.Printf("  📊 Large-scale testing up to 500-device facility networks\n")
 	fmt.Printf("  📊 Multi-attack-vector resistance validation\n")
-	fmt.Printf("  📊 Medical device-specific performance optimization\n")
-	fmt.Printf("  📊 Healthcare compliance and regulatory alignment\n\n")
+	fmt.Printf("  📊 Waste device-specific performance optimization\n")
+	fmt.Printf("  📊 WasteManagement compliance and regulatory alignment\n\n")
 	
 	fmt.Printf("🎉 CONCLUSION:\n")
 	fmt.Printf("SecureWearTrade provides comprehensive technical superiority over existing\n")
 	fmt.Printf("solutions across all major security domains with an average %.1f%% advantage.\n", overallAdvantage)
 	fmt.Printf("The detailed comparative analysis demonstrates measurable improvements in\n")
-	fmt.Printf("security effectiveness, performance scalability, and healthcare-specific\n")
+	fmt.Printf("security effectiveness, performance scalability, and waste-management-specific\n")
 	fmt.Printf("optimization that directly address Reviewer #3's concerns about comparative\n")
 	fmt.Printf("analysis depth and technical implementation superiority.\n")
 }

@@ -11,7 +11,7 @@ import (
 type DynamicCryptographicBinding struct {
 	HybridOptimizer     *HybridOptimizer
 	GasAnalyzer         *GasUsageAnalyzer
-	NetworkCoordinator  *MultiHospitalCoordinator
+	NetworkCoordinator  *MultiFacilityCoordinator
 	UpdateProcessor     *RealTimeUpdateProcessor
 	PerformanceTracker  *GasPerformanceTracker
 	ConsistencyManager  *ConsistencyManager
@@ -105,7 +105,7 @@ func NewDynamicCryptographicBinding() *DynamicCryptographicBinding {
 	dcb := &DynamicCryptographicBinding{
 		HybridOptimizer:    NewHybridOptimizer(),
 		GasAnalyzer:        NewGasUsageAnalyzer(),
-		NetworkCoordinator: NewMultiHospitalCoordinator(),
+		NetworkCoordinator: NewMultiFacilityCoordinator(),
 		UpdateProcessor:    NewRealTimeUpdateProcessor(),
 		PerformanceTracker: NewGasPerformanceTracker(),
 		ConsistencyManager: NewConsistencyManager(),
@@ -114,8 +114,8 @@ func NewDynamicCryptographicBinding() *DynamicCryptographicBinding {
 	return dcb
 }
 
-// RunMultiHospitalNetworkGasAnalysis executes comprehensive gas usage analysis
-func (dcb *DynamicCryptographicBinding) RunMultiHospitalNetworkGasAnalysis() *NetworkGasAnalysis {
+// RunMultiFacilityNetworkGasAnalysis executes comprehensive gas usage analysis
+func (dcb *DynamicCryptographicBinding) RunMultiFacilityNetworkGasAnalysis() *NetworkGasAnalysis {
 	fmt.Println("=== DYNAMIC CRYPTOGRAPHIC BINDING - GAS OPTIMIZATION ANALYSIS ===")
 	fmt.Println("Multi-Hospital Network Gas Usage Analysis")
 	
@@ -475,11 +475,11 @@ type CostAnalysis struct {
 	ETHPrice     float64
 }
 
-type MultiHospitalCoordinator struct {
-	NetworkNodes map[int]*HospitalNode
+type MultiFacilityCoordinator struct {
+	NetworkNodes map[int]*FacilityNode
 }
 
-type HospitalNode struct {
+type FacilityNode struct {
 	NodeID   string
 	Capacity int
 }
@@ -583,9 +583,9 @@ func NewGasUsageAnalyzer() *GasUsageAnalyzer {
 	}
 }
 
-func NewMultiHospitalCoordinator() *MultiHospitalCoordinator {
-	return &MultiHospitalCoordinator{
-		NetworkNodes: make(map[int]*HospitalNode),
+func NewMultiFacilityCoordinator() *MultiFacilityCoordinator {
+	return &MultiFacilityCoordinator{
+		NetworkNodes: make(map[int]*FacilityNode),
 	}
 }
 

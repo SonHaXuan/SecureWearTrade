@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 
-const JediInstance = axios.default.create({
+const HibeInstance = axios.default.create({
   baseURL: "http://localhost:8080",
 });
 
@@ -53,7 +53,7 @@ app.post("/api/request-access", async (req, res) => {
       `${user.expiredDate}\n`
   );
 
-  const jediPKResA = await JediInstance.get(`/jedi-private-key/`);
+  const jediPKResA = await HibeInstance.get(`/jedi-private-key/`);
   const jediKeys = jediPKResA.data.data;
 
   console.log(

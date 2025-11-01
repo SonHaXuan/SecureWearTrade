@@ -97,7 +97,7 @@ func NewEthereumConnector(nodeURL, privateKeyHex, contractAddressHex string, cha
 	}, nil
 }
 
-// SubmitAccessTransaction submits healthcare access transaction to blockchain
+// SubmitAccessTransaction submits waste-management access transaction to blockchain
 func (ec *EthereumConnector) SubmitAccessTransaction(hibeKeyData *HIBEKeyData, gasFeePaid *big.Int) (string, error) {
 	// Get current nonce
 	publicKey := ec.privateKey.Public()
@@ -118,10 +118,10 @@ func (ec *EthereumConnector) SubmitAccessTransaction(hibeKeyData *HIBEKeyData, g
 		return "", fmt.Errorf("failed to get gas price: %v", err)
 	}
 	
-	// Create transaction data for healthcare access
+	// Create transaction data for waste-management access
 	txData := map[string]interface{}{
-		"patientID":    hibeKeyData.PatientID,
-		"doctorWallet": hibeKeyData.DoctorWallet,
+		"binID":    hibeKeyData.BinID,
+		"operatorWallet": hibeKeyData.OperatorWallet,
 		"keyHash":      hibeKeyData.KeyHash,
 		"timestamp":    hibeKeyData.Timestamp.Unix(),
 		"dataType":     ec.extractDataType(hibeKeyData.Identity),
@@ -146,7 +146,7 @@ func (ec *EthereumConnector) SubmitAccessTransaction(hibeKeyData *HIBEKeyData, g
 		gasFeePaid,
 		300000,
 		gasPrice,
-		[]byte(fmt.Sprintf("HEALTHCARE_ACCESS_%s_%s", hibeKeyData.PatientID, hibeKeyData.DoctorWallet)),
+		[]byte(fmt.Sprintf("WASTE_ACCESS_%s_%s", hibeKeyData.BinID, hibeKeyData.OperatorWallet)),
 	)
 	
 	signedTx, err := types.SignTx(tx, types.NewEIP155Signer(ec.chainID), ec.privateKey)

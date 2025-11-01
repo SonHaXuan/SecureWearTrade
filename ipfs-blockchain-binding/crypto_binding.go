@@ -28,8 +28,8 @@ type HIBEKeyData struct {
 	KeyHex        string    `json:"key_hex"`
 	Identity      []string  `json:"identity"`
 	Depth         int       `json:"depth"`
-	PatientID     string    `json:"patient_id"`
-	DoctorWallet  string    `json:"doctor_wallet"`
+	BinID     string    `json:"bin_id"`
+	OperatorWallet  string    `json:"operator_wallet"`
 	Timestamp     time.Time `json:"timestamp"`
 	KeyHash       string    `json:"key_hash"`
 }
@@ -50,7 +50,7 @@ type AccessBinding struct {
 // AccessPolicy defines blockchain-mediated access control policies
 type AccessPolicy struct {
 	Owner            common.Address `json:"owner"`
-	PatientID        string         `json:"patient_id"`
+	BinID        string         `json:"bin_id"`
 	DataType         string         `json:"data_type"`
 	AccessLevel      string         `json:"access_level"`
 	Department       string         `json:"department"`
@@ -86,13 +86,13 @@ func NewCryptographicBinding(ethConnector *EthereumConnector, ipfsConnector *IPF
 	}
 }
 
-// GenerateHIBEKeyForHealthcare generates HIBE key for healthcare access patterns
-func (cb *CryptographicBinding) GenerateHIBEKeyForHealthcare(patientID, doctorWallet, department, dataType, accessLevel string) (*HIBEKeyData, error) {
+// GenerateHIBEKeyForWasteManagement generates HIBE key for waste-management access patterns
+func (cb *CryptographicBinding) GenerateHIBEKeyForWasteManagement(binID, operatorWallet, department, dataType, accessLevel string) (*HIBEKeyData, error) {
 	cb.mu.Lock()
 	defer cb.mu.Unlock()
 	
-	// Algorithm 3: Optimized HIBE Key Generation for Healthcare Patterns
-	identity := []string{"hospital", department, "patient", patientID, dataType, accessLevel}
+	// Algorithm 3: Optimized HIBE Key Generation for WasteManagement Patterns
+	identity := []string{"facility", department, "bin", binID, dataType, accessLevel}
 	
 	// Generate cryptographic key using hierarchical approach
 	hibeKey, err := cb.generateHIBEKey(identity)
@@ -104,14 +104,14 @@ func (cb *CryptographicBinding) GenerateHIBEKeyForHealthcare(patientID, doctorWa
 		KeyHex:       hex.EncodeToString(hibeKey),
 		Identity:     identity,
 		Depth:        len(identity),
-		PatientID:    patientID,
-		DoctorWallet: doctorWallet,
+		BinID:    binID,
+		OperatorWallet: operatorWallet,
 		Timestamp:    time.Now(),
 		KeyHash:      cb.calculateKeyHash(hibeKey),
 	}
 	
 	// Store in memory for quick access
-	keyID := fmt.Sprintf("%s-%s-%s", patientID, doctorWallet, department)
+	keyID := fmt.Sprintf("%s-%s-%s", binID, operatorWallet, department)
 	cb.HIBEKeys[keyID] = keyData
 	
 	return keyData, nil
@@ -133,8 +133,8 @@ func (cb *CryptographicBinding) CreateCryptographicBinding(hibeKeyData *HIBEKeyD
 	
 	// Step 3: Create access policy
 	accessPolicy := &AccessPolicy{
-		Owner:            common.HexToAddress(hibeKeyData.DoctorWallet),
-		PatientID:        hibeKeyData.PatientID,
+		Owner:            common.HexToAddress(hibeKeyData.OperatorWallet),
+		BinID:        hibeKeyData.BinID,
 		DataType:         cb.extractDataType(hibeKeyData.Identity),
 		AccessLevel:      cb.extractAccessLevel(hibeKeyData.Identity),
 		Department:       cb.extractDepartment(hibeKeyData.Identity),
@@ -149,7 +149,7 @@ func (cb *CryptographicBinding) CreateCryptographicBinding(hibeKeyData *HIBEKeyD
 		HIBEKey:       hibeKeyData.KeyHex,
 		TransactionID: transactionID,
 		IPFSHash:      ipfsHash,
-		Owner:         common.HexToAddress(hibeKeyData.DoctorWallet),
+		Owner:         common.HexToAddress(hibeKeyData.OperatorWallet),
 		AccessPolicy:  accessPolicy,
 		Timestamp:     time.Now(),
 		IsActive:      true,
@@ -171,21 +171,21 @@ func (cb *CryptographicBinding) CreateCryptographicBinding(hibeKeyData *HIBEKeyD
 
 // RealWorldExample demonstrates the complete binding process with concrete values
 func (cb *CryptographicBinding) RealWorldExample() error {
-	fmt.Println("=== Real-World Healthcare Data Binding Example ===")
+	fmt.Println("=== Real-World WasteManagement Data Binding Example ===")
 	
-	// Scenario: Doctor uploads patient ECG data to IPFS
-	patientID := "12345"
-	doctorWallet := "0x742d35Cc6634C0532925a3b8D6Ac6B0ad39CEe5C"
+	// Scenario: Operator uploads bin sensor data to IPFS
+	binID := "12345"
+	operatorWallet := "0x742d35Cc6634C0532925a3b8D6Ac6B0ad39CEe5C"
 	department := "cardiology"
 	dataType := "ecg"
 	accessLevel := "realtime"
 	ipfsHash := "QmX4e7W8tR9oP2aS6dF3gH5jK8lM9nB1cV4xZ2yA7sE6qT"
 	gasFee := big.NewInt(1000000000000000) // 0.001 ETH
 	
-	fmt.Printf("Step 1: Generate HIBE key for patient %s\n", patientID)
+	fmt.Printf("Step 1: Generate HIBE key for bin %s\n", binID)
 	
 	// Generate HIBE key
-	hibeKeyData, err := cb.GenerateHIBEKeyForHealthcare(patientID, doctorWallet, department, dataType, accessLevel)
+	hibeKeyData, err := cb.GenerateHIBEKeyForWasteManagement(binID, operatorWallet, department, dataType, accessLevel)
 	if err != nil {
 		return fmt.Errorf("step 1 failed: %v", err)
 	}

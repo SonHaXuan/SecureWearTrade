@@ -477,10 +477,10 @@ func (mts *MultiTierRateLimitingService) DemonstrateRealWorldScenario() {
 		description string
 	}{
 		{
-			clientID:    "doctor_wallet_0x742d35Cc",
+			clientID:    "operator_wallet_0x742d35Cc",
 			gasFeePaid:  big.NewInt(5000000000), // 5 gwei - Basic tier
-			requestType: "healthcare_data_upload",
-			description: "Healthcare professional uploading patient data with basic tier",
+			requestType: "waste-management_data_upload",
+			description: "WasteManagement professional uploading bin data with basic tier",
 		},
 		{
 			clientID:    "research_institute_0x8b2c9f",
@@ -489,10 +489,10 @@ func (mts *MultiTierRateLimitingService) DemonstrateRealWorldScenario() {
 			description: "Research institute uploading bulk genetic data with premium tier",
 		},
 		{
-			clientID:    "enterprise_hospital_0x7c3e9a",
+			clientID:    "enterprise_facility_0x7c3e9a",
 			gasFeePaid:  big.NewInt(150000000000), // 150 gwei - Platinum tier
 			requestType: "real_time_monitoring",
-			description: "Enterprise hospital with real-time patient monitoring",
+			description: "Enterprise facility with real-time bin monitoring",
 		},
 	}
 	

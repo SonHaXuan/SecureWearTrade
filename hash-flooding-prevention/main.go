@@ -174,8 +174,8 @@ func demonstrateAttackScenarios(floodPrevention *prevention.HashFloodingPreventi
 	fmt.Println("\n--- Attack Scenario Simulations ---")
 	
 	// Scenario 1: Basic legitimate user
-	fmt.Println("\nScenario 1: Legitimate Healthcare Professional")
-	testClient("doctor_0x742d35Cc", big.NewInt(5000000000), 10, floodPrevention) // 5 gwei, 10 requests
+	fmt.Println("\nScenario 1: Legitimate WasteManagement Professional")
+	testClient("operator_0x742d35Cc", big.NewInt(5000000000), 10, floodPrevention) // 5 gwei, 10 requests
 	
 	// Scenario 2: Research institution with higher gas fees
 	fmt.Println("\nScenario 2: Research Institution (Premium Tier)")
@@ -186,8 +186,8 @@ func demonstrateAttackScenarios(floodPrevention *prevention.HashFloodingPreventi
 	testClient("attacker_0x123456", big.NewInt(1000000000), 150, floodPrevention) // 1 gwei, 150 requests
 	
 	// Scenario 4: Enterprise with high gas fees
-	fmt.Println("\nScenario 4: Enterprise Hospital (Platinum Tier)")
-	testClient("hospital_0x7c3e9a", big.NewInt(150000000000), 1000, floodPrevention) // 150 gwei, 1000 requests
+	fmt.Println("\nScenario 4: Enterprise Facility (Platinum Tier)")
+	testClient("facility_0x7c3e9a", big.NewInt(150000000000), 1000, floodPrevention) // 150 gwei, 1000 requests
 	
 	// Scenario 5: Burst attack simulation
 	fmt.Println("\nScenario 5: Burst Attack Simulation")
@@ -272,46 +272,46 @@ func simulateBurstAttack(clientID string, gasFeePaid *big.Int, floodPrevention *
 func demonstrateIntegratedWorkflow(floodPrevention *prevention.HashFloodingPrevention) {
 	fmt.Println("Demonstrating integrated IPFS-blockchain binding with hash flooding prevention...")
 	
-	// Simulate healthcare data upload workflow
+	// Simulate waste-management data upload workflow
 	workflows := []struct {
 		clientID     string
-		patientID    string
+		binID    string
 		gasFeePaid   *big.Int
 		dataSize     string
 		description  string
 	}{
 		{
-			clientID:    "doctor_cardiology_0x742d35",
-			patientID:   "patient_12345",
+			clientID:    "operator_recycling_0x742d35",
+			binID:   "bin_12345",
 			gasFeePaid:  big.NewInt(15000000000), // 15 gwei
 			dataSize:    "2.5MB ECG data",
-			description: "Cardiologist uploading patient ECG data",
+			description: "Cardiologist uploading bin ECG data",
 		},
 		{
 			clientID:    "research_genomics_0x8b2c9f",
-			patientID:   "research_cohort_001",
+			binID:   "research_cohort_001",
 			gasFeePaid:  big.NewInt(45000000000), // 45 gwei
 			dataSize:    "150MB genetic data",
 			description: "Genomics research lab uploading genetic analysis",
 		},
 		{
 			clientID:    "emergency_dept_0x7c3e9a",
-			patientID:   "emergency_67890",
+			binID:   "emergency_67890",
 			gasFeePaid:  big.NewInt(200000000000), // 200 gwei
 			dataSize:    "5MB critical vitals",
-			description: "Emergency department uploading critical patient data",
+			description: "Emergency department uploading critical bin data",
 		},
 	}
 	
 	for i, workflow := range workflows {
 		fmt.Printf("\n--- Workflow %d: %s ---\n", i+1, workflow.description)
 		fmt.Printf("Client: %s\n", workflow.clientID)
-		fmt.Printf("Patient: %s\n", workflow.patientID)
+		fmt.Printf("Bin: %s\n", workflow.binID)
 		fmt.Printf("Data: %s\n", workflow.dataSize)
 		fmt.Printf("Gas Fee: %s gwei\n", weiToGwei(workflow.gasFeePaid))
 		
 		// Step 1: Hash flooding prevention check
-		result, err := floodPrevention.ValidateHashRequest(workflow.clientID, workflow.gasFeePaid, "healthcare_data_upload")
+		result, err := floodPrevention.ValidateHashRequest(workflow.clientID, workflow.gasFeePaid, "waste-management_data_upload")
 		if err != nil {
 			fmt.Printf("Error in flood prevention: %v\n", err)
 			continue
@@ -328,21 +328,21 @@ func demonstrateIntegratedWorkflow(floodPrevention *prevention.HashFloodingPreve
 		fmt.Println("🔗 Creating cryptographic binding...")
 		
 		// In real implementation, this would involve actual IPFS upload and blockchain transaction
-		mockIPFSHash := fmt.Sprintf("Qm%s...%s", workflow.patientID[:8], workflow.clientID[len(workflow.clientID)-8:])
-		mockTxHash := fmt.Sprintf("0x%s...%s", workflow.clientID[2:10], workflow.patientID)
+		mockIPFSHash := fmt.Sprintf("Qm%s...%s", workflow.binID[:8], workflow.clientID[len(workflow.clientID)-8:])
+		mockTxHash := fmt.Sprintf("0x%s...%s", workflow.clientID[2:10], workflow.binID)
 		
 		fmt.Printf("   IPFS Hash: %s\n", mockIPFSHash)
 		fmt.Printf("   Transaction Hash: %s\n", mockTxHash)
 		
 		// Step 3: Simulate binding verification
-		bindingHash := fmt.Sprintf("0x%x", []byte(workflow.clientID+workflow.patientID))
+		bindingHash := fmt.Sprintf("0x%x", []byte(workflow.clientID+workflow.binID))
 		fmt.Printf("   Binding Hash: %s\n", bindingHash)
 		fmt.Printf("✅ Cryptographic binding created successfully\n")
 		
 		// Step 4: Access control validation
 		fmt.Println("🔒 Validating access control permissions...")
 		fmt.Printf("   Department: %s access granted\n", extractDepartment(workflow.clientID))
-		fmt.Printf("   Data Type: Healthcare records\n")
+		fmt.Printf("   Data Type: WasteManagement records\n")
 		fmt.Printf("   Access Level: %s\n", determineAccessLevel(workflow.gasFeePaid))
 		fmt.Printf("✅ Access control validation passed\n")
 		
@@ -357,8 +357,8 @@ func weiToGwei(wei *big.Int) string {
 }
 
 func extractDepartment(clientID string) string {
-	if contains(clientID, "cardiology") {
-		return "Cardiology"
+	if contains(clientID, "recycling") {
+		return "Recycling"
 	} else if contains(clientID, "research") {
 		return "Research"
 	} else if contains(clientID, "emergency") {

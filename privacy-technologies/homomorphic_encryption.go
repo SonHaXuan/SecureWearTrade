@@ -18,22 +18,22 @@ type HomomorphicEncryption struct {
 }
 
 type CardiacMeasurement struct {
-	PatientID      string
+	BinID      string
 	PreTreatment   float64
 	PostTreatment  float64
 	TreatmentType  string
-	HospitalID     string
+	FacilityID     string
 	Encrypted      bool
 	EncryptedData  *big.Int
 }
 
 type TreatmentResponse struct {
-	PatientID              string
+	BinID              string
 	BaselineCardiacOutput  float64
 	PostTreatmentOutput    float64
 	ImprovementPercentage  float64
 	TreatmentType          string
-	HospitalID             string
+	FacilityID             string
 }
 
 type HomomorphicTestResult struct {
@@ -43,7 +43,7 @@ type HomomorphicTestResult struct {
 	ARBImprovement        float64
 	ACEImprovement        float64
 	AccuracyMatch         bool
-	PatientsProcessed     int
+	BinsProcessed     int
 	OperationsCompleted   int
 	HomomorphicOperations int
 }
@@ -55,7 +55,7 @@ type HETestResults struct {
 
 type HESummary struct {
 	AverageProcessingTime    time.Duration
-	TotalPatientsProcessed   int
+	TotalBinsProcessed   int
 	ARBAverageImprovement    float64
 	ACEAverageImprovement    float64
 	AccuracyRate             float64
@@ -110,87 +110,87 @@ func (he *HomomorphicEncryption) DecryptResult(encrypted *big.Int) float64 {
 func (he *HomomorphicEncryption) generateCardiacTestData() []CardiacMeasurement {
 	measurements := make([]CardiacMeasurement, 4200)
 	
-	cedarsARBPatients := 600
-	cedarsACEPatients := 600
-	clevelandARBPatients := 450
-	clevelandACEPatients := 450
-	cedarsControlPatients := 1200
-	clevelandControlPatients := 900
+	cedarsARBBins := 600
+	cedarsACEBins := 600
+	clevelandARBBins := 450
+	clevelandACEBins := 450
+	cedarsControlBins := 1200
+	clevelandControlBins := 900
 	
 	idx := 0
 	
-	for i := 0; i < cedarsARBPatients; i++ {
+	for i := 0; i < cedarsARBBins; i++ {
 		baseline := 4.5 + (float64(i%20)*0.1) + (float64(i%7)*0.05)
 		improvement := 0.15 + (float64(i%10)*0.01)
 		measurements[idx] = CardiacMeasurement{
-			PatientID:     fmt.Sprintf("CS-ARB-%04d", i+1),
+			BinID:     fmt.Sprintf("CS-ARB-%04d", i+1),
 			PreTreatment:  baseline,
 			PostTreatment: baseline * (1 + improvement),
 			TreatmentType: "ARB",
-			HospitalID:    "Cedars-Sinai",
+			FacilityID:    "CityWaste-Sinai",
 		}
 		idx++
 	}
 	
-	for i := 0; i < cedarsACEPatients; i++ {
+	for i := 0; i < cedarsACEBins; i++ {
 		baseline := 4.4 + (float64(i%18)*0.08) + (float64(i%9)*0.03)
 		improvement := 0.09 + (float64(i%15)*0.008)
 		measurements[idx] = CardiacMeasurement{
-			PatientID:     fmt.Sprintf("CS-ACE-%04d", i+1),
+			BinID:     fmt.Sprintf("CS-ACE-%04d", i+1),
 			PreTreatment:  baseline,
 			PostTreatment: baseline * (1 + improvement),
 			TreatmentType: "ACE",
-			HospitalID:    "Cedars-Sinai",
+			FacilityID:    "CityWaste-Sinai",
 		}
 		idx++
 	}
 	
-	for i := 0; i < clevelandARBPatients; i++ {
+	for i := 0; i < clevelandARBBins; i++ {
 		baseline := 4.6 + (float64(i%15)*0.12) + (float64(i%6)*0.04)
 		improvement := 0.15 + (float64(i%12)*0.012)
 		measurements[idx] = CardiacMeasurement{
-			PatientID:     fmt.Sprintf("CC-ARB-%04d", i+1),
+			BinID:     fmt.Sprintf("CC-ARB-%04d", i+1),
 			PreTreatment:  baseline,
 			PostTreatment: baseline * (1 + improvement),
 			TreatmentType: "ARB",
-			HospitalID:    "Cleveland-Clinic",
+			FacilityID:    "Metro-Recycling",
 		}
 		idx++
 	}
 	
-	for i := 0; i < clevelandACEPatients; i++ {
+	for i := 0; i < clevelandACEBins; i++ {
 		baseline := 4.3 + (float64(i%22)*0.09) + (float64(i%8)*0.06)
 		improvement := 0.09 + (float64(i%18)*0.007)
 		measurements[idx] = CardiacMeasurement{
-			PatientID:     fmt.Sprintf("CC-ACE-%04d", i+1),
+			BinID:     fmt.Sprintf("CC-ACE-%04d", i+1),
 			PreTreatment:  baseline,
 			PostTreatment: baseline * (1 + improvement),
 			TreatmentType: "ACE",
-			HospitalID:    "Cleveland-Clinic",
+			FacilityID:    "Metro-Recycling",
 		}
 		idx++
 	}
 	
-	for i := 0; i < cedarsControlPatients; i++ {
+	for i := 0; i < cedarsControlBins; i++ {
 		baseline := 4.5 + (float64(i%25)*0.08) + (float64(i%11)*0.02)
 		measurements[idx] = CardiacMeasurement{
-			PatientID:     fmt.Sprintf("CS-CTRL-%04d", i+1),
+			BinID:     fmt.Sprintf("CS-CTRL-%04d", i+1),
 			PreTreatment:  baseline,
 			PostTreatment: baseline * (1.02 + float64(i%20)*0.001),
 			TreatmentType: "Control",
-			HospitalID:    "Cedars-Sinai",
+			FacilityID:    "CityWaste-Sinai",
 		}
 		idx++
 	}
 	
-	for i := 0; i < clevelandControlPatients; i++ {
+	for i := 0; i < clevelandControlBins; i++ {
 		baseline := 4.4 + (float64(i%20)*0.1) + (float64(i%13)*0.03)
 		measurements[idx] = CardiacMeasurement{
-			PatientID:     fmt.Sprintf("CC-CTRL-%04d", i+1),
+			BinID:     fmt.Sprintf("CC-CTRL-%04d", i+1),
 			PreTreatment:  baseline,
 			PostTreatment: baseline * (1.015 + float64(i%25)*0.0008),
 			TreatmentType: "Control",
-			HospitalID:    "Cleveland-Clinic",
+			FacilityID:    "Metro-Recycling",
 		}
 		idx++
 	}
@@ -295,10 +295,10 @@ func (he *HomomorphicEncryption) runSingleTreatmentResponseTest(testRun int) Hom
 	
 	processingTime := time.Since(startTime)
 	
-	patientsProcessed := 0
+	binsProcessed := 0
 	for _, measurement := range measurements {
 		if measurement.TreatmentType == "ARB" || measurement.TreatmentType == "ACE" {
-			patientsProcessed++
+			binsProcessed++
 		}
 	}
 	
@@ -309,7 +309,7 @@ func (he *HomomorphicEncryption) runSingleTreatmentResponseTest(testRun int) Hom
 		ARBImprovement:        arbImprovement,
 		ACEImprovement:        aceImprovement,
 		AccuracyMatch:         accuracyMatch,
-		PatientsProcessed:     patientsProcessed,
+		BinsProcessed:     binsProcessed,
 		OperationsCompleted:   len(measurements),
 		HomomorphicOperations: homomorphicOps,
 	}
@@ -321,7 +321,7 @@ func (he *HomomorphicEncryption) RunTreatmentResponseAnalysis() *HETestResults {
 	}
 	
 	log.Printf("Starting Treatment Response Analysis with Homomorphic Encryption...")
-	log.Printf("Analyzing cardiac output calculations across Cedars-Sinai (2,400 patients) and Cleveland Clinic (1,800 patients)")
+	log.Printf("Analyzing cardiac output calculations across CityWaste-Sinai (2,400 bins) and Metro Recycling (1,800 bins)")
 	log.Printf("Testing ARB vs ACE inhibitor effectiveness with full privacy protection")
 	
 	targetTimes := []time.Duration{
@@ -351,14 +351,14 @@ func (he *HomomorphicEncryption) RunTreatmentResponseAnalysis() *HETestResults {
 	log.Printf("Results: ARB therapy: %.1f%% improvement vs %.1f%% for ACE inhibitors",
 		results.Summary.ARBAverageImprovement, results.Summary.ACEAverageImprovement)
 	log.Printf("Accuracy: 100%% identical to unencrypted cardiac analysis")
-	log.Printf("Patient protection: Individual cardiac measurements and treatment responses never decrypted")
+	log.Printf("Bin protection: Individual cardiac measurements and treatment responses never decrypted")
 	
 	return results
 }
 
 func (results *HETestResults) calculateSummary() {
 	var totalTime time.Duration
-	var totalPatients int
+	var totalBins int
 	var totalARBImprovement float64
 	var totalACEImprovement float64
 	var accurateTests int
@@ -366,7 +366,7 @@ func (results *HETestResults) calculateSummary() {
 	
 	for _, test := range results.TreatmentResponseTests {
 		totalTime += test.ProcessingTime
-		totalPatients += test.PatientsProcessed
+		totalBins += test.BinsProcessed
 		totalARBImprovement += test.ARBImprovement
 		totalACEImprovement += test.ACEImprovement
 		totalHomomorphicOps += test.HomomorphicOperations
@@ -378,7 +378,7 @@ func (results *HETestResults) calculateSummary() {
 	
 	results.Summary = HESummary{
 		AverageProcessingTime:  totalTime / time.Duration(len(results.TreatmentResponseTests)),
-		TotalPatientsProcessed: totalPatients,
+		TotalBinsProcessed: totalBins,
 		ARBAverageImprovement:  totalARBImprovement / float64(len(results.TreatmentResponseTests)),
 		ACEAverageImprovement:  totalACEImprovement / float64(len(results.TreatmentResponseTests)),
 		AccuracyRate:          float64(accurateTests) / float64(len(results.TreatmentResponseTests)),
@@ -391,14 +391,14 @@ func (results *HETestResults) PrintDetailedResults() {
 	fmt.Printf("\n=== HOMOMORPHIC ENCRYPTION - TREATMENT RESPONSE ANALYSIS RESULTS ===\n\n")
 	
 	fmt.Printf("Test Configuration:\n")
-	fmt.Printf("- Hospital Networks: Cedars-Sinai Medical Center (2,400 patients) + Cleveland Clinic (1,800 patients)\n")
+	fmt.Printf("- Facility Networks: CityWaste-Sinai Waste Center (2,400 bins) + Metro Recycling (1,800 bins)\n")
 	fmt.Printf("- Treatment Comparison: ARB therapy vs ACE inhibitors for heart failure\n")
-	fmt.Printf("- Privacy Protection: Homomorphic encryption ensures individual patient data never decrypted\n")
+	fmt.Printf("- Privacy Protection: Homomorphic encryption ensures individual bin data never decrypted\n")
 	fmt.Printf("- Total Test Runs: %d\n\n", len(results.TreatmentResponseTests))
 	
 	fmt.Printf("Individual Test Results:\n")
 	fmt.Printf("%-8s %-15s %-12s %-12s %-12s %-10s %-8s\n",
-		"Test", "Processing Time", "ARB Improv.", "ACE Improv.", "Accuracy", "Patients", "HE Ops")
+		"Test", "Processing Time", "ARB Improv.", "ACE Improv.", "Accuracy", "Bins", "HE Ops")
 	fmt.Printf("%-8s %-15s %-12s %-12s %-12s %-10s %-8s\n",
 		"Run", "(ms)", "(%)", "(%)", "Match", "Processed", "Count")
 	
@@ -413,7 +413,7 @@ func (results *HETestResults) PrintDetailedResults() {
 			test.ARBImprovement,
 			test.ACEImprovement,
 			test.AccuracyMatch,
-			test.PatientsProcessed,
+			test.BinsProcessed,
 			test.HomomorphicOperations,
 		)
 	}
@@ -424,10 +424,10 @@ func (results *HETestResults) PrintDetailedResults() {
 	fmt.Printf("\nPerformance Summary:\n")
 	fmt.Printf("- Average Processing Time: %dms\n", avgMs)
 	fmt.Printf("- Processing Time Range: %dms - %dms\n", times[0], times[len(times)-1])
-	fmt.Printf("- Total Patients Analyzed: %d (across all test runs)\n", results.Summary.TotalPatientsProcessed)
+	fmt.Printf("- Total Bins Analyzed: %d (across all test runs)\n", results.Summary.TotalBinsProcessed)
 	fmt.Printf("- Total Homomorphic Operations: %d\n", results.Summary.TotalHomomorphicOps)
 	
-	fmt.Printf("\nClinical Results:\n")
+	fmt.Printf("\nOperational Results:\n")
 	fmt.Printf("- ARB Therapy Average Improvement: %.1f%% in cardiac output\n", results.Summary.ARBAverageImprovement)
 	fmt.Printf("- ACE Inhibitor Average Improvement: %.1f%% in cardiac output\n", results.Summary.ACEAverageImprovement)
 	fmt.Printf("- ARB Superiority: +%.1f%% better improvement than ACE inhibitors\n",
@@ -436,9 +436,9 @@ func (results *HETestResults) PrintDetailedResults() {
 	
 	fmt.Printf("\nPrivacy Protection:\n")
 	fmt.Printf("- %s\n", results.Summary.PrivacyGuarantee)
-	fmt.Printf("- Individual patient cardiac measurements remain encrypted throughout analysis\n")
+	fmt.Printf("- Individual bin cardiac measurements remain encrypted throughout analysis\n")
 	fmt.Printf("- Treatment response calculations performed on encrypted data\n")
-	fmt.Printf("- Multi-hospital comparison without revealing individual patient information\n")
+	fmt.Printf("- Multi-facility comparison without revealing individual bin information\n")
 	
 	fmt.Printf("\nTarget Performance Verification:\n")
 	expectedTimes := []int{890, 920, 875, 945, 860}

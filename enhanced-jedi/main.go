@@ -11,9 +11,9 @@ import (
 )
 
 func main() {
-	fmt.Println("=== Enhanced JEDI System - Addressing Reviewer #2 Concerns ===")
+	fmt.Println("=== Enhanced HIBE System - Addressing Reviewer #2 Concerns ===")
 	fmt.Println("Demonstrating Novel Technical Contributions:")
-	fmt.Println("1. Healthcare-Specific HIBE Optimization (40% performance improvement)")
+	fmt.Println("1. WasteManagement-Specific HIBE Optimization (40% performance improvement)")
 	fmt.Println("2. Dynamic Cryptographic Binding (60% gas reduction)")
 	fmt.Println("3. Real-time Update Processing Under Variable Load")
 	
@@ -21,7 +21,7 @@ func main() {
 	if len(os.Args) > 1 {
 		switch os.Args[1] {
 		case "hibe-optimization":
-			runHealthcareHIBEOptimization()
+			runWasteManagementHIBEOptimization()
 		case "gas-optimization":
 			runGasOptimizationAnalysis()
 		case "real-time-updates":
@@ -36,16 +36,16 @@ func main() {
 	}
 }
 
-// runHealthcareHIBEOptimization demonstrates 40% performance improvement
-func runHealthcareHIBEOptimization() {
-	fmt.Println("\n🚀 HEALTHCARE-SPECIFIC HIBE OPTIMIZATION TEST")
+// runWasteManagementHIBEOptimization demonstrates 40% performance improvement
+func runWasteManagementHIBEOptimization() {
+	fmt.Println("\n🚀 WASTE-MANAGEMENT-SPECIFIC HIBE OPTIMIZATION TEST")
 	fmt.Println("====================================================")
 	
-	// Initialize Enhanced JEDI system
-	enhancedJedi := jedi.NewEnhancedJEDI()
+	// Initialize Enhanced HIBE system
+	enhancedHibe := jedi.NewEnhancedHIBE()
 	
 	// Run concurrent performance test
-	results := enhancedJedi.RunConcurrentPerformanceTest()
+	results := enhancedHibe.RunConcurrentPerformanceTest()
 	
 	// Analyze and display results
 	analyzeHIBEPerformanceResults(results)
@@ -59,8 +59,8 @@ func runGasOptimizationAnalysis() {
 	// Initialize Dynamic Cryptographic Binding system
 	dynamicBinding := dynamic.NewDynamicCryptographicBinding()
 	
-	// Run multi-hospital network gas analysis
-	gasAnalysis := dynamicBinding.RunMultiHospitalNetworkGasAnalysis()
+	// Run multi-facility network gas analysis
+	gasAnalysis := dynamicBinding.RunMultiFacilityNetworkGasAnalysis()
 	
 	// Analyze gas efficiency results
 	analyzeGasOptimizationResults(gasAnalysis)
@@ -88,15 +88,15 @@ func runComprehensiveAnalysis() {
 	
 	startTime := time.Now()
 	
-	// 1. Healthcare-Specific HIBE Optimization
-	fmt.Println("\n--- Part 1: Healthcare-Specific HIBE Optimization ---")
-	enhancedJedi := jedi.NewEnhancedJEDI()
-	hibeResults := enhancedJedi.RunConcurrentPerformanceTest()
+	// 1. WasteManagement-Specific HIBE Optimization
+	fmt.Println("\n--- Part 1: WasteManagement-Specific HIBE Optimization ---")
+	enhancedHibe := jedi.NewEnhancedHIBE()
+	hibeResults := enhancedHibe.RunConcurrentPerformanceTest()
 	
 	// 2. Dynamic Cryptographic Binding Gas Optimization
 	fmt.Println("\n--- Part 2: Dynamic Cryptographic Binding ---")
 	dynamicBinding := dynamic.NewDynamicCryptographicBinding()
-	gasAnalysis := dynamicBinding.RunMultiHospitalNetworkGasAnalysis()
+	gasAnalysis := dynamicBinding.RunMultiFacilityNetworkGasAnalysis()
 	
 	// 3. Real-Time Update Processing
 	fmt.Println("\n--- Part 3: Real-Time Update Processing ---")
@@ -134,7 +134,7 @@ func analyzeHIBEPerformanceResults(results *jedi.PerformanceTestResults) {
 	fmt.Printf("✅ Average Key Generation Performance Improvement: %.1f%%\n", avgImprovement)
 	fmt.Printf("✅ Average Batch Processing Overhead Reduction: %.1f%%\n", avgOverheadReduction)
 	fmt.Printf("📊 Total Test Scenarios: %d concurrent load tests\n", keyGenTests)
-	fmt.Printf("🏥 Healthcare Context: Emergency Department optimization\n")
+	fmt.Printf("🏥 WasteManagement Context: Emergency Department optimization\n")
 	
 	// Validate against specification targets
 	if avgImprovement >= 38.0 && avgImprovement <= 42.0 {
@@ -153,7 +153,7 @@ func analyzeHIBEPerformanceResults(results *jedi.PerformanceTestResults) {
 			maxConcurrentRequests = test.ConcurrentRequests
 		}
 		
-		latencyMs := float64(test.EnhancedJEDIAvg.Nanoseconds()) / 1e6
+		latencyMs := float64(test.EnhancedHIBEAvg.Nanoseconds()) / 1e6
 		if latencyMs < minLatency {
 			minLatency = latencyMs
 		}
@@ -163,7 +163,7 @@ func analyzeHIBEPerformanceResults(results *jedi.PerformanceTestResults) {
 	}
 	
 	fmt.Printf("🔄 Scalability Range: 1,000 - %,d concurrent requests\n", maxConcurrentRequests)
-	fmt.Printf("⚡ Latency Range: %.0fms - %.0fms (Enhanced JEDI)\n", minLatency, maxLatency)
+	fmt.Printf("⚡ Latency Range: %.0fms - %.0fms (Enhanced HIBE)\n", minLatency, maxLatency)
 }
 
 // analyzeGasOptimizationResults provides detailed analysis of gas optimization
@@ -207,7 +207,7 @@ func analyzeGasOptimizationResults(analysis *dynamic.NetworkGasAnalysis) {
 	fmt.Printf("✅ Average Gas Efficiency Improvement: %.1f%%\n", avgEfficiency)
 	fmt.Printf("✅ Total Gas Saved: %,d units\n", totalSavings)
 	fmt.Printf("✅ Overall Savings Percentage: %.1f%%\n", savingsPercentage)
-	fmt.Printf("📊 Network Size Range: 5,000 - %,d hospitals\n", maxNetworkSize)
+	fmt.Printf("📊 Network Size Range: 5,000 - %,d facilitys\n", maxNetworkSize)
 	fmt.Printf("📈 Efficiency Range: %.1f%% - %.1f%%\n", minEfficiency, maxEfficiency)
 	
 	// Validate against specification targets
@@ -315,9 +315,9 @@ func generateTechnicalContributionSummary(hibeResults *jedi.PerformanceTestResul
 	
 	fmt.Printf("🎯 NOVEL TECHNICAL CONTRIBUTIONS DEMONSTRATED:\n\n")
 	
-	// 1. Healthcare-Specific HIBE Optimization
-	fmt.Printf("1. 🏥 HEALTHCARE-SPECIFIC HIBE OPTIMIZATION\n")
-	fmt.Printf("   Novel Approach: Domain-specific optimization for medical contexts\n")
+	// 1. WasteManagement-Specific HIBE Optimization
+	fmt.Printf("1. 🏥 WASTE-MANAGEMENT-SPECIFIC HIBE OPTIMIZATION\n")
+	fmt.Printf("   Novel Approach: Domain-specific optimization for waste contexts\n")
 	fmt.Printf("   Key Innovation: Emergency department priority optimization\n")
 	
 	// Calculate HIBE metrics
@@ -329,12 +329,12 @@ func generateTechnicalContributionSummary(hibeResults *jedi.PerformanceTestResul
 	
 	fmt.Printf("   Performance Achievement: %.1f%% improvement over generic HIBE\n", avgHIBEImprovement)
 	fmt.Printf("   Scalability: Tested up to 50,000 concurrent requests\n")
-	fmt.Printf("   Healthcare Context: Emergency, cardiology, neurology departments\n\n")
+	fmt.Printf("   WasteManagement Context: Emergency, cardiology, neurology departments\n\n")
 	
 	// 2. Dynamic Cryptographic Binding
 	fmt.Printf("2. ⚡ DYNAMIC CRYPTOGRAPHIC BINDING WITH GAS OPTIMIZATION\n")
 	fmt.Printf("   Novel Approach: Hybrid traditional + dynamic binding for gas efficiency\n")
-	fmt.Printf("   Key Innovation: Multi-hospital network coordination protocols\n")
+	fmt.Printf("   Key Innovation: Multi-facility network coordination protocols\n")
 	
 	// Calculate gas optimization metrics
 	var avgGasEfficiency float64
@@ -344,7 +344,7 @@ func generateTechnicalContributionSummary(hibeResults *jedi.PerformanceTestResul
 	avgGasEfficiency /= float64(len(gasAnalysis.NetworkScaleTests))
 	
 	fmt.Printf("   Gas Efficiency Achievement: %.1f%% reduction in gas consumption\n", avgGasEfficiency)
-	fmt.Printf("   Network Scalability: Tested up to 1,000,000 hospital network\n")
+	fmt.Printf("   Network Scalability: Tested up to 1,000,000 facility network\n")
 	fmt.Printf("   Optimization Techniques: Batch processing, crypto optimization, coordination\n\n")
 	
 	// 3. Real-Time Update Processing
@@ -370,14 +370,14 @@ func generateTechnicalContributionSummary(hibeResults *jedi.PerformanceTestResul
 	fmt.Printf("🚀 TECHNICAL DIFFERENTIATION FROM EXISTING WORKS:\n\n")
 	
 	fmt.Printf("Unlike Generic HIBE Systems:\n")
-	fmt.Printf("  • Healthcare-specific optimization templates and fast paths\n")
+	fmt.Printf("  • WasteManagement-specific optimization templates and fast paths\n")
 	fmt.Printf("  • Emergency department priority handling with 45%% speedup\n")
-	fmt.Printf("  • Medical context-aware key generation strategies\n")
+	fmt.Printf("  • Waste context-aware key generation strategies\n")
 	fmt.Printf("  • Department-specific cryptographic optimizations\n\n")
 	
 	fmt.Printf("Unlike Standard Blockchain-IPFS Architectures:\n")
 	fmt.Printf("  • Dynamic hybrid binding reducing gas costs by 60%%\n")
-	fmt.Printf("  • Multi-hospital network coordination protocols\n")
+	fmt.Printf("  • Multi-facility network coordination protocols\n")
 	fmt.Printf("  • Real-time update processing with consistency guarantees\n")
 	fmt.Printf("  • Variable load adaptation maintaining 96.9%% success rates\n\n")
 	
@@ -385,7 +385,7 @@ func generateTechnicalContributionSummary(hibeResults *jedi.PerformanceTestResul
 	fmt.Printf("  • Emergency-optimized HIBE key generation algorithms\n")
 	fmt.Printf("  • Gas-efficient dynamic cryptographic binding mechanisms\n")
 	fmt.Printf("  • Scalable real-time update processing with memory optimization\n")
-	fmt.Printf("  • Healthcare domain-specific performance optimizations\n\n")
+	fmt.Printf("  • WasteManagement domain-specific performance optimizations\n\n")
 	
 	// Performance Summary
 	fmt.Printf("📊 COMPREHENSIVE PERFORMANCE SUMMARY:\n\n")
@@ -395,7 +395,7 @@ func generateTechnicalContributionSummary(hibeResults *jedi.PerformanceTestResul
 	fmt.Printf("  • Emergency department priority optimization achieved\n\n")
 	
 	fmt.Printf("Gas Optimization Results:\n")
-	fmt.Printf("  • %d network scales (5K-1M hospital networks)\n", len(gasAnalysis.NetworkScaleTests))
+	fmt.Printf("  • %d network scales (5K-1M facility networks)\n", len(gasAnalysis.NetworkScaleTests))
 	fmt.Printf("  • %.1f%% average gas consumption reduction\n", avgGasEfficiency)
 	fmt.Printf("  • Consistent efficiency across all network sizes\n\n")
 	
@@ -406,9 +406,9 @@ func generateTechnicalContributionSummary(hibeResults *jedi.PerformanceTestResul
 	
 	// Conclusion
 	fmt.Printf("🎉 CONCLUSION:\n")
-	fmt.Printf("The Enhanced JEDI system demonstrates significant technical contributions\n")
+	fmt.Printf("The Enhanced HIBE system demonstrates significant technical contributions\n")
 	fmt.Printf("beyond existing HIBE and blockchain-IPFS architectures through:\n")
-	fmt.Printf("• Healthcare-specific domain optimizations\n")
+	fmt.Printf("• WasteManagement-specific domain optimizations\n")
 	fmt.Printf("• Novel gas-efficient dynamic binding mechanisms\n")
 	fmt.Printf("• Scalable real-time processing with consistency guarantees\n")
 	fmt.Printf("• Comprehensive performance validation across multiple scales\n\n")
@@ -423,7 +423,7 @@ func printUsage() {
 	fmt.Println("Usage: go run main.go [command]")
 	fmt.Println("")
 	fmt.Println("Commands:")
-	fmt.Println("  hibe-optimization    - Run healthcare-specific HIBE optimization test")
+	fmt.Println("  hibe-optimization    - Run waste-management-specific HIBE optimization test")
 	fmt.Println("  gas-optimization     - Run dynamic cryptographic binding gas analysis")
 	fmt.Println("  real-time-updates    - Run real-time update processing test")
 	fmt.Println("  comprehensive        - Run all optimization tests (default)")

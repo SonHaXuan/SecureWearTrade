@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-// IPFSConnector manages IPFS interactions for healthcare data storage
+// IPFSConnector manages IPFS interactions for waste-management data storage
 type IPFSConnector struct {
 	nodeURL     string
 	httpClient  *http.Client
@@ -20,10 +20,10 @@ type IPFSConnector struct {
 	mu          sync.RWMutex
 }
 
-// HealthcareData represents healthcare data structure for IPFS storage
-type HealthcareData struct {
-	PatientID    string                 `json:"patient_id"`
-	DoctorWallet string                 `json:"doctor_wallet"`
+// WasteManagementData represents waste-management data structure for IPFS storage
+type WasteManagementData struct {
+	BinID    string                 `json:"bin_id"`
+	OperatorWallet string                 `json:"operator_wallet"`
 	Department   string                 `json:"department"`
 	DataType     string                 `json:"data_type"`
 	AccessLevel  string                 `json:"access_level"`
@@ -72,19 +72,19 @@ func NewIPFSConnector(nodeURL string) *IPFSConnector {
 	}
 }
 
-// StoreHealthcareData stores encrypted healthcare data on IPFS
-func (ic *IPFSConnector) StoreHealthcareData(data *HealthcareData) (string, error) {
+// StoreWasteManagementData stores encrypted waste-management data on IPFS
+func (ic *IPFSConnector) StoreWasteManagementData(data *WasteManagementData) (string, error) {
 	ic.mu.Lock()
 	defer ic.mu.Unlock()
 	
-	// Serialize healthcare data
+	// Serialize waste-management data
 	jsonData, err := json.Marshal(data)
 	if err != nil {
-		return "", fmt.Errorf("failed to serialize healthcare data: %v", err)
+		return "", fmt.Errorf("failed to serialize waste-management data: %v", err)
 	}
 	
 	// Check rate limiting
-	clientID := data.DoctorWallet
+	clientID := data.OperatorWallet
 	if !ic.rateLimiter.AllowRequest(clientID) {
 		return "", fmt.Errorf("rate limit exceeded for client %s", clientID)
 	}
@@ -94,7 +94,7 @@ func (ic *IPFSConnector) StoreHealthcareData(data *HealthcareData) (string, erro
 	boundary := "----WebKitFormBoundary7MA4YWxkTrZu0gW"
 	
 	body.WriteString(fmt.Sprintf("--%s\r\n", boundary))
-	body.WriteString("Content-Disposition: form-data; name=\"file\"; filename=\"healthcare_data.json\"\r\n")
+	body.WriteString("Content-Disposition: form-data; name=\"file\"; filename=\"waste-management_data.json\"\r\n")
 	body.WriteString("Content-Type: application/json\r\n\r\n")
 	body.Write(jsonData)
 	body.WriteString(fmt.Sprintf("\r\n--%s--\r\n", boundary))
@@ -138,8 +138,8 @@ func (ic *IPFSConnector) StoreHealthcareData(data *HealthcareData) (string, erro
 	return ipfsResp.Hash, nil
 }
 
-// RetrieveHealthcareData retrieves healthcare data from IPFS
-func (ic *IPFSConnector) RetrieveHealthcareData(hash string, clientID string) (*HealthcareData, error) {
+// RetrieveWasteManagementData retrieves waste-management data from IPFS
+func (ic *IPFSConnector) RetrieveWasteManagementData(hash string, clientID string) (*WasteManagementData, error) {
 	// Check rate limiting
 	if !ic.rateLimiter.AllowRequest(clientID) {
 		return nil, fmt.Errorf("rate limit exceeded for client %s", clientID)
@@ -147,7 +147,7 @@ func (ic *IPFSConnector) RetrieveHealthcareData(hash string, clientID string) (*
 	
 	// Check cache first
 	if cached, found := ic.hashCache.Get(hash); found {
-		if data, ok := cached.Data.(*HealthcareData); ok {
+		if data, ok := cached.Data.(*WasteManagementData); ok {
 			return data, nil
 		}
 	}
@@ -168,16 +168,16 @@ func (ic *IPFSConnector) RetrieveHealthcareData(hash string, clientID string) (*
 		return nil, fmt.Errorf("IPFS request failed with status %d", resp.StatusCode)
 	}
 	
-	// Parse healthcare data
+	// Parse waste-management data
 	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read IPFS response: %v", err)
 	}
 	
-	var data HealthcareData
+	var data WasteManagementData
 	err = json.Unmarshal(respBody, &data)
 	if err != nil {
-		return nil, fmt.Errorf("failed to parse healthcare data: %v", err)
+		return nil, fmt.Errorf("failed to parse waste-management data: %v", err)
 	}
 	
 	// Cache the result

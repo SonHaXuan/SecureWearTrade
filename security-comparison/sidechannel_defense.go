@@ -25,7 +25,7 @@ type SecureWearTradeSideChannelDefenses struct {
 	ConstantTimeOperations  *ConstantTimeOperations
 	NoiseInjection         *NoiseInjection
 	MaskingTechniques      *MaskingTechniques
-	MedicalDeviceProtection *MedicalDeviceProtection
+	WasteDeviceProtection *WasteDeviceProtection
 }
 
 // TimingAttackDefense provides constant-time implementations for HIBE operations
@@ -52,13 +52,13 @@ type SideChannelTestResults struct {
 	EMAnalysisResults      *EMAnalysisResults
 	OverallDefenseEfficiency *OverallDefenseEfficiency
 	CompetitorComparison    *SideChannelCompetitorComparison
-	MedicalDeviceSpecific   *MedicalDeviceSideChannelResults
+	WasteDeviceSpecific   *WasteDeviceSideChannelResults
 }
 
 // TimingAttackResults represents comprehensive timing attack defense results
 type TimingAttackResults struct {
 	HIBEKeyGeneration    *AttackDefenseResult `json:"hibe_key_generation"`
-	MedicalDataDecryption *AttackDefenseResult `json:"medical_data_decryption"`
+	WasteDataDecryption *AttackDefenseResult `json:"waste_data_decryption"`
 	DeviceAuthentication  *AttackDefenseResult `json:"device_authentication"`
 	RemoteTiming         *AttackDefenseResult `json:"remote_timing"`
 	OverallTimingDefense *AttackDefenseResult `json:"overall_timing_defense"`
@@ -95,7 +95,7 @@ type IndividualSideChannelTest struct {
 	DefenseActivated    []string      `json:"defense_activated"`
 	AttackDifficulty    string        `json:"attack_difficulty"`
 	WearableDeviceType  string        `json:"wearable_device_type"`
-	MedicalContext      string        `json:"medical_context"`
+	WasteContext      string        `json:"waste_context"`
 }
 
 // DefenseComparisonMetrics provides detailed comparison with existing solutions
@@ -116,7 +116,7 @@ type SolutionDefenseMetrics struct {
 	OverallDefense       float64           `json:"overall_defense"`
 	DefenseCapabilities  []string          `json:"defense_capabilities"`
 	KnownVulnerabilities []string          `json:"known_vulnerabilities"`
-	MedicalDeviceSupport bool              `json:"medical_device_support"`
+	WasteDeviceSupport bool              `json:"waste_device_support"`
 }
 
 // NewSideChannelDefenseAnalyzer creates a comprehensive side-channel defense analyzer
@@ -155,7 +155,7 @@ func (scda *SideChannelDefenseAnalyzer) RunComprehensiveSideChannelAnalysis() *S
 	// 4. Overall Defense Efficiency Analysis
 	results.OverallDefenseEfficiency = scda.calculateOverallDefenseEfficiency(results)
 	results.CompetitorComparison = scda.generateSideChannelCompetitorComparison(results)
-	results.MedicalDeviceSpecific = scda.analyzeMedicalDeviceSpecificDefenses(results)
+	results.WasteDeviceSpecific = scda.analyzeWasteDeviceSpecificDefenses(results)
 	
 	// 5. Print Comprehensive Defense Report
 	scda.printComprehensiveDefenseReport(results)
@@ -177,7 +177,7 @@ func (scda *SideChannelDefenseAnalyzer) testTimingAttackDefenses() *TimingAttack
 			},
 			DefenseMechanisms: []string{
 				"Constant-time HIBE key generation implementation",
-				"Medical device timing normalization",
+				"Waste device timing normalization",
 				"Secure computation protocols",
 				"Hardware-level timing protection",
 			},
@@ -186,8 +186,8 @@ func (scda *SideChannelDefenseAnalyzer) testTimingAttackDefenses() *TimingAttack
 			DefenseEffectiveness: 99.5,
 			TestResults:         scda.simulateTimingAttackTests("HIBE_KeyGen", 50000),
 		},
-		MedicalDataDecryption: &AttackDefenseResult{
-			AttackType:              "Medical Data Decryption Timing Attack",
+		WasteDataDecryption: &AttackDefenseResult{
+			AttackType:              "Waste Data Decryption Timing Attack",
 			SecureWearTradeSuccess:  1.0, // < 1% success rate
 			ExistingSolutionSuccess: map[string]float64{
 				"Existing Solutions": 25.0, // 20-30% range
@@ -195,14 +195,14 @@ func (scda *SideChannelDefenseAnalyzer) testTimingAttackDefenses() *TimingAttack
 				"Bamasag":           28.0,
 			},
 			DefenseMechanisms: []string{
-				"Timing attack resistant medical data decryption",
+				"Timing attack resistant waste data decryption",
 				"Constant-time cryptographic operations",
-				"Medical context-aware timing protection",
+				"Waste context-aware timing protection",
 			},
 			TestAttempts:         40000,
 			AttackComplexity:     "Medium",
 			DefenseEffectiveness: 99.0,
-			TestResults:         scda.simulateTimingAttackTests("Medical_Decrypt", 40000),
+			TestResults:         scda.simulateTimingAttackTests("Waste_Decrypt", 40000),
 		},
 		DeviceAuthentication: &AttackDefenseResult{
 			AttackType:              "Device Authentication Timing Attack",
@@ -214,7 +214,7 @@ func (scda *SideChannelDefenseAnalyzer) testTimingAttackDefenses() *TimingAttack
 			},
 			DefenseMechanisms: []string{
 				"Uniform timing for device authentication",
-				"Medical device-specific timing normalization",
+				"Waste device-specific timing normalization",
 				"Secure authentication protocols",
 			},
 			TestAttempts:         35000,
@@ -233,7 +233,7 @@ func (scda *SideChannelDefenseAnalyzer) testTimingAttackDefenses() *TimingAttack
 			DefenseMechanisms: []string{
 				"Network jitter compensation",
 				"Remote timing attack mitigation",
-				"Medical network security protocols",
+				"Waste network security protocols",
 			},
 			TestAttempts:         30000,
 			AttackComplexity:     "Low",
@@ -256,7 +256,7 @@ func (scda *SideChannelDefenseAnalyzer) testPowerAnalysisDefenses() *PowerAnalys
 			},
 			DefenseMechanisms: []string{
 				"Power consumption normalization on wearables",
-				"Medical device power management",
+				"Waste device power management",
 				"Hardware-level power analysis protection",
 			},
 			TestAttempts:         25000,
@@ -275,7 +275,7 @@ func (scda *SideChannelDefenseAnalyzer) testPowerAnalysisDefenses() *PowerAnalys
 			DefenseMechanisms: []string{
 				"Random masking for HIBE operations",
 				"Advanced power analysis countermeasures",
-				"Medical device-specific power protection",
+				"Waste device-specific power protection",
 			},
 			TestAttempts:         20000,
 			AttackComplexity:     "High",
@@ -293,7 +293,7 @@ func (scda *SideChannelDefenseAnalyzer) testPowerAnalysisDefenses() *PowerAnalys
 			DefenseMechanisms: []string{
 				"Advanced masking with noise injection",
 				"Correlation-resistant implementations",
-				"Medical device hardening",
+				"Waste device hardening",
 			},
 			TestAttempts:         15000,
 			AttackComplexity:     "High",
@@ -309,7 +309,7 @@ func (scda *SideChannelDefenseAnalyzer) testPowerAnalysisDefenses() *PowerAnalys
 				"Bamasag":           37.0,
 			},
 			DefenseMechanisms: []string{
-				"EM shielding recommendations for medical devices",
+				"EM shielding recommendations for waste devices",
 				"Electromagnetic interference protection",
 				"Hardware-level EM analysis resistance",
 			},
@@ -334,9 +334,9 @@ func (scda *SideChannelDefenseAnalyzer) testEMAnalysisDefenses() *EMAnalysisResu
 				"Generic":           35.0,
 			},
 			DefenseMechanisms: []string{
-				"EM shielding recommendations for medical devices",
+				"EM shielding recommendations for waste devices",
 				"Electromagnetic interference protection",
-				"Medical device EM hardening standards",
+				"Waste device EM hardening standards",
 				"Wearable device EM security protocols",
 			},
 			TestAttempts:         10000,
@@ -370,7 +370,7 @@ func (scda *SideChannelDefenseAnalyzer) simulateTimingAttackTests(attackType str
 			DefenseActivated:   []string{"Constant-Time Operations", "Timing Normalization"},
 			AttackDifficulty:   "High",
 			WearableDeviceType: scda.getRandomWearableType(),
-			MedicalContext:     scda.getRandomMedicalContext(),
+			WasteContext:     scda.getRandomWasteContext(),
 		}
 		
 		results = append(results, test)
@@ -390,7 +390,7 @@ func (scda *SideChannelDefenseAnalyzer) simulatePowerAttackTests(attackType stri
 		switch attackType {
 		case "SPA":
 			successRate = 0.05 // < 5%
-			defenses = []string{"Power Normalization", "Medical Device Power Management"}
+			defenses = []string{"Power Normalization", "Waste Device Power Management"}
 		case "DPA":
 			successRate = 0.02 // < 2%
 			defenses = []string{"Random Masking", "Advanced Countermeasures"}
@@ -409,7 +409,7 @@ func (scda *SideChannelDefenseAnalyzer) simulatePowerAttackTests(attackType stri
 			DefenseActivated:   defenses,
 			AttackDifficulty:   "High",
 			WearableDeviceType: scda.getRandomWearableType(),
-			MedicalContext:     scda.getRandomMedicalContext(),
+			WasteContext:     scda.getRandomWasteContext(),
 		}
 		
 		results = append(results, test)
@@ -433,7 +433,7 @@ func (scda *SideChannelDefenseAnalyzer) simulateEMAttackTests(attackType string,
 			DefenseActivated:   []string{"EM Shielding", "Interference Protection"},
 			AttackDifficulty:   "Very High",
 			WearableDeviceType: scda.getRandomWearableType(),
-			MedicalContext:     scda.getRandomMedicalContext(),
+			WasteContext:     scda.getRandomWasteContext(),
 		}
 		
 		results = append(results, test)
@@ -453,13 +453,13 @@ func (scda *SideChannelDefenseAnalyzer) calculateOverallDefenseEfficiency(result
 			"Timing Attacks":     98.5,
 			"Power Analysis":     97.8,
 			"EM Analysis":        99.5,
-			"Medical Device Specific": 99.0,
+			"Waste Device Specific": 99.0,
 		},
-		MedicalDeviceOptimizations: []string{
+		WasteDeviceOptimizations: []string{
 			"Wearable device power management",
-			"Medical context-aware timing protection",
-			"Healthcare-specific EM shielding",
-			"Medical device authentication hardening",
+			"Waste context-aware timing protection",
+			"WasteManagement-specific EM shielding",
+			"Waste device authentication hardening",
 		},
 	}
 }
@@ -479,9 +479,9 @@ func (scda *SideChannelDefenseAnalyzer) generateSideChannelCompetitorComparison(
 			KnownVulnerabilities: []string{
 				"Vulnerable to advanced timing attacks",
 				"Limited power analysis protection",
-				"No medical device optimization",
+				"No waste device optimization",
 			},
-			MedicalDeviceSupport: false,
+			WasteDeviceSupport: false,
 		},
 		Bamasag: &SolutionDefenseMetrics{
 			SolutionName:         "Bamasag",
@@ -495,10 +495,10 @@ func (scda *SideChannelDefenseAnalyzer) generateSideChannelCompetitorComparison(
 			},
 			KnownVulnerabilities: []string{
 				"Higher side-channel vulnerability",
-				"No specialized medical protection",
+				"No specialized waste protection",
 				"Limited EM analysis defense",
 			},
-			MedicalDeviceSupport: false,
+			WasteDeviceSupport: false,
 		},
 		ExistingHIBE: &SolutionDefenseMetrics{
 			SolutionName:         "Existing HIBE",
@@ -513,9 +513,9 @@ func (scda *SideChannelDefenseAnalyzer) generateSideChannelCompetitorComparison(
 			KnownVulnerabilities: []string{
 				"No constant-time implementation",
 				"Limited side-channel awareness",
-				"No medical context optimization",
+				"No waste context optimization",
 			},
-			MedicalDeviceSupport: false,
+			WasteDeviceSupport: false,
 		},
 		SecurityAdvantage: &SecurityGapAnalysis{
 			TimingAttackAdvantage:  26.5, // 98.5% - 72.0% (best competitor)
@@ -523,39 +523,39 @@ func (scda *SideChannelDefenseAnalyzer) generateSideChannelCompetitorComparison(
 			EMAnalysisAdvantage:   27.5, // 99.5% - 72.0%
 			OverallAdvantage:      25.8, // 98.6% - 72.8%
 			KeyDifferentiators: []string{
-				"Medical device-specific side-channel protection",
+				"Waste device-specific side-channel protection",
 				"Constant-time HIBE implementations",
 				"Wearable device power optimization",
-				"EM shielding for medical environments",
+				"EM shielding for waste environments",
 			},
 		},
 	}
 }
 
-func (scda *SideChannelDefenseAnalyzer) analyzeMedicalDeviceSpecificDefenses(results *SideChannelTestResults) *MedicalDeviceSideChannelResults {
-	return &MedicalDeviceSideChannelResults{
+func (scda *SideChannelDefenseAnalyzer) analyzeWasteDeviceSpecificDefenses(results *SideChannelTestResults) *WasteDeviceSideChannelResults {
+	return &WasteDeviceSideChannelResults{
 		WearableDeviceProtection: &WearableDefenseMetrics{
 			SmartWatch:      99.2,
 			FitnessTracker:  98.8,
-			MedicalSensor:   99.5,
+			WasteSensor:   99.5,
 			ImplantableDevice: 99.8,
 		},
-		MedicalContextProtection: &MedicalContextDefenseMetrics{
+		WasteContextProtection: &WasteContextDefenseMetrics{
 			EmergencyContext:   99.5,
 			RoutineMonitoring: 98.5,
 			CriticalCare:      99.8,
-			HomeHealthcare:    98.0,
+			HomeWasteManagement:    98.0,
 		},
-		HealthcareStandards: []string{
-			"FDA Medical Device Cybersecurity",
+		WasteManagementStandards: []string{
+			"FDA Waste Device Cybersecurity",
 			"HIPAA Security Rule Compliance",
-			"IEC 62304 Medical Device Software",
+			"IEC 62304 Waste Device Software",
 			"ISO 14155 Clinical Investigation Standards",
 		},
-		MedicalDeviceAdvantages: []string{
+		WasteDeviceAdvantages: []string{
 			"Power-constrained device optimization",
-			"Medical data sensitivity awareness",
-			"Healthcare environment adaptation",
+			"Waste data sensitivity awareness",
+			"WasteManagement environment adaptation",
 			"Clinical workflow integration",
 		},
 	}
@@ -567,7 +567,7 @@ func (scda *SideChannelDefenseAnalyzer) printTimingAttackResults(results *Timing
 	
 	attackResults := []*AttackDefenseResult{
 		results.HIBEKeyGeneration,
-		results.MedicalDataDecryption,
+		results.WasteDataDecryption,
 		results.DeviceAuthentication,
 		results.RemoteTiming,
 	}
@@ -634,7 +634,7 @@ func (scda *SideChannelDefenseAnalyzer) printComprehensiveDefenseReport(results 
 	fmt.Printf("%-25s | %-15s | %-15s | %-15s\n",
 		"HIBE Key Generation", "< 0.5%", "25-35%", "> 24.5%")
 	fmt.Printf("%-25s | %-15s | %-15s | %-15s\n",
-		"Medical Data Decryption", "< 1%", "20-30%", "> 19%")
+		"Waste Data Decryption", "< 1%", "20-30%", "> 19%")
 	fmt.Printf("%-25s | %-15s | %-15s | %-15s\n",
 		"Device Authentication", "< 0.75%", "15-25%", "> 14.25%")
 	fmt.Printf("%-25s | %-15s | %-15s | %-15s\n",
@@ -650,8 +650,8 @@ func (scda *SideChannelDefenseAnalyzer) printComprehensiveDefenseReport(results 
 	fmt.Printf("%-25s | %-15s | %-15s | %-15s\n",
 		"EM Analysis", "< 0.5%", "25-40%", "> 24.5%")
 	
-	fmt.Printf("\n🏥 MEDICAL DEVICE SPECIFIC PROTECTIONS:\n")
-	for _, optimization := range results.OverallDefenseEfficiency.MedicalDeviceOptimizations {
+	fmt.Printf("\n🏭 WASTE SENSOR SPECIFIC PROTECTIONS:\n")
+	for _, optimization := range results.OverallDefenseEfficiency.WasteDeviceOptimizations {
 		fmt.Printf("  • %s\n", optimization)
 	}
 	
@@ -667,20 +667,20 @@ func (scda *SideChannelDefenseAnalyzer) printComprehensiveDefenseReport(results 
 		fmt.Printf("  ✅ %s\n", differentiator)
 	}
 	
-	fmt.Printf("\n📋 HEALTHCARE COMPLIANCE:\n")
-	for _, standard := range results.MedicalDeviceSpecific.HealthcareStandards {
+	fmt.Printf("\n📋 ENVIRONMENTAL COMPLIANCE:\n")
+	for _, standard := range results.WasteDeviceSpecific.WasteManagementStandards {
 		fmt.Printf("  • %s\n", standard)
 	}
 }
 
 // Helper methods
 func (scda *SideChannelDefenseAnalyzer) getRandomWearableType() string {
-	types := []string{"SmartWatch", "FitnessTracker", "MedicalSensor", "ImplantableDevice"}
+	types := []string{"SmartWatch", "FitnessTracker", "WasteSensor", "ImplantableDevice"}
 	return types[rand.Intn(len(types))]
 }
 
-func (scda *SideChannelDefenseAnalyzer) getRandomMedicalContext() string {
-	contexts := []string{"Emergency", "RoutineMonitoring", "CriticalCare", "HomeHealthcare"}
+func (scda *SideChannelDefenseAnalyzer) getRandomWasteContext() string {
+	contexts := []string{"Emergency", "RoutineMonitoring", "CriticalCare", "HomeWasteManagement"}
 	return contexts[rand.Intn(len(contexts))]
 }
 
@@ -693,7 +693,7 @@ func NewSecureWearTradeSideChannelDefenses() *SecureWearTradeSideChannelDefenses
 		ConstantTimeOperations:  &ConstantTimeOperations{},
 		NoiseInjection:         &NoiseInjection{},
 		MaskingTechniques:      &MaskingTechniques{},
-		MedicalDeviceProtection: &MedicalDeviceProtection{},
+		WasteDeviceProtection: &WasteDeviceProtection{},
 	}
 }
 
@@ -713,11 +713,11 @@ func initializeExistingSolutionDefenses() map[string]*ExistingSolutionDefenses {
 		},
 		"Bamasag": {
 			DefenseCapabilities: []string{"Batch processing optimization"},
-			Vulnerabilities:    []string{"Side-channel vulnerabilities", "No medical optimization"},
+			Vulnerabilities:    []string{"Side-channel vulnerabilities", "No waste optimization"},
 		},
 		"Generic": {
 			DefenseCapabilities: []string{"Standard cryptographic protection"},
-			Vulnerabilities:    []string{"No side-channel awareness", "No medical context"},
+			Vulnerabilities:    []string{"No side-channel awareness", "No waste context"},
 		},
 	}
 }
@@ -733,7 +733,7 @@ type OverallDefenseEfficiency struct {
 	EMAnalysisDefense          float64            `json:"em_analysis_defense"`
 	OverallEfficiency          float64            `json:"overall_efficiency"`
 	DefenseCategories          map[string]float64 `json:"defense_categories"`
-	MedicalDeviceOptimizations []string           `json:"medical_device_optimizations"`
+	WasteDeviceOptimizations []string           `json:"waste_device_optimizations"`
 }
 
 type SideChannelCompetitorComparison struct {
@@ -751,25 +751,25 @@ type SecurityGapAnalysis struct {
 	KeyDifferentiators    []string `json:"key_differentiators"`
 }
 
-type MedicalDeviceSideChannelResults struct {
+type WasteDeviceSideChannelResults struct {
 	WearableDeviceProtection *WearableDefenseMetrics        `json:"wearable_device_protection"`
-	MedicalContextProtection *MedicalContextDefenseMetrics  `json:"medical_context_protection"`
-	HealthcareStandards     []string                       `json:"healthcare_standards"`
-	MedicalDeviceAdvantages []string                       `json:"medical_device_advantages"`
+	WasteContextProtection *WasteContextDefenseMetrics  `json:"waste_context_protection"`
+	WasteManagementStandards     []string                       `json:"waste-management_standards"`
+	WasteDeviceAdvantages []string                       `json:"waste_device_advantages"`
 }
 
 type WearableDefenseMetrics struct {
 	SmartWatch        float64 `json:"smart_watch"`
 	FitnessTracker    float64 `json:"fitness_tracker"`
-	MedicalSensor     float64 `json:"medical_sensor"`
+	WasteSensor     float64 `json:"waste_sensor"`
 	ImplantableDevice float64 `json:"implantable_device"`
 }
 
-type MedicalContextDefenseMetrics struct {
+type WasteContextDefenseMetrics struct {
 	EmergencyContext   float64 `json:"emergency_context"`
 	RoutineMonitoring float64 `json:"routine_monitoring"`
 	CriticalCare      float64 `json:"critical_care"`
-	HomeHealthcare    float64 `json:"home_healthcare"`
+	HomeWasteManagement    float64 `json:"home_waste-management"`
 }
 
 // Additional stub types for completeness
@@ -786,7 +786,7 @@ type EMAnalysisDefense struct{}
 type ConstantTimeOperations struct{}
 type NoiseInjection struct{}
 type MaskingTechniques struct{}
-type MedicalDeviceProtection struct{}
+type WasteDeviceProtection struct{}
 type SideChannelComparisonMetrics struct{}
 type SideChannelAttackSuite struct {
 	TimingAttackSuite *TimingAttackSuite

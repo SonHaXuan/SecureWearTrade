@@ -1,28 +1,32 @@
 {
-   "medicalData": [
+   "wasteData": [
         {
-            "patientName": "John Doe",
-            "age": 35,
-            "bloodType": "A+",
-            "diagnosis": "Hypertension"
+            "binId": "BIN-001",
+            "location": "Downtown District A",
+            "wasteType": "Mixed",
+            "fillLevel": 85,
+            "weight": 120
         },
         {
-            "patientName": "Jane Smith",
-            "age": 42,
-            "bloodType": "B-",
-            "diagnosis": "Diabetes"
+            "binId": "BIN-002",
+            "location": "Residential Zone B",
+            "wasteType": "Recyclable",
+            "fillLevel": 65,
+            "weight": 95
         },
         {
-            "patientName": "John Doe",
-            "age": 35,
-            "bloodType": "A+",
-            "diagnosis": "Hypertension"
+            "binId": "BIN-003",
+            "location": "Commercial Street C",
+            "wasteType": "Organic",
+            "fillLevel": 92,
+            "weight": 145
         },
         {
-            "patientName": "Jane Smith",
-            "age": 42,
-            "bloodType": "B-",
-            "diagnosis": "Diabetes"
+            "binId": "BIN-004",
+            "location": "Industrial Park D",
+            "wasteType": "Electronic",
+            "fillLevel": 45,
+            "weight": 78
         }
     ]
 }

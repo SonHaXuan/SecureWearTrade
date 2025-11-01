@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project implements a blockchain-based KYC (Know Your Customer) and medical data trading system using NFTs, IPFS storage, and advanced cryptographic techniques. The smart contract allows users to mint KYC data as NFTs and trade them securely.
+This project implements a blockchain-based KYC (Know Your Customer) and waste data trading system using NFTs, IPFS storage, and advanced cryptographic techniques. The smart contract allows users to mint KYC data as NFTs and trade them securely.
 
 ## 🏗️ Architecture
 
@@ -11,7 +11,7 @@ This project implements a blockchain-based KYC (Know Your Customer) and medical 
 - **IPFS Integration** for metadata storage
 - **Owner-controlled minting** and transfer mechanisms
 - **Purchase functionality** for data trading
-- **Cryptographic security** with RSA and JEDI integration
+- **Cryptographic security** with RSA and HIBE integration
 
 ### Technology Stack
 - **Solidity 0.8.17** for smart contract development
@@ -19,7 +19,7 @@ This project implements a blockchain-based KYC (Know Your Customer) and medical 
 - **OpenZeppelin** for secure contract standards
 - **IPFS/Pinata** for decentralized metadata storage
 - **RSA Encryption** for data security
-- **JEDI Blockchain** for advanced cryptographic operations
+- **HIBE Blockchain** for advanced cryptographic operations
 
 ## 🚀 Quick Start
 
@@ -156,7 +156,7 @@ npx hardhat test --network localhost
 - RSA key generation and encryption
 - IPFS metadata storage
 - NFT minting and ownership
-- JEDI cryptographic operations
+- HIBE cryptographic operations
 - Data transfer and decryption
 
 ## 📁 Project Structure
@@ -172,7 +172,7 @@ kyc-contract/
 ├── test/
 │   └── test.js              # Comprehensive test suite
 ├── data/
-│   └── test.json            # Sample medical data
+│   └── test.json            # Sample waste data
 ├── hardhat.config.js        # Hardhat configuration
 ├── .env.example             # Environment template
 ├── CLAUDE.md                # Claude Code guidance
@@ -212,7 +212,7 @@ npx hardhat verify --network sepolia 0x969c98B11144F58F331a154D002f2Bd53Ee9C2A4
 ### Data Security
 - RSA encryption for sensitive data (512-bit for testing)
 - IPFS for decentralized storage
-- JEDI blockchain integration for advanced cryptography
+- HIBE blockchain integration for advanced cryptography
 
 ### Development Security
 - Never commit private keys to version control

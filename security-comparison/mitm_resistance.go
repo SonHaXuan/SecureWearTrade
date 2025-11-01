@@ -27,7 +27,7 @@ type SecureWearTradeDefense struct {
 	DeviceAuthenticator  *DeviceAuthenticator
 	SessionManager       *SessionManager
 	DNSSecurityManager   *DNSSecurityManager
-	MedicalDeviceAttest  *MedicalDeviceAttestation
+	WasteDeviceAttest  *WasteDeviceAttestation
 }
 
 // CertificatePinner provides HIBE-enhanced certificate pinning
@@ -39,12 +39,12 @@ type CertificatePinner struct {
 	AttackResistance     *AttackResistanceMetrics
 }
 
-// HIBECertificate represents a HIBE-secured certificate with medical device binding
+// HIBECertificate represents a HIBE-secured certificate with waste device binding
 type HIBECertificate struct {
 	Certificate       *x509.Certificate
 	HIBEKey          []byte
 	DeviceID         string
-	MedicalContext   string
+	WasteContext   string
 	ValidationLevel  int
 	TrustChain       [][]byte
 	ExpirationTime   time.Time
@@ -193,7 +193,7 @@ func (mra *MITMResistanceAnalyzer) testCertificateSubstitution() *AttackTestResu
 		},
 		DefenseMechanisms: []string{
 			"Certificate pinning with HIBE key validation",
-			"Medical device attestation",
+			"Waste device attestation",
 			"Hierarchical certificate trust chains",
 			"Real-time certificate validation",
 		},
@@ -228,7 +228,7 @@ func (mra *MITMResistanceAnalyzer) testSSLStripping() *AttackTestResult {
 		DefenseMechanisms: []string{
 			"TLS 1.3+ enforcement with HIBE-secured handshake",
 			"TLS downgrade prevention",
-			"Encrypted medical device communication",
+			"Encrypted waste device communication",
 			"Protocol version validation",
 		},
 		TestResults: make([]*IndividualAttackTest, 0),
@@ -260,8 +260,8 @@ func (mra *MITMResistanceAnalyzer) testTrafficInterception() *AttackTestResult {
 			"Generic":           9.1,
 		},
 		DefenseMechanisms: []string{
-			"HIBE end-to-end encryption with medical device attestation",
-			"Secure medical data channels",
+			"HIBE end-to-end encryption with waste device attestation",
+			"Secure waste data channels",
 			"Device-to-device authentication",
 			"Encrypted communication protocols",
 		},
@@ -295,7 +295,7 @@ func (mra *MITMResistanceAnalyzer) testSessionHijacking() *AttackTestResult {
 		},
 		DefenseMechanisms: []string{
 			"HIBE-based session tokens with device binding",
-			"Medical device session validation",
+			"Waste device session validation",
 			"Secure session management protocols",
 			"Session integrity verification",
 		},
@@ -330,7 +330,7 @@ func (mra *MITMResistanceAnalyzer) testDNSSpoofing() *AttackTestResult {
 		DefenseMechanisms: []string{
 			"HIBE-secured DNS resolution with device trust chains",
 			"DNS security integration",
-			"Medical network DNS validation",
+			"Waste network DNS validation",
 			"Secure DNS protocols",
 		},
 		TestResults: make([]*IndividualAttackTest, 0),
@@ -420,14 +420,14 @@ func (mra *MITMResistanceAnalyzer) calculateOverallResistance(results *MITMTestR
 		DefenseMechanismsUsed: []string{
 			"Certificate pinning with HIBE key validation",
 			"TLS 1.3+ enforcement with HIBE-secured handshake",
-			"HIBE end-to-end encryption with medical device attestation",
+			"HIBE end-to-end encryption with waste device attestation",
 			"HIBE-based session tokens with device binding",
 			"HIBE-secured DNS resolution with device trust chains",
 		},
 		SecurityLevel: "Maximum",
 		ComplianceStandards: []string{
 			"HIPAA Compliance",
-			"FDA Medical Device Security",
+			"FDA Waste Device Security",
 			"SOC 2 Type II",
 			"ISO 27001",
 		},
@@ -475,7 +475,7 @@ func (mra *MITMResistanceAnalyzer) generateCompetitorComparison(results *MITMTes
 				"Improved certificate handling",
 			},
 			Weaknesses: []string{
-				"Limited medical device integration",
+				"Limited waste device integration",
 				"No comprehensive DNS security",
 			},
 		},
@@ -493,7 +493,7 @@ func (mra *MITMResistanceAnalyzer) generateCompetitorComparison(results *MITMTes
 			},
 			Weaknesses: []string{
 				"Higher attack success rates",
-				"Limited medical context awareness",
+				"Limited waste context awareness",
 			},
 		},
 		GenericSolutions: &CompetitorMetrics{
@@ -509,7 +509,7 @@ func (mra *MITMResistanceAnalyzer) generateCompetitorComparison(results *MITMTes
 				"Basic authentication",
 			},
 			Weaknesses: []string{
-				"No healthcare specialization",
+				"No waste-management specialization",
 				"Limited attack resistance",
 			},
 		},
@@ -517,7 +517,7 @@ func (mra *MITMResistanceAnalyzer) generateCompetitorComparison(results *MITMTes
 			SecureWearTradeAdvantage: 15.5, // ~15.5% better than best competitor
 			KeyDifferentiators: []string{
 				"0% MITM attack success rate",
-				"Medical device specialized security",
+				"Waste device specialized security",
 				"HIBE-integrated defense mechanisms",
 				"Comprehensive DNS security integration",
 			},
@@ -555,7 +555,7 @@ func (mra *MITMResistanceAnalyzer) printComprehensiveReport(results *MITMTestRes
 		fmt.Printf("  • %s: %.1f%% resistance\n", attack, resistance)
 	}
 	
-	fmt.Printf("\n🏥 MEDICAL DEVICE SECURITY FEATURES:\n")
+	fmt.Printf("\n🏭 WASTE SENSOR SECURITY FEATURES:\n")
 	for _, mechanism := range results.OverallResistance.DefenseMechanismsUsed {
 		fmt.Printf("  • %s\n", mechanism)
 	}
@@ -607,7 +607,7 @@ func NewSecureWearTradeDefense() *SecureWearTradeDefense {
 		DeviceAuthenticator: &DeviceAuthenticator{},
 		SessionManager:      &SessionManager{},
 		DNSSecurityManager:  &DNSSecurityManager{},
-		MedicalDeviceAttest: &MedicalDeviceAttestation{},
+		WasteDeviceAttest: &WasteDeviceAttestation{},
 	}
 }
 
@@ -651,7 +651,7 @@ type TLSEnforcer struct{}
 type DeviceAuthenticator struct{}
 type SessionManager struct{}
 type DNSSecurityManager struct{}
-type MedicalDeviceAttestation struct{}
+type WasteDeviceAttestation struct{}
 type HIBEKeyValidator struct{}
 type SecureCertificateStore struct{}
 type CertificateValidationResults struct{}

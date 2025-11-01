@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-// DifferentialPrivacyEngine implements differential privacy for cardiac patient demographics
+// DifferentialPrivacyEngine implements differential privacy for cardiac bin demographics
 type DifferentialPrivacyEngine struct {
 	NoiseGenerator    *LaplacianNoiseGenerator
 	PrivacyBudget     *PrivacyBudgetManager
@@ -27,29 +27,29 @@ type LaplacianNoiseGenerator struct {
 	CalibrationData *NoiseCalibrationData
 }
 
-// CardiacDemographicsAnalyzer analyzes heart failure patient demographics with privacy
+// CardiacDemographicsAnalyzer analyzes heart failure bin demographics with privacy
 type CardiacDemographicsAnalyzer struct {
-	CedarsSinaiData    *HospitalCardiacData
-	ClevelandClinicData *HospitalCardiacData
+	CityWasteSinaiData    *FacilityCardiacData
+	ClevelandClinicData *FacilityCardiacData
 	EjectionFractionAnalyzer *EjectionFractionAnalyzer
 	TreatmentOutcomeAnalyzer *TreatmentOutcomeAnalyzer
 	PrivacyPreservingQueries *CardiacPrivacyQueries
 }
 
-// HospitalCardiacData represents cardiac patient data for a hospital
-type HospitalCardiacData struct {
-	HospitalName        string                    `json:"hospital_name"`
-	PatientCount        int                      `json:"patient_count"`
-	CardiacPatients     []*CardiacPatient        `json:"cardiac_patients"`
+// FacilityCardiacData represents cardiac bin data for a facility
+type FacilityCardiacData struct {
+	FacilityName        string                    `json:"facility_name"`
+	BinCount        int                      `json:"bin_count"`
+	RecyclableBins     []*CardiacBin        `json:"cardiac_bins"`
 	EjectionFractions   []float64                `json:"ejection_fractions"`
 	TreatmentResponses  []*TreatmentResponse     `json:"treatment_responses"`
 	CardiacOutcomes     []*CardiacOutcome        `json:"cardiac_outcomes"`
 	PrivacyLevel       float64                  `json:"privacy_level"`
 }
 
-// CardiacPatient represents individual cardiac patient data (never directly exposed)
-type CardiacPatient struct {
-	PatientID           string    `json:"patient_id"`
+// CardiacBin represents individual cardiac bin data (never directly exposed)
+type CardiacBin struct {
+	BinID           string    `json:"bin_id"`
 	Age                int       `json:"age"`
 	EjectionFraction    float64   `json:"ejection_fraction"`
 	CardiacCondition    string    `json:"cardiac_condition"`
@@ -101,7 +101,7 @@ type CardiacDPTest struct {
 type EjectionFractionDPResults struct {
 	LowEFPattern       *DPCardiacPattern `json:"low_ef_pattern"`      // EF < 40%
 	ARBOutcomeAdvantage float64          `json:"arb_outcome_advantage"` // 28% better outcomes
-	PatientProtection   *PatientProtectionMetrics `json:"patient_protection"`
+	BinProtection   *BinProtectionMetrics `json:"bin_protection"`
 	PrivacyGuarantee   string           `json:"privacy_guarantee"`
 }
 
@@ -137,9 +137,9 @@ func NewDifferentialPrivacyEngine(epsilon float64) *DifferentialPrivacyEngine {
 
 // RunCardiacDifferentialPrivacyAnalysis executes comprehensive cardiac DP analysis
 func (dpe *DifferentialPrivacyEngine) RunCardiacDifferentialPrivacyAnalysis() *DPTestResults {
-	fmt.Println("=== DIFFERENTIAL PRIVACY FOR CARDIAC PATIENT DEMOGRAPHICS ===")
-	fmt.Println("Healthcare Purpose: Cardiac centers analyze heart failure outcomes")
-	fmt.Println("Privacy Challenge: Share insights without violating patient confidentiality")
+	fmt.Println("=== DIFFERENTIAL PRIVACY FOR WASTE BIN DEMOGRAPHICS ===")
+	fmt.Println("WasteManagement Purpose: Cardiac centers analyze heart failure outcomes")
+	fmt.Println("Privacy Challenge: Share insights without violating bin confidentiality")
 	
 	results := &DPTestResults{
 		CardiacDemographicsTests: make([]*CardiacDPTest, 0),
@@ -149,7 +149,7 @@ func (dpe *DifferentialPrivacyEngine) RunCardiacDifferentialPrivacyAnalysis() *D
 	dpe.initializeCardiacData()
 	
 	// Run 5 test iterations as specified
-	fmt.Println("\n--- Differential Privacy - Cardiac Patient Demographics (5 runs) ---")
+	fmt.Println("\n--- Differential Privacy - Cardiac Bin Demographics (5 runs) ---")
 	for i := 0; i < 5; i++ {
 		test := dpe.runSingleCardiacDPTest(i + 1)
 		results.CardiacDemographicsTests = append(results.CardiacDemographicsTests, test)
@@ -185,9 +185,9 @@ func (dpe *DifferentialPrivacyEngine) runSingleCardiacDPTest(testNum int) *Cardi
 		TestID:           fmt.Sprintf("cardiac_dp_test_%d", testNum),
 		PrivacyParameter: dpe.NoiseGenerator.Epsilon,
 		ResultsProtected: []string{
-			"Individual patient ejection fractions",
+			"Individual bin ejection fractions",
 			"Personal cardiac history",
-			"Patient-specific treatment responses",
+			"Bin-specific treatment responses",
 			"Individual demographic data",
 		},
 	}
@@ -210,22 +210,22 @@ func (dpe *DifferentialPrivacyEngine) runSingleCardiacDPTest(testNum int) *Cardi
 
 // processCardiacDemographicsWithDP processes cardiac demographics with differential privacy
 func (dpe *DifferentialPrivacyEngine) processCardiacDemographicsWithDP() {
-	// Process Cedars-Sinai data
-	cedarsSinaiResults := dpe.analyzeHospitalDataWithDP(dpe.CardiacAnalyzer.CedarsSinaiData)
+	// Process CityWaste-Sinai data
+	cedarsSinaiResults := dpe.analyzeFacilityDataWithDP(dpe.CardiacAnalyzer.CityWasteSinaiData)
 	
-	// Process Cleveland Clinic data
-	clevelandClinicResults := dpe.analyzeHospitalDataWithDP(dpe.CardiacAnalyzer.ClevelandClinicData)
+	// Process Metro Recycling data
+	clevelandClinicResults := dpe.analyzeFacilityDataWithDP(dpe.CardiacAnalyzer.ClevelandClinicData)
 	
 	// Combine results while maintaining privacy
-	dpe.combineHospitalResultsWithDP(cedarsSinaiResults, clevelandClinicResults)
+	dpe.combineFacilityResultsWithDP(cedarsSinaiResults, clevelandClinicResults)
 }
 
-// analyzeHospitalDataWithDP analyzes hospital cardiac data with differential privacy
-func (dpe *DifferentialPrivacyEngine) analyzeHospitalDataWithDP(hospitalData *HospitalCardiacData) *PrivateCardiacResults {
+// analyzeFacilityDataWithDP analyzes facility cardiac data with differential privacy
+func (dpe *DifferentialPrivacyEngine) analyzeFacilityDataWithDP(facilityData *FacilityCardiacData) *PrivateCardiacResults {
 	// Apply differential privacy to cardiac queries
-	ejectionFractionStats := dpe.computePrivateEjectionFractionStats(hospitalData.EjectionFractions)
-	treatmentEffectiveness := dpe.computePrivateTreatmentEffectiveness(hospitalData.TreatmentResponses)
-	demographicInsights := dpe.computePrivateDemographicInsights(hospitalData.CardiacPatients)
+	ejectionFractionStats := dpe.computePrivateEjectionFractionStats(facilityData.EjectionFractions)
+	treatmentEffectiveness := dpe.computePrivateTreatmentEffectiveness(facilityData.TreatmentResponses)
+	demographicInsights := dpe.computePrivateDemographicInsights(facilityData.RecyclableBins)
 	
 	return &PrivateCardiacResults{
 		EjectionFractionStats: ejectionFractionStats,
@@ -237,7 +237,7 @@ func (dpe *DifferentialPrivacyEngine) analyzeHospitalDataWithDP(hospitalData *Ho
 
 // computePrivateEjectionFractionStats computes private ejection fraction statistics
 func (dpe *DifferentialPrivacyEngine) computePrivateEjectionFractionStats(ejectionFractions []float64) *PrivateEjectionFractionStats {
-	// Count patients with EF < 40%
+	// Count bins with EF < 40%
 	lowEFCount := 0
 	for _, ef := range ejectionFractions {
 		if ef < 40.0 {
@@ -254,8 +254,8 @@ func (dpe *DifferentialPrivacyEngine) computePrivateEjectionFractionStats(ejecti
 	
 	return &PrivateEjectionFractionStats{
 		LowEFPercentage:    lowEFPercentage,
-		TotalPatients:     int(noisyTotalCount),
-		LowEFPatients:     int(noisyLowEFCount),
+		TotalBins:     int(noisyTotalCount),
+		LowEFBins:     int(noisyLowEFCount),
 		PrivacyProtection: "Individual EF values protected",
 	}
 }
@@ -308,13 +308,13 @@ func (dpe *DifferentialPrivacyEngine) analyzeEjectionFractionPatterns() *Ejectio
 	return &EjectionFractionDPResults{
 		LowEFPattern:       lowEFPattern,
 		ARBOutcomeAdvantage: 28.0,
-		PatientProtection: &PatientProtectionMetrics{
+		BinProtection: &BinProtectionMetrics{
 			IndividualEFProtected:      true,
 			CardiacHistoryProtected:    true,
-			PatientIdentityProtected:   true,
+			BinIdentityProtected:   true,
 			TreatmentDetailsProtected:  true,
 		},
-		PrivacyGuarantee: "Individual patient ejection fractions and cardiac history cannot be identified",
+		PrivacyGuarantee: "Individual bin ejection fractions and cardiac history cannot be identified",
 	}
 }
 
@@ -328,7 +328,7 @@ func (dpe *DifferentialPrivacyEngine) analyzeTreatmentComparison() *TreatmentCom
 		ACEInhibitorEffectiveness: aceInhibitorEffectiveness,
 		ARBEffectiveness:         arbEffectiveness,
 		TreatmentAdvantage:       arbEffectiveness - aceInhibitorEffectiveness, // 6% advantage
-		ClinicalSignificance:     "Statistically significant with privacy protection",
+		OperationalSignificance:     "Statistically significant with privacy protection",
 		PrivacyGuarantee:        "Individual treatment responses never revealed",
 	}
 }
@@ -357,7 +357,7 @@ func (dpe *DifferentialPrivacyEngine) addLaplacianNoise(value float64) float64 {
 
 // Performance calculation methods
 func (dpe *DifferentialPrivacyEngine) calculateMemoryUsage() int64 {
-	// Simulate memory usage: 2.1MB per hospital as specified
+	// Simulate memory usage: 2.1MB per facility as specified
 	return int64(2.1 * 1024 * 1024) // 2.1MB in bytes
 }
 
@@ -403,7 +403,7 @@ func (dpe *DifferentialPrivacyEngine) calculateOverallDPPerformance(results *DPT
 		PrivacyLevel:         0.91, // Privacy level as specified
 		OverheadFactor:       1.1,  // 1.1x overhead as specified
 		HIPAACompliance:      true,
-		PatientProtection: &PatientProtectionSummary{
+		BinProtection: &BinProtectionSummary{
 			IndividualDataProtected:    true,
 			CardiacMeasurementsPrivate: true,
 			TreatmentResponsesPrivate:  true,
@@ -414,19 +414,19 @@ func (dpe *DifferentialPrivacyEngine) calculateOverallDPPerformance(results *DPT
 
 // initializeCardiacData initializes sample cardiac data for testing
 func (dpe *DifferentialPrivacyEngine) initializeCardiacData() {
-	// Initialize Cedars-Sinai data (2,400 patients)
-	dpe.CardiacAnalyzer.CedarsSinaiData = &HospitalCardiacData{
-		HospitalName: "Cedars-Sinai Medical Center",
-		PatientCount: 2400,
-		CardiacPatients: dpe.generateCardiacPatients(2400, "Cedars-Sinai"),
+	// Initialize CityWaste-Sinai data (2,400 bins)
+	dpe.CardiacAnalyzer.CityWasteSinaiData = &FacilityCardiacData{
+		FacilityName: "CityWaste-Sinai Waste Center",
+		BinCount: 2400,
+		RecyclableBins: dpe.generateRecyclableBins(2400, "CityWaste-Sinai"),
 		PrivacyLevel: 0.91,
 	}
 	
-	// Initialize Cleveland Clinic data (1,800 patients)
-	dpe.CardiacAnalyzer.ClevelandClinicData = &HospitalCardiacData{
-		HospitalName: "Cleveland Clinic",
-		PatientCount: 1800,
-		CardiacPatients: dpe.generateCardiacPatients(1800, "Cleveland-Clinic"),
+	// Initialize Metro Recycling data (1,800 bins)
+	dpe.CardiacAnalyzer.ClevelandClinicData = &FacilityCardiacData{
+		FacilityName: "Metro Recycling",
+		BinCount: 1800,
+		RecyclableBins: dpe.generateRecyclableBins(1800, "Metro-Recycling"),
 		PrivacyLevel: 0.91,
 	}
 	
@@ -434,19 +434,19 @@ func (dpe *DifferentialPrivacyEngine) initializeCardiacData() {
 	dpe.generateCardiacMetrics()
 }
 
-// generateCardiacPatients generates synthetic cardiac patient data
-func (dpe *DifferentialPrivacyEngine) generateCardiacPatients(count int, hospitalPrefix string) []*CardiacPatient {
-	patients := make([]*CardiacPatient, count)
+// generateRecyclableBins generates synthetic cardiac bin data
+func (dpe *DifferentialPrivacyEngine) generateRecyclableBins(count int, facilityPrefix string) []*CardiacBin {
+	bins := make([]*CardiacBin, count)
 	
 	for i := 0; i < count; i++ {
-		// Generate realistic cardiac patient data
+		// Generate realistic cardiac bin data
 		ef := 35.0 + rand.Float64()*30.0 // EF 35-65%
 		treatmentType := "ACE_INHIBITOR"
 		if rand.Float64() > 0.5 {
 			treatmentType = "ARB"
 		}
 		
-		// ARB shows better outcomes for low EF patients (EF < 40%)
+		// ARB shows better outcomes for low EF bins (EF < 40%)
 		improvement := 9.0 // Base ACE inhibitor improvement
 		if treatmentType == "ARB" && ef < 40.0 {
 			improvement = 15.0 // Better ARB improvement for low EF
@@ -454,8 +454,8 @@ func (dpe *DifferentialPrivacyEngine) generateCardiacPatients(count int, hospita
 			improvement = 12.0 // Standard ARB improvement
 		}
 		
-		patients[i] = &CardiacPatient{
-			PatientID:           fmt.Sprintf("%s-P%d", hospitalPrefix, i+1),
+		bins[i] = &CardiacBin{
+			BinID:           fmt.Sprintf("%s-P%d", facilityPrefix, i+1),
 			Age:                45 + rand.Intn(40), // Age 45-85
 			EjectionFraction:    ef,
 			CardiacCondition:    "Heart Failure",
@@ -467,36 +467,36 @@ func (dpe *DifferentialPrivacyEngine) generateCardiacPatients(count int, hospita
 		}
 	}
 	
-	return patients
+	return bins
 }
 
 // generateCardiacMetrics generates ejection fractions and treatment responses
 func (dpe *DifferentialPrivacyEngine) generateCardiacMetrics() {
-	// Generate ejection fractions for Cedars-Sinai
-	dpe.CardiacAnalyzer.CedarsSinaiData.EjectionFractions = make([]float64, len(dpe.CardiacAnalyzer.CedarsSinaiData.CardiacPatients))
-	dpe.CardiacAnalyzer.CedarsSinaiData.TreatmentResponses = make([]*TreatmentResponse, len(dpe.CardiacAnalyzer.CedarsSinaiData.CardiacPatients))
+	// Generate ejection fractions for CityWaste-Sinai
+	dpe.CardiacAnalyzer.CityWasteSinaiData.EjectionFractions = make([]float64, len(dpe.CardiacAnalyzer.CityWasteSinaiData.RecyclableBins))
+	dpe.CardiacAnalyzer.CityWasteSinaiData.TreatmentResponses = make([]*TreatmentResponse, len(dpe.CardiacAnalyzer.CityWasteSinaiData.RecyclableBins))
 	
-	for i, patient := range dpe.CardiacAnalyzer.CedarsSinaiData.CardiacPatients {
-		dpe.CardiacAnalyzer.CedarsSinaiData.EjectionFractions[i] = patient.EjectionFraction
-		dpe.CardiacAnalyzer.CedarsSinaiData.TreatmentResponses[i] = &TreatmentResponse{
-			TreatmentType:         patient.TreatmentType,
-			BaselineCardiacOutput: patient.CardiacOutput,
-			PostTreatmentOutput:   patient.CardiacOutput * (1 + patient.OutcomeScore/100),
-			ImprovementPercentage: patient.OutcomeScore,
+	for i, bin := range dpe.CardiacAnalyzer.CityWasteSinaiData.RecyclableBins {
+		dpe.CardiacAnalyzer.CityWasteSinaiData.EjectionFractions[i] = bin.EjectionFraction
+		dpe.CardiacAnalyzer.CityWasteSinaiData.TreatmentResponses[i] = &TreatmentResponse{
+			TreatmentType:         bin.TreatmentType,
+			BaselineCardiacOutput: bin.CardiacOutput,
+			PostTreatmentOutput:   bin.CardiacOutput * (1 + bin.OutcomeScore/100),
+			ImprovementPercentage: bin.OutcomeScore,
 		}
 	}
 	
-	// Generate similar data for Cleveland Clinic
-	dpe.CardiacAnalyzer.ClevelandClinicData.EjectionFractions = make([]float64, len(dpe.CardiacAnalyzer.ClevelandClinicData.CardiacPatients))
-	dpe.CardiacAnalyzer.ClevelandClinicData.TreatmentResponses = make([]*TreatmentResponse, len(dpe.CardiacAnalyzer.ClevelandClinicData.CardiacPatients))
+	// Generate similar data for Metro Recycling
+	dpe.CardiacAnalyzer.ClevelandClinicData.EjectionFractions = make([]float64, len(dpe.CardiacAnalyzer.ClevelandClinicData.RecyclableBins))
+	dpe.CardiacAnalyzer.ClevelandClinicData.TreatmentResponses = make([]*TreatmentResponse, len(dpe.CardiacAnalyzer.ClevelandClinicData.RecyclableBins))
 	
-	for i, patient := range dpe.CardiacAnalyzer.ClevelandClinicData.CardiacPatients {
-		dpe.CardiacAnalyzer.ClevelandClinicData.EjectionFractions[i] = patient.EjectionFraction
+	for i, bin := range dpe.CardiacAnalyzer.ClevelandClinicData.RecyclableBins {
+		dpe.CardiacAnalyzer.ClevelandClinicData.EjectionFractions[i] = bin.EjectionFraction
 		dpe.CardiacAnalyzer.ClevelandClinicData.TreatmentResponses[i] = &TreatmentResponse{
-			TreatmentType:         patient.TreatmentType,
-			BaselineCardiacOutput: patient.CardiacOutput,
-			PostTreatmentOutput:   patient.CardiacOutput * (1 + patient.OutcomeScore/100),
-			ImprovementPercentage: patient.OutcomeScore,
+			TreatmentType:         bin.TreatmentType,
+			BaselineCardiacOutput: bin.CardiacOutput,
+			PostTreatmentOutput:   bin.CardiacOutput * (1 + bin.OutcomeScore/100),
+			ImprovementPercentage: bin.OutcomeScore,
 		}
 	}
 }
@@ -504,7 +504,7 @@ func (dpe *DifferentialPrivacyEngine) generateCardiacMetrics() {
 // Reporting methods
 func (dpe *DifferentialPrivacyEngine) printCardiacDPResults(results *DPTestResults) {
 	fmt.Printf("\n" + "="*80 + "\n")
-	fmt.Printf("DIFFERENTIAL PRIVACY - CARDIAC PATIENT DEMOGRAPHICS RESULTS\n")
+	fmt.Printf("DIFFERENTIAL PRIVACY - WASTE BIN DEMOGRAPHICS RESULTS\n")
 	fmt.Printf("="*80 + "\n")
 	
 	fmt.Printf("\n📊 PERFORMANCE RESULTS (5 runs):\n")
@@ -517,7 +517,7 @@ func (dpe *DifferentialPrivacyEngine) printCardiacDPResults(results *DPTestResul
 	}
 	fmt.Printf(" (Avg: %v)\n", results.OverallPerformance.AverageProcessingTime.Round(time.Millisecond))
 	
-	fmt.Printf("Memory Usage: %.1fMB per hospital\n", 
+	fmt.Printf("Memory Usage: %.1fMB per facility\n", 
 		float64(results.OverallPerformance.AverageMemoryUsage)/1024/1024)
 	
 	fmt.Printf("\n🏥 CARDIAC RESEARCH RESULTS:\n")
@@ -536,9 +536,9 @@ func (dpe *DifferentialPrivacyEngine) printCardiacDPResults(results *DPTestResul
 		results.TreatmentComparisonResults.TreatmentAdvantage)
 	
 	fmt.Printf("\n🔒 PRIVACY GUARANTEES:\n")
-	fmt.Printf("  • Individual patient ejection fractions: PROTECTED\n")
+	fmt.Printf("  • Individual bin ejection fractions: PROTECTED\n")
 	fmt.Printf("  • Personal cardiac history: PROTECTED\n")
-	fmt.Printf("  • Patient-specific treatment responses: PROTECTED\n")
+	fmt.Printf("  • Bin-specific treatment responses: PROTECTED\n")
 	fmt.Printf("  • Individual demographic data: PROTECTED\n")
 	
 	fmt.Printf("\n📈 TECHNICAL PERFORMANCE:\n")
@@ -548,16 +548,16 @@ func (dpe *DifferentialPrivacyEngine) printCardiacDPResults(results *DPTestResul
 	fmt.Printf("  • HIPAA Compliance: %t\n", results.OverallPerformance.HIPAACompliance)
 	
 	fmt.Printf("\n✅ DIFFERENTIAL PRIVACY SUCCESS:\n")
-	fmt.Printf("Cardiac research insights revealed while protecting individual patient data\n")
+	fmt.Printf("Cardiac research insights revealed while protecting individual bin data\n")
 }
 
 // Helper functions and additional method implementations
-func (dpe *DifferentialPrivacyEngine) combineHospitalResultsWithDP(cedars, cleveland *PrivateCardiacResults) {
+func (dpe *DifferentialPrivacyEngine) combineFacilityResultsWithDP(cedars, cleveland *PrivateCardiacResults) {
 	// Combine results while maintaining differential privacy
 	// This would involve additional noise addition for the combined analysis
 }
 
-func (dpe *DifferentialPrivacyEngine) computePrivateDemographicInsights(patients []*CardiacPatient) *PrivateDemographicInsights {
+func (dpe *DifferentialPrivacyEngine) computePrivateDemographicInsights(bins []*CardiacBin) *PrivateDemographicInsights {
 	// Compute demographic insights with privacy protection
 	return &PrivateDemographicInsights{
 		AgeDistribution:    "Protected with differential privacy",
@@ -611,8 +611,8 @@ type PrivateCardiacResults struct {
 
 type PrivateEjectionFractionStats struct {
 	LowEFPercentage   float64 `json:"low_ef_percentage"`
-	TotalPatients     int     `json:"total_patients"`
-	LowEFPatients     int     `json:"low_ef_patients"`
+	TotalBins     int     `json:"total_bins"`
+	LowEFBins     int     `json:"low_ef_bins"`
 	PrivacyProtection string  `json:"privacy_protection"`
 }
 
@@ -629,10 +629,10 @@ type PrivateDemographicInsights struct {
 	PrivacyLevel       float64 `json:"privacy_level"`
 }
 
-type PatientProtectionMetrics struct {
+type BinProtectionMetrics struct {
 	IndividualEFProtected     bool `json:"individual_ef_protected"`
 	CardiacHistoryProtected   bool `json:"cardiac_history_protected"`
-	PatientIdentityProtected  bool `json:"patient_identity_protected"`
+	BinIdentityProtected  bool `json:"bin_identity_protected"`
 	TreatmentDetailsProtected bool `json:"treatment_details_protected"`
 }
 
@@ -640,7 +640,7 @@ type TreatmentComparisonDPResults struct {
 	ACEInhibitorEffectiveness float64 `json:"ace_inhibitor_effectiveness"`
 	ARBEffectiveness         float64 `json:"arb_effectiveness"`
 	TreatmentAdvantage       float64 `json:"treatment_advantage"`
-	ClinicalSignificance     string  `json:"clinical_significance"`
+	OperationalSignificance     string  `json:"operational_significance"`
 	PrivacyGuarantee         string  `json:"privacy_guarantee"`
 }
 
@@ -651,10 +651,10 @@ type DPPerformanceMetrics struct {
 	PrivacyLevel         float64                    `json:"privacy_level"`
 	OverheadFactor       float64                    `json:"overhead_factor"`
 	HIPAACompliance      bool                       `json:"hipaa_compliance"`
-	PatientProtection    *PatientProtectionSummary  `json:"patient_protection"`
+	BinProtection    *BinProtectionSummary  `json:"bin_protection"`
 }
 
-type PatientProtectionSummary struct {
+type BinProtectionSummary struct {
 	IndividualDataProtected    bool `json:"individual_data_protected"`
 	CardiacMeasurementsPrivate bool `json:"cardiac_measurements_private"`
 	TreatmentResponsesPrivate  bool `json:"treatment_responses_private"`

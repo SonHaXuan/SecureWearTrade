@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project involves interacting with a Jedi server and running a smart contract. Follow the steps below to build and run the necessary components and execute tests.
+This project implements a **Smart City Waste Management System** using HIBE (Joint Encryption and Delegation Infrastructure) for secure data access control. The system enables encrypted data sharing between smart waste bins, collection vehicles, recycling facilities, and city management systems while maintaining granular access control and full auditability.
 
 ## Prerequisites
 
@@ -14,21 +14,26 @@ Ensure you have the following installed on your machine:
 - Node.js and npm (Node Package Manager)
 - Hardhat (for running Ethereum smart contract tests)
 
-## Dataset
+## Use Case: Smart Waste Management
 
-This project uses the [LifeSnaps Fitbit Dataset](https://www.kaggle.com/datasets/skywescar/lifesnaps-fitbit-dataset) from Kaggle for data analysis and testing. Please ensure you download and place the dataset in the appropriate directory before proceeding.
+This system demonstrates how HIBE encryption and delegation can secure a smart city waste management infrastructure, including:
+
+- **Smart Bins**: IoT-enabled waste bins with sensors for fill level, weight, temperature, and waste type
+- **Collection Vehicles**: Garbage trucks accessing bin data for route optimization
+- **Waste Facilities**: Recycling centers, transfer stations, and processing plants
+- **City Management**: Environmental monitoring, compliance inspection, and analytics systems
 
 ## Step-by-Step Instructions
 
-### 1. Start the Jedi Server
+### 1. Start the Hibe Server
 
-The Jedi server needs to be built and run using Docker. Follow these steps to start the server:
+The Hibe server needs to be built and run using Docker. Follow these steps to start the server:
 
-1. Navigate to the `go-jedi` directory:
+1. Navigate to the `go-hibe` directory:
    ```bash
-   cd go-jedi
+   cd go-hibe
    ```
-2. Build the Docker image for Jedi:
+2. Build the Docker image for Hibe:
 
    ```bash
    docker build . -t jedi
@@ -43,7 +48,7 @@ The Jedi server needs to be built and run using Docker. Follow these steps to st
 
 ### 2. Run the Smart Contract Tests
 
-After starting the Jedi server, you need to interact with it using a smart contract. Follow these steps to set up and run the tests:
+After starting the Hibe server, you need to interact with it using a smart contract. Follow these steps to set up and run the tests:
 
 1. Navigate to the kyc-contract directory:
 
@@ -64,15 +69,37 @@ After starting the Jedi server, you need to interact with it using a smart contr
 
 ### Customizing Tests
 
-If you wish to modify the test data or the test cases, you can edit the kyc-contract/test/MedicalRecord-test.js file. Be sure to adjust the test data and logic according to your requirements.
+If you wish to modify the test data or the test cases, you can edit the kyc-contract/test/test.js file. Be sure to adjust the test data and logic according to your requirements.
 
-## Security Analysis for SecureWearTrade JEDI Implementation
+### Running Waste Management Test Scenarios
 
-This section outlines the security considerations and experimental validation results for the JEDI (Joint Encryption and Delegation Infrastructure) implementation used in the SecureWearTrade application.
+To test the complete waste management delegation and revocation system:
+
+```bash
+cd go-hibe
+./test_waste_management_scenarios.sh
+```
+
+This will run 10 comprehensive test scenarios including:
+- Collection vehicle route optimization
+- Emergency overflow response
+- Recycling center processing
+- Facility inspections
+- Environmental monitoring
+- Driver departure revocation
+- Security breach response
+
+For detailed documentation, see:
+- `go-hibe/WASTE_MANAGEMENT_TESTING_GUIDE.md`
+- `go-hibe/waste_management_test_scenarios.md`
+
+## Security Analysis for Smart Waste Management HIBE Implementation
+
+This section outlines the security considerations and experimental validation results for the HIBE (Joint Encryption and Delegation Infrastructure) implementation used in the Smart City Waste Management application.
 
 ### Overview
 
-The JEDI cryptographic system provides attribute-based encryption with delegation capabilities. This implementation is designed to secure data within a hierarchical structure while allowing selective access delegation. The security of this system has been rigorously tested through comprehensive experimental validation.
+The HIBE cryptographic system provides attribute-based encryption with delegation capabilities. This implementation is designed to secure data within a hierarchical structure while allowing selective access delegation. The security of this system has been rigorously tested through comprehensive experimental validation.
 
 ### Experimental Validation Results
 
@@ -166,8 +193,8 @@ Extensive testing against various side-channel attack vectors:
 The experimental validation framework can be executed using the following commands:
 
 ```bash
-# Navigate to go-jedi directory
-cd go-jedi
+# Navigate to go-hibe directory
+cd go-hibe
 
 # Run comprehensive security test suite
 go test ./security/... -v
@@ -188,13 +215,13 @@ go run main.go
 ### Test Data and Reproducibility
 
 All tests use standardized test vectors and scenarios located in:
-- `go-jedi/testdata/attack_scenarios.json`
-- `go-jedi/testdata/performance_baselines.json`
-- `go-jedi/testdata/test_vectors.json`
+- `go-hibe/testdata/attack_scenarios.json`
+- `go-hibe/testdata/performance_baselines.json`
+- `go-hibe/testdata/test_vectors.json`
 
 Detailed results and methodology are documented in:
-- `go-jedi/results/README.md`
-- `go-jedi/results/templates/report_template.html`
+- `go-hibe/results/README.md`
+- `go-hibe/results/templates/report_template.html`
 
 ### Security Testing Framework
 

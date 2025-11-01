@@ -1,12 +1,12 @@
-# 🏥 KYC Blockchain Medical Data Trading Platform
+# 🏥 KYC Blockchain Waste Data Trading Platform
 
-A decentralized platform for secure KYC verification and medical data trading using blockchain technology, NFTs, and advanced cryptographic techniques.
+A decentralized platform for secure KYC verification and waste data trading using blockchain technology, NFTs, and advanced cryptographic techniques.
 
 ## 🌟 Features
 
 ### 🔐 Security & Privacy
 - **RSA Encryption**: End-to-end encryption for sensitive data
-- **JEDI Blockchain Integration**: Advanced cryptographic operations
+- **HIBE Blockchain Integration**: Advanced cryptographic operations
 - **IPFS Storage**: Decentralized metadata storage
 - **Owner-Controlled Access**: Granular permission management
 
@@ -55,7 +55,7 @@ npx hardhat run scripts/deploy-simple.js --network sepolia
 ```
 ┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
 │   User Data     │    │   IPFS Storage   │    │   KYC Contract  │
-│  (Medical/KYC)  │───▶│  (Metadata URI)  │───▶│   (NFT Token)   │
+│  (Waste/KYC)  │───▶│  (Metadata URI)  │───▶│   (NFT Token)   │
 └─────────────────┘    └──────────────────┘    └─────────────────┘
          │                       │                       │
          ▼                       ▼                       ▼
@@ -74,7 +74,7 @@ npx hardhat run scripts/deploy-simple.js --network sepolia
 
 ### Cryptography
 - **RSA-512** - Data encryption (testing)
-- **JEDI Blockchain** - Advanced crypto operations
+- **HIBE Blockchain** - Advanced crypto operations
 - **IPFS/Pinata** - Decentralized storage
 
 ### Development Tools
@@ -101,7 +101,7 @@ npx hardhat test --network localhost
 ✅ **RSA Key Generation & Encryption**
 ✅ **IPFS Metadata Storage**
 ✅ **NFT Minting & Ownership**
-✅ **JEDI Cryptographic Operations**
+✅ **HIBE Cryptographic Operations**
 ✅ **Data Transfer & Decryption**
 
 ## 📊 Deployed Contracts
@@ -119,11 +119,11 @@ npx hardhat test --network localhost
 
 ## 💡 Use Cases
 
-### 🏥 Healthcare
-- Secure patient data sharing
-- Medical record verification
+### 🏥 WasteManagement
+- Secure bin data sharing
+- Waste record verification
 - Clinical trial data management
-- Doctor-patient data exchange
+- Operator-bin data exchange
 
 ### 🔐 KYC Services
 - Identity verification

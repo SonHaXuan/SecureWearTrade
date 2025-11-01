@@ -190,12 +190,12 @@ func (pua *PrivacyUtilityAnalysis) analyzeHomomorphicEncryption() []PrivacyUtili
 func (pua *PrivacyUtilityAnalysis) analyzeSecureMultipartyComputation() []PrivacyUtilityMetrics {
 	log.Printf("Analyzing Secure Multiparty Computation performance and utility...")
 	
-	smcResults := pua.SMCEngine.RunHospitalProtocolComparison()
-	metrics := make([]PrivacyUtilityMetrics, len(smcResults.HospitalProtocolTests))
+	smcResults := pua.SMCEngine.RunFacilityProtocolComparison()
+	metrics := make([]PrivacyUtilityMetrics, len(smcResults.FacilityProtocolTests))
 	
 	baselineTime := 200 * time.Millisecond
 	
-	for i, test := range smcResults.HospitalProtocolTests {
+	for i, test := range smcResults.FacilityProtocolTests {
 		privacyLevel := pua.calculatePrivacyLevel("Secure Multiparty Computation")
 		accuracyPreservation := 100.0
 		if test.PrivacyPreserved {
@@ -308,7 +308,7 @@ func (pua *PrivacyUtilityAnalysis) generateRecommendations(summary ComparisonSum
 		"For maximum privacy protection: Use Homomorphic Encryption (98.2% privacy level)",
 		"For best performance: Use Differential Privacy (lowest processing overhead)",
 		"For optimal privacy-utility balance: Use Homomorphic Encryption",
-		"For multi-hospital collaboration: Use Secure Multiparty Computation",
+		"For multi-facility collaboration: Use Secure Multiparty Computation",
 		"For regulatory compliance: Homomorphic Encryption provides strongest HIPAA compliance",
 		"For large-scale deployments: Differential Privacy offers best scalability",
 		"For real-time applications: Consider Differential Privacy for sub-50ms response times",
@@ -360,7 +360,7 @@ func (result *ComprehensiveAnalysisResult) PrintDetailedResults() {
 	
 	fmt.Printf("Analysis Overview:\n")
 	fmt.Printf("- Privacy Technologies Analyzed: 3 (Differential Privacy, Homomorphic Encryption, Secure Multiparty Computation)\n")
-	fmt.Printf("- Test Scenarios: Cardiac research with real hospital data (Cedars-Sinai, Cleveland Clinic, Mayo, Johns Hopkins)\n")
+	fmt.Printf("- Test Scenarios: Cardiac research with real facility data (CityWaste-Sinai, Metro Recycling, Mayo, EcoWaste Processing)\n")
 	fmt.Printf("- Evaluation Metrics: Privacy Level, Utility Score, Performance Overhead, Scalability, Compliance\n\n")
 	
 	fmt.Printf("=== DIFFERENTIAL PRIVACY ANALYSIS ===\n")
@@ -429,9 +429,9 @@ func (result *ComprehensiveAnalysisResult) PrintDetailedResults() {
 	
 	fmt.Printf("\n=== CLINICAL RESEARCH IMPLICATIONS ===\n")
 	fmt.Printf("For cardiac research scenarios analyzed:\n")
-	fmt.Printf("- Patient demographics analysis: Differential Privacy provides optimal balance\n")
+	fmt.Printf("- Bin demographics analysis: Differential Privacy provides optimal balance\n")
 	fmt.Printf("- Treatment response calculations: Homomorphic Encryption ensures 100%% accuracy\n")
-	fmt.Printf("- Multi-hospital protocol comparison: SMC enables secure collaboration\n")
+	fmt.Printf("- Multi-facility protocol comparison: SMC enables secure collaboration\n")
 	fmt.Printf("- Real-time monitoring: Differential Privacy supports sub-50ms response times\n")
 	fmt.Printf("- Regulatory compliance: All three technologies meet HIPAA requirements\n")
 	

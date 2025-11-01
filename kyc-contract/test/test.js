@@ -18,11 +18,11 @@ const ENCRYPTION_KEY = "WbHPUuDNQLpFtSSGiBtTVSeqPdAHBZzw"; // Replace this with 
 const IV_LENGTH = 16;
 let TOKEN_ID = 1;
 
-const JediInstance = axios.default.create({
+const HibeInstance = axios.default.create({
   baseURL: "http://localhost:8080",
 });
 
-describe("JEDI Blockchain for Medical record TEST", async function () {
+describe("HIBE Blockchain for Waste Management TEST", async function () {
   var owner, otherAccount, contract, pinata;
   before(async () => {
     await loadFixture(deployOneYearLockFixture);
@@ -39,7 +39,7 @@ describe("JEDI Blockchain for Medical record TEST", async function () {
     // Contracts are deployed using the first signer/account by default
     const [ownerTemp, otherAccountTemp] = await ethers.getSigners();
 
-    const Contract = await ethers.getContractFactory("KYC");
+    const Contract = await ethers.getContractFactory("WasteManagement");
     contract = await Contract.deploy();
 
     owner = ownerTemp;
@@ -69,7 +69,7 @@ describe("JEDI Blockchain for Medical record TEST", async function () {
 
   const userInfoA = testData;
 
-  it("Step 1: Generate RSA keys and create NFT for storing KYC on blockchain", async function () {
+  it("Step 1: Generate RSA keys and create NFT for storing waste bin data on blockchain", async function () {
     const key = new NodeRSA({ b: 512 });
 
     // Generate an RSA key pair
@@ -103,9 +103,9 @@ describe("JEDI Blockchain for Medical record TEST", async function () {
     };
   });
 
-  it("Step 2.1: Delegate JEDI key for user A and encrypt it with RSA key", async function () {
+  it("Step 2.1: Delegate HIBE key for user A and encrypt it with RSA key", async function () {
     // generate jedi private key
-    const jediPKResA = await JediInstance.get(`/jedi-private-key/`);
+    const jediPKResA = await HibeInstance.get(`/jedi-private-key/`);
     const jediKeys = jediPKResA.data.data;
 
     expect(jediKeys).to.be.a("string");
@@ -114,7 +114,7 @@ describe("JEDI Blockchain for Medical record TEST", async function () {
     const encryptedPublickey = publicKeyEncryption.encrypt(jediKeys);
 
     // save info for next steps
-    userInfoA.encryptedJediKey = encryptedPublickey;
+    userInfoA.encryptedHibeKey = encryptedPublickey;
 
     // return data to user
     return {
@@ -125,7 +125,7 @@ describe("JEDI Blockchain for Medical record TEST", async function () {
   it("Step 2.2: Decrypt encrypted jedi keys", async function () {
     const privateKeyDecryption = new NodeRSA(userInfoA.rsaPrivateKey);
     const jediKeys = privateKeyDecryption.decrypt(
-      userInfoA.encryptedJediKey,
+      userInfoA.encryptedHibeKey,
       "utf8"
     );
 
@@ -138,8 +138,8 @@ describe("JEDI Blockchain for Medical record TEST", async function () {
     };
   });
 
-  it("Step 3: Delegate JEDI key for user B from user A", async function () {
-    const jediKeyRes = await JediInstance.get(
+  it("Step 3: Delegate HIBE key for user B from user A", async function () {
+    const jediKeyRes = await HibeInstance.get(
       `/jedi-private-key?parent=${userInfoA.jediKeys}`
     );
 
@@ -153,10 +153,10 @@ describe("JEDI Blockchain for Medical record TEST", async function () {
     };
   });
 
-  it("Encrypt and Decrypt message with JEDI", async function () {
+  it("Encrypt and Decrypt message with HIBE", async function () {
     const message = "Hello world";
 
-    const encryptedMsgRes = await JediInstance.post(`/encrypt`, {
+    const encryptedMsgRes = await HibeInstance.post(`/encrypt`, {
       message,
       uri: "a/b/c/d",
     });
@@ -167,7 +167,7 @@ describe("JEDI Blockchain for Medical record TEST", async function () {
 
     const encryptedMsg = encryptedMsgRes.data.data;
 
-    const decryptedMsgRes = await JediInstance.post(`/decrypt`, {
+    const decryptedMsgRes = await HibeInstance.post(`/decrypt`, {
       encryptedMessage: encryptedMsg,
       uri: "a/b/c/d",
       key: userInfoA.jediKeys,
